@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.openAi = void 0;
 const openai_1 = require("openai");
 const dotenv = __importStar(require("dotenv"));
+const logger_1 = require("../logger");
 dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
@@ -109,7 +110,7 @@ const openAi = async (prompt, options = {}) => {
         return String(result.content);
     }
     catch (error) {
-        throw new Error(`openAi error: ${error}`);
+        logger_1.Logger.error(`openAi error: ${error}`);
     }
 };
 exports.openAi = openAi;

@@ -29,6 +29,7 @@ const dotenv = __importStar(require("dotenv"));
 const util_1 = require("util");
 const translateVertexPromptParams_1 = require("../translate/translateVertexPromptParams");
 const translate_1 = require("../translate");
+const logger_1 = require("../logger");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 const { helpers } = aiplatform;
@@ -104,9 +105,9 @@ const vertexAi = async (prompt, options = {}) => {
             publisher: options.publisher || 'google',
         };
         if (endpointParams.projectId === '')
-            throw new Error('Please set projectId in options parameter or GCLOUD_PROJECT in your environment');
+            throw new Error(`Please set projectId in options parameter or GCLOUD_PROJECT in your environment. e.g. \n$ export GCLOUD_PROJECT="my-project-id"`);
         if (endpointParams.location === '')
-            throw new Error('Please set location in options parameter \nor FIREBASE_CONFIG in your environment. e.g. { "locationId": "us-central1" }');
+            throw new Error(`Please set location in options parameter or FIREBASE_CONFIG in your environment. e.g. \n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`);
         const vertexParameterParams = {
             temperature: options.temperature || 0.2,
             maxOutputTokens: options.maxOutputTokens || 256,
@@ -138,7 +139,8 @@ const vertexAi = async (prompt, options = {}) => {
         return predictions;
     }
     catch (error) {
-        throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+        logger_1.Logger.error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+        process.exit(1);
     }
 };
 exports.vertexAi = vertexAi;
