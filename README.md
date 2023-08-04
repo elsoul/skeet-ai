@@ -23,12 +23,16 @@
 
 ## Skeet Framework Plugin - AI
 
-Skeet AI Plugin for AI.
-This plugin is a wrapper for Google Cloud Vertex AI and Open AI.
-Fast and easy to deploy with Skeet Framework.
+Skeet AI Plugin for Multile Chat Models.
+
+Build generative AI apps quickly and responsibly with Model API, a simple, secure, and multiple AI models are available.
+
+This plugin wraps the following AI models.
 
 - [Vertex AI(Google Cloud)](https://cloud.google.com/vertex-ai/)
 - [Open AI(ChatGPT)](https://openai.com/)
+
+Fast and easy to deploy with Skeet Framework.
 
 ## 🧪 Dependency 🧪
 
@@ -56,7 +60,7 @@ Enable API and Permissions on GCP.
 if you havent installed Skeet CLI, install it.
 
 ```bash
-$ gcloud auth login
+$ gcloud auth application-default
 $ npm i -g @skeet-framework/cli
 ```
 
@@ -69,7 +73,6 @@ $ skeet iam ai
 ✔ Successfully created ./skeet-cloud.config.json 🎉
 🚸 === Copy & Paste below command to your terminal === 🚸
 
-export GOOGLE_APPLICATION_CREDENTIALS=/your/dev/path/keyfile.json
 export GCLOUD_PROJECT=your-project-id
 export FIREBASE_CONFIG='{ "locationId": "us-central1" }'
 

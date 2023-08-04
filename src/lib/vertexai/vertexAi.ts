@@ -8,7 +8,6 @@ import {
 } from '../types/vertexaiTypes'
 import { translateVertexPromptParams } from '../translate/translateVertexPromptParams'
 import { translate } from '../translate'
-import { Logger } from '../logger'
 dotenv.config()
 
 const { PredictionServiceClient } = aiplatform.v1
@@ -114,14 +113,14 @@ export const vertexAi = async (
       publisher: options.publisher || 'google',
     }
     if (endpointParams.projectId === '') {
-      Logger.info(
+      console.log(
         `⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment. \n\nexample:\n\n$ export GCLOUD_PROJECT="my-project-id"`,
       )
       return ''
     }
 
     if (endpointParams.location === '') {
-      Logger.info(
+      console.log(
         `Please set location in options parameter or FIREBASE_CONFIG in your environment. \n\nexample:\n\n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`,
       )
       return ''
@@ -169,7 +168,7 @@ export const vertexAi = async (
       if (typeof error === 'object') {
         const errorLog = String(error.details)
         if (errorLog.includes('Permission')) {
-          Logger.info(
+          console.log(
             `⚠️ Make sure if you login to your GCP project.\n\nexample:\n\n$ gcloud auth application-default login\n\nOr\n\n$ skeet iam ai \n\nTo activate service account.`,
           )
           return ''
