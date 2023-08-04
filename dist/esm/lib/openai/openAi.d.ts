@@ -4,8 +4,7 @@ import { OpenAIOptions, OpenAIPromptParams } from '../types/openaiTypes';
 
  * Example:
  * ```ts
-import { OpenAIPromptParams } from '../types/openaiTypes'
-import { openAi } from './openAi'
+import { openAi, OpenAIPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
   const prompt: OpenAIPromptParams = {

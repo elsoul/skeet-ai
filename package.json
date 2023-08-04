@@ -1,6 +1,6 @@
 {
   "name": "@skeet-framework/ai",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Skeet Framework Plugin - AI",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/elsoul/skeet-ai/issues"
   },
-  "homepage": "https://skeet.dev",
+  "homepage": "https://elsoul.github.io/skeet-ai",
   "scripts": {
     "test": "jest --coverage=false --detectOpenHandles --maxWorkers=1",
     "build": "yarn build-doc&& yarn version:update && yarn build:cjs && yarn build:esm",

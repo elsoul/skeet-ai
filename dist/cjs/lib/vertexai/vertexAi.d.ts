@@ -4,8 +4,7 @@ import { VertexAiOptions, VertexPromptParams } from '../types/vertexaiTypes';
 
  * Example:
  * ```ts
-import { VertexPromptParams } from '../types/vertexaiTypes'
-import { vertexAi } from './vertexAi'
+import { vertexAi, VertexPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
   const prompt: VertexPromptParams = {

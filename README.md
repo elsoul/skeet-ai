@@ -23,23 +23,116 @@
 
 # Skeet Framework Plugin - AI
 
-Skeet Utils Plugin for AI.
+Skeet AI Plugin for AI.
 
 # Installation
-
-```bash
-$ skeet yarn add -p @skeet-framework/ai
-```
-
-or
 
 ```bash
 $ yarn add @skeet-framework/ai
 ```
 
-# Skeet Utils Docs
+with Skeet Framework CLI
 
-- [Skeet Utils TypeDoc](https://elsoul.github.io/skeet-ai/)
+```bash
+$ skeet yarn add -p @skeet-framework/ai
+```
+
+# Usage
+
+set environment variables
+
+```bash
+$ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/credential.json
+$ export GCLOUD_PROJECT=your-project-id
+$ export FIREBASE_CONFIG={ "locationId": "us-central1" }
+```
+
+## Vertex AI
+
+Example `app.ts`
+
+```ts
+import { vertexAi, VertexPromptParams } from '@skeet-framework/ai'
+
+const run = async () => {
+  const prompt: VertexPromptParams = {
+    context:
+      'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
+    examples: [
+      {
+        input: {
+          content:
+            'What is the Skeet framework and what benefits does it offer for app development?',
+        },
+        output: {
+          content:
+            'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
+        },
+      },
+    ],
+    messages: [
+      {
+        author: 'user',
+        content: 'Tell me about the Skeet framework.',
+      },
+    ],
+  }
+
+  const response = await vertexAi(prompt)
+  console.log(response)
+}
+
+run()
+```
+
+## OpenAI
+
+set environment variables
+
+```bash
+$ export CHAT_GPT_ORG=org-id
+$ export CHAT_GPT_KEY=your-api-key
+```
+
+Example `app.ts`
+
+```ts
+import { openAi, OpenAIPromptParams } from '@skeet-framework/ai'
+
+const run = async () => {
+  const prompt: OpenAIPromptParams = {
+    messages: [
+      {
+        role: 'system',
+        content:
+          'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
+      },
+      {
+        role: 'user',
+        content:
+          'What is the Skeet framework and what benefits does it offer for app development?',
+      },
+      {
+        role: 'assistant',
+        content:
+          'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
+      },
+      {
+        role: 'user',
+        content: 'Tell me about the Skeet framework.',
+      },
+    ],
+  }
+  const result = await openAi(prompt)
+  console.log(result)
+}
+
+run()
+```
+
+# Skeet AI Docs
+
+- [Skeet AI TypeDoc](https://elsoul.github.io/skeet-ai/)
 
 ## Skeet Framework Document
 
@@ -56,7 +149,7 @@ TypeScript Serverless Framework 'Skeet'.
 The Skeet project was launched with the goal of reducing software development, operation, and maintenance costs.
 
 Build Serverless Apps faster.
-Powered by TUtils, Cloud Functions, Typesaurus, Jest, Prettier, and Google Cloud.
+Powered by TAI, Cloud Functions, Typesaurus, Jest, Prettier, and Google Cloud.
 
 ## Dependency
 

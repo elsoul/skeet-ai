@@ -13,8 +13,7 @@ const FIREBASE_CONFIG = process.env.FIREBASE_CONFIG || '';
 
  * Example:
  * ```ts
-import { VertexPromptParams } from '../types/vertexaiTypes'
-import { vertexAi } from './vertexAi'
+import { vertexAi, VertexPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
   const prompt: VertexPromptParams = {
