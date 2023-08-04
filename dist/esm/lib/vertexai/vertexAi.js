@@ -60,8 +60,13 @@ run()
 export const vertexAi = async (prompt, options = {}) => {
     try {
         if (!options.location) {
-            const { locationId } = JSON.parse(FIREBASE_CONFIG);
-            options.location = locationId;
+            try {
+                const { locationId } = JSON.parse(FIREBASE_CONFIG);
+                options.location = locationId;
+            }
+            catch (error) {
+                options.location = '';
+            }
         }
         if (!options.isJapanese)
             options.isJapanese = false;

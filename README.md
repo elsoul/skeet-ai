@@ -39,13 +39,33 @@ $ skeet yarn add -p @skeet-framework/ai
 
 # Usage
 
-set environment variables
+Enable API and Permissions on GCP.
+
+if you havent installed Skeet CLI, install it.
 
 ```bash
-$ export GOOGLE_APPLICATION_CREDENTIALS=/path/to/your/credential.json
-$ export GCLOUD_PROJECT=your-project-id
-$ export FIREBASE_CONFIG={ "locationId": "us-central1" }
+$ npm i -g @skeet-framework/cli
 ```
+
+and run `skeet iam ai` command.
+
+```bash
+$ skeet iam ai
+? What's your GCP Project ID your-project-id
+? Select Regions to deploy asia-east1
+✔ Successfully created ./skeet-cloud.config.json 🎉
+🚸 === Copy & Paste below command to your terminal === 🚸
+
+export GOOGLE_APPLICATION_CREDENTIALS=/your/dev/path/keyfile.json
+export GCLOUD_PROJECT=your-project-id
+export FIREBASE_CONFIG='{ "locationId": "us-central1" }'
+
+🚸 =========           END           ========= 🚸
+```
+
+And set environment variables following the console's output.
+
+**Note: If you deploy to Firebase Functions in a production environment, both the `GCLOUD_PROJECT` and `FIREBASE_CONFIG` environment variables will be automatically set.**
 
 ## Vertex AI
 
@@ -83,6 +103,12 @@ const run = async () => {
 }
 
 run()
+```
+
+Run
+
+```bash
+$ npx ts-node app.ts
 ```
 
 ## OpenAI
@@ -128,6 +154,12 @@ const run = async () => {
 }
 
 run()
+```
+
+Run
+
+```bash
+$ npx ts-node app.ts
 ```
 
 # Skeet AI Docs

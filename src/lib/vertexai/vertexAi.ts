@@ -69,8 +69,12 @@ export const vertexAi = async (
 ): Promise<string> => {
   try {
     if (!options.location) {
-      const { locationId } = JSON.parse(FIREBASE_CONFIG)
-      options.location = locationId
+      try {
+        const { locationId } = JSON.parse(FIREBASE_CONFIG)
+        options.location = locationId
+      } catch (error) {
+        options.location = ''
+      }
     }
     if (!options.isJapanese) options.isJapanese = false
 
