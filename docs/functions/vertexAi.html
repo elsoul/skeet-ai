@@ -30,11 +30,15 @@
 <li>
 <h5><span class="tsd-kind-parameter">prompt</span>: <a href="../types/VertexPromptParams.html" class="tsd-signature-type tsd-kind-type-alias">VertexPromptParams</a></h5>
 <div class="tsd-comment tsd-typography"><p>the message to send to the server.</p>
+<pre><code class="language-ts"><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-7">VertexPromptParams</span><span class="hl-1"> {</span><br/><span class="hl-1"> context: string</span><br/><span class="hl-1"> examples: VertexExample[]</span><br/><span class="hl-1"> messages: VertexMessage[]</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-7">VertexExample</span><span class="hl-1"> {</span><br/><span class="hl-1"> input: VertexParameterParams</span><br/><span class="hl-1"> output: VertexParameterParams</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-7">VertexParameterParams</span><span class="hl-1"> {</span><br/><span class="hl-1"> content: string</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
 </div>
 <div class="tsd-comment tsd-typography"></div></li>
 <li>
 <h5><span class="tsd-kind-parameter">options</span>: <a href="../types/VertexAiOptions.html" class="tsd-signature-type tsd-kind-type-alias">VertexAiOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 <div class="tsd-comment tsd-typography"><p>the options to use when sending the request.</p>
+<pre><code class="language-ts"><span class="hl-3">type</span><span class="hl-1"> </span><span class="hl-7">VertexAiOptions</span><span class="hl-1"> {</span><br/><span class="hl-1"> projectId?: string</span><br/><span class="hl-1"> location?: string</span><br/><span class="hl-1"> apiEndpoint?: string</span><br/><span class="hl-1"> model?: string</span><br/><span class="hl-1"> publisher?: string</span><br/><span class="hl-1"> isJapanese?: boolean</span><br/><span class="hl-1">}</span>
+</code><button>Copy</button></pre>
 </div>
 <div class="tsd-comment tsd-typography"></div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><p>the response from the Vertex AI server.</p>
@@ -42,11 +46,11 @@
 <div class="tsd-comment tsd-typography">
 <h4>Remarks</h4><p>Both <code>options.projectId</code> and <code>options.location</code> are required, unless you have <code>GCLOUD_PROJECT</code> and <code>FIREBASE_CONFIG</code> set in your environment variables. Please note that values in options will override these environment variables.</p>
 <p>e.g. <code>.env</code></p>
-<pre><code class="language-bash"><span class="hl-5">GCLOUD_PROJECT</span><span class="hl-1">=</span><span class="hl-2">&quot;my-project-id&quot;</span><br/><span class="hl-5">FIREBASE_CONFIG</span><span class="hl-1">=</span><span class="hl-2">{</span><span class="hl-1"> </span><span class="hl-0">&quot;locationId&quot;</span><span class="hl-0">:</span><span class="hl-1"> </span><span class="hl-2">&quot;us-central1&quot;</span><span class="hl-1"> </span><span class="hl-2">}</span>
+<pre><code class="language-bash"><span class="hl-5">GCLOUD_PROJECT</span><span class="hl-1">=</span><span class="hl-2">&quot;my-project-id&quot;</span><br/><span class="hl-5">FIREBASE_CONFIG</span><span class="hl-1">=</span><span class="hl-2">&#39;{ &quot;locationId&quot;: &quot;us-central1&quot; }&#39;</span>
 </code><button>Copy</button></pre>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/elsoul/skeet-ai/blob/8e4845a/src/lib/vertexai/vertexAi.ts#L66">src/lib/vertexai/vertexAi.ts:66</a></li></ul></aside></li></ul></section></div>
+<li>Defined in <a href="https://github.com/elsoul/skeet-ai/blob/a837f08/src/lib/vertexai/vertexAi.ts#L92">src/lib/vertexai/vertexAi.ts:92</a></li></ul></aside></li></ul></section></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

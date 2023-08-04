@@ -50,10 +50,36 @@ run()
  * e.g. `.env`
  * ```bash
  * GCLOUD_PROJECT="my-project-id"
- * FIREBASE_CONFIG={ "locationId": "us-central1" }
+ * FIREBASE_CONFIG='{ "locationId": "us-central1" }'
  * ```
  * @param prompt the message to send to the server.
+ * ```ts
+ * type VertexPromptParams {
+ *  context: string
+ *  examples: VertexExample[]
+ *  messages: VertexMessage[]
+ * }
+ *
+ * type VertexExample {
+ *  input: VertexParameterParams
+ *  output: VertexParameterParams
+ * }
+ *
+ * type VertexParameterParams {
+ *  content: string
+ * }
+ * ```
  * @param options the options to use when sending the request.
+ * ```ts
+ * type VertexAiOptions {
+ *  projectId?: string
+ *  location?: string
+ *  apiEndpoint?: string
+ *  model?: string
+ *  publisher?: string
+ *  isJapanese?: boolean
+ * }
+ * ```
  * @returns the response from the Vertex AI server.
  *
  */

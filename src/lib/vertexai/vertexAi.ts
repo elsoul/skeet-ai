@@ -56,10 +56,36 @@ run()
  * e.g. `.env`
  * ```bash
  * GCLOUD_PROJECT="my-project-id"
- * FIREBASE_CONFIG={ "locationId": "us-central1" }
+ * FIREBASE_CONFIG='{ "locationId": "us-central1" }'
  * ```
  * @param prompt the message to send to the server.
+ * ```ts
+ * type VertexPromptParams {
+ *  context: string
+ *  examples: VertexExample[]
+ *  messages: VertexMessage[]
+ * }
+ * 
+ * type VertexExample {
+ *  input: VertexParameterParams
+ *  output: VertexParameterParams
+ * }
+ * 
+ * type VertexParameterParams {
+ *  content: string
+ * }
+ * ```
  * @param options the options to use when sending the request.
+ * ```ts
+ * type VertexAiOptions {
+ *  projectId?: string
+ *  location?: string
+ *  apiEndpoint?: string
+ *  model?: string
+ *  publisher?: string
+ *  isJapanese?: boolean
+ * }
+ * ```
  * @returns the response from the Vertex AI server.
  *
  */
@@ -117,6 +143,7 @@ export const vertexAi = async (
     const instanceValue: any = options.isJapanese
       ? helpers.toValue(await translateVertexPromptParams(prompt))
       : helpers.toValue(prompt)
+
     const instances: any[] = [instanceValue]
     const parameters: any = helpers.toValue(vertexParameterParams)
     const request: any = {
@@ -134,6 +161,7 @@ export const vertexAi = async (
         )
       : response.predictions[0].structValue.fields.candidates.listValue
           .values[0].structValue.fields.content.stringValue
+
     return String(predictions)
   } catch (error: any) {
     try {

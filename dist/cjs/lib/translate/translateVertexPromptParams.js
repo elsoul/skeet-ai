@@ -8,17 +8,17 @@ const translateVertexPromptParams = async (params, target = 'en') => {
         params.examples = await Promise.all(params.examples.map(async (example) => {
             return {
                 input: {
-                    content: await (0, translate_1.translate)(example.input.content),
+                    content: await (0, translate_1.translate)(example.input.content, target),
                 },
                 output: {
-                    content: await (0, translate_1.translate)(example.output.content),
+                    content: await (0, translate_1.translate)(example.output.content, target),
                 },
             };
         }));
         params.messages = await Promise.all(params.messages.map(async (message) => {
             return {
                 author: message.author,
-                content: await (0, translate_1.translate)(message.content),
+                content: await (0, translate_1.translate)(message.content, target),
             };
         }));
         return params;

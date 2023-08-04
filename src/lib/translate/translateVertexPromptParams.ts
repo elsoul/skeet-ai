@@ -11,10 +11,10 @@ export const translateVertexPromptParams = async (
       params.examples.map(async (example) => {
         return {
           input: {
-            content: await translate(example.input.content),
+            content: await translate(example.input.content, target),
           },
           output: {
-            content: await translate(example.output.content),
+            content: await translate(example.output.content, target),
           },
         }
       }),
@@ -23,7 +23,7 @@ export const translateVertexPromptParams = async (
       params.messages.map(async (message) => {
         return {
           author: message.author,
-          content: await translate(message.content),
+          content: await translate(message.content, target),
         }
       }),
     )

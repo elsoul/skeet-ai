@@ -35,15 +35,27 @@
   </a>
 </p>
 
-<a id="md:skeet-framework-plugin---ai" class="tsd-anchor"></a><h1><a href="#md:skeet-framework-plugin---ai">Skeet Framework Plugin - AI</a></h1><p>Skeet AI Plugin for AI.</p>
-<a id="md:installation" class="tsd-anchor"></a><h1><a href="#md:installation">Installation</a></h1><pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@skeet-framework/ai</span>
+<a id="md:skeet-framework-plugin---ai" class="tsd-anchor"></a><h2><a href="#md:skeet-framework-plugin---ai">Skeet Framework Plugin - AI</a></h2><p>Skeet AI Plugin for AI.
+This plugin is a wrapper for Google Cloud Vertex AI and Open AI.
+Fast and easy to deploy with Skeet Framework.</p>
+<ul>
+<li><a href="https://cloud.google.com/vertex-ai/">Vertex AI(Google Cloud)</a></li>
+<li><a href="https://openai.com/">Open AI(ChatGPT)</a></li>
+</ul>
+<a id="md:🧪-dependency-🧪" class="tsd-anchor"></a><h2><a href="#md:🧪-dependency-🧪">🧪 Dependency 🧪</a></h2><ul>
+<li><a href="https://www.typescriptlang.org/">TypeScript</a> ^5.0.0</li>
+<li><a href="https://nodejs.org/ja/">Node.js</a> ^18.16.0</li>
+<li><a href="https://yarnpkg.com/">Yarn</a> ^1.22.19</li>
+<li><a href="https://cloud.google.com/sdk/docs/install">Google Cloud SDK</a> ^430.0.0</li>
+</ul>
+<a id="md:installation" class="tsd-anchor"></a><h2><a href="#md:installation">Installation</a></h2><pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-2">@skeet-framework/ai</span>
 </code><button>Copy</button></pre>
 <p>with Skeet Framework CLI</p>
 <pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">skeet</span><span class="hl-1"> </span><span class="hl-2">yarn</span><span class="hl-1"> </span><span class="hl-2">add</span><span class="hl-1"> </span><span class="hl-3">-p</span><span class="hl-1"> </span><span class="hl-2">@skeet-framework/ai</span>
 </code><button>Copy</button></pre>
-<a id="md:usage" class="tsd-anchor"></a><h1><a href="#md:usage">Usage</a></h1><p>Enable API and Permissions on GCP.</p>
+<a id="md:initial-setup---vertex-ai-google-cloud" class="tsd-anchor"></a><h1><a href="#md:initial-setup---vertex-ai-google-cloud">Initial Setup - Vertex AI (Google Cloud)</a></h1><p>Enable API and Permissions on GCP.</p>
 <p>if you havent installed Skeet CLI, install it.</p>
-<pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-3">-g</span><span class="hl-1"> </span><span class="hl-2">@skeet-framework/cli</span>
+<pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">gcloud</span><span class="hl-1"> </span><span class="hl-2">auth</span><span class="hl-1"> </span><span class="hl-2">login</span><br/><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">npm</span><span class="hl-1"> </span><span class="hl-2">i</span><span class="hl-1"> </span><span class="hl-3">-g</span><span class="hl-1"> </span><span class="hl-2">@skeet-framework/cli</span>
 </code><button>Copy</button></pre>
 <p>and run <code>skeet iam ai</code> command.</p>
 <pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">skeet</span><span class="hl-1"> </span><span class="hl-2">iam</span><span class="hl-1"> </span><span class="hl-2">ai</span><br/><span class="hl-1">? What</span><span class="hl-2">&#39;s your GCP Project ID your-project-id</span><br/><span class="hl-2">? Select Regions to deploy asia-east1</span><br/><span class="hl-2">✔ Successfully created ./skeet-cloud.config.json 🎉</span><br/><span class="hl-2">🚸 === Copy &amp; Paste below command to your terminal === 🚸</span><br/><br/><span class="hl-2">export GOOGLE_APPLICATION_CREDENTIALS=/your/dev/path/keyfile.json</span><br/><span class="hl-2">export GCLOUD_PROJECT=your-project-id</span><br/><span class="hl-2">export FIREBASE_CONFIG=&#39;</span><span class="hl-1">{ </span><span class="hl-0">&quot;locationId&quot;</span><span class="hl-0">:</span><span class="hl-1"> </span><span class="hl-2">&quot;us-central1&quot;</span><span class="hl-1"> </span><span class="hl-2">}&#39;</span><br/><br/><span class="hl-2">🚸 =========           END           ========= 🚸</span>
@@ -56,7 +68,26 @@
 <p>Run</p>
 <pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">npx</span><span class="hl-1"> </span><span class="hl-2">ts-node</span><span class="hl-1"> </span><span class="hl-2">app.ts</span>
 </code><button>Copy</button></pre>
-<a id="md:openai" class="tsd-anchor"></a><h2><a href="#md:openai">OpenAI</a></h2><p>set environment variables</p>
+<a id="md:vertex-ai---japanese-日本語" class="tsd-anchor"></a><h2><a href="#md:vertex-ai---japanese-日本語">Vertex AI - Japanese (日本語)</a></h2><p>以下のように <code>isJapanese</code> オプションを <code>true</code> にすることで、
+日本語をサポートしています。</p>
+<pre><code class="language-ts"><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">options</span><span class="hl-1"> = {</span><br/><span class="hl-1">  </span><span class="hl-5">isJapanese:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">}</span><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">response</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">vertexAi</span><span class="hl-1">(</span><span class="hl-5">prompt</span><span class="hl-1">, </span><span class="hl-5">options</span><span class="hl-1">)</span>
+</code><button>Copy</button></pre>
+<p><strong>デフォルトのモデルは <code>chat-bison@001</code> を使用していますが、
+このモデルは日本語をサポートしていないため、
+内部では Google 翻訳API を使用して、日本語を英語に変換してから、
+英語のモデルを使用しています。</strong></p>
+<p>Example <code>app.ts</code></p>
+<pre><code class="language-ts"><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">VertexAiOptions</span><span class="hl-1">, </span><span class="hl-5">VertexPromptParams</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;../types/vertexaiTypes&#39;</span><br/><span class="hl-4">import</span><span class="hl-1"> { </span><span class="hl-5">vertexAi</span><span class="hl-1"> } </span><span class="hl-4">from</span><span class="hl-1"> </span><span class="hl-2">&#39;./vertexAi&#39;</span><br/><br/><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-0">run</span><span class="hl-1"> = </span><span class="hl-3">async</span><span class="hl-1"> () </span><span class="hl-3">=&gt;</span><span class="hl-1"> {</span><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">prompt</span><span class="hl-1">: </span><span class="hl-7">VertexPromptParams</span><span class="hl-1"> = {</span><br/><span class="hl-1">    </span><span class="hl-5">context:</span><br/><span class="hl-1">      </span><span class="hl-2">&#39;あなたは、Web アプリケーションを構築するためのフレームワークである Skeet フレームワークに精通している開発者です。&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">    </span><span class="hl-5">examples:</span><span class="hl-1"> [</span><br/><span class="hl-1">      {</span><br/><span class="hl-1">        </span><span class="hl-5">input:</span><span class="hl-1"> {</span><br/><span class="hl-1">          </span><span class="hl-5">content:</span><br/><span class="hl-1">            </span><span class="hl-2">&#39;Skeet フレームワークとは何ですか?また、それがアプリ開発にどのようなメリットをもたらしますか?&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">        </span><span class="hl-5">output:</span><span class="hl-1"> {</span><br/><span class="hl-1">          </span><span class="hl-5">content:</span><br/><span class="hl-1">            </span><span class="hl-2">&#39;Skeet フレームワークは、アプリケーションの開発および運用コストを削減することを目的とした、オープンソースのフルスタック アプリケーション開発ソリューションです。これにより、開発者はインフラストラクチャについて心配する必要がなくなり、アプリケーション ロジックに集中できるようになります。このフレームワークは、SQL と NoSQL を組み合わせて構築できます。&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">        },</span><br/><span class="hl-1">      },</span><br/><span class="hl-1">    ],</span><br/><span class="hl-1">    </span><span class="hl-5">messages:</span><span class="hl-1"> [</span><br/><span class="hl-1">      {</span><br/><span class="hl-1">        </span><span class="hl-5">author:</span><span class="hl-1"> </span><span class="hl-2">&#39;user&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">        </span><span class="hl-5">content:</span><span class="hl-1"> </span><span class="hl-2">&#39;Skeet フレームワークについて教えてください。&#39;</span><span class="hl-1">,</span><br/><span class="hl-1">      },</span><br/><span class="hl-1">    ],</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">options</span><span class="hl-1">: </span><span class="hl-7">VertexAiOptions</span><span class="hl-1"> = {</span><br/><span class="hl-1">    </span><span class="hl-5">isJapanese:</span><span class="hl-1"> </span><span class="hl-3">true</span><span class="hl-1">,</span><br/><span class="hl-1">  }</span><br/><br/><span class="hl-1">  </span><span class="hl-3">const</span><span class="hl-1"> </span><span class="hl-6">response</span><span class="hl-1"> = </span><span class="hl-4">await</span><span class="hl-1"> </span><span class="hl-0">vertexAi</span><span class="hl-1">(</span><span class="hl-5">prompt</span><span class="hl-1">, </span><span class="hl-5">options</span><span class="hl-1">)</span><br/><span class="hl-1">  </span><span class="hl-5">console</span><span class="hl-1">.</span><span class="hl-0">log</span><span class="hl-1">(</span><span class="hl-5">response</span><span class="hl-1">)</span><br/><span class="hl-1">}</span><br/><br/><span class="hl-0">run</span><span class="hl-1">()</span>
+</code><button>Copy</button></pre>
+<p>Run (実行)</p>
+<pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">npx</span><span class="hl-1"> </span><span class="hl-2">ts-node</span><span class="hl-1"> </span><span class="hl-2">app.ts</span>
+</code><button>Copy</button></pre>
+<a id="md:initial-setup---open-ai-chatgpt" class="tsd-anchor"></a><h1><a href="#md:initial-setup---open-ai-chatgpt">Initial Setup - Open AI (ChatGPT)</a></h1><a id="md:create-openai-api-key" class="tsd-anchor"></a><h2><a href="#md:create-openai-api-key">Create OpenAI API Key</a></h2><ul>
+<li><a href="https://beta.openai.com/">https://beta.openai.com/</a></li>
+</ul>
+<p><img src="https://storage.googleapis.com/skeet-assets/imgs/backend/openai-api-key.png" alt="OpenAI ChatGPT API"></p>
+<p>📕 <a href="https://platform.openai.com/docs/introduction">OpenAI API Document</a></p>
+<a id="md:usage" class="tsd-anchor"></a><h1><a href="#md:usage">Usage</a></h1><a id="md:openai" class="tsd-anchor"></a><h2><a href="#md:openai">OpenAI</a></h2><p>set environment variables</p>
 <pre><code class="language-bash"><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">export</span><span class="hl-1"> </span><span class="hl-2">CHAT_GPT_ORG=org-id</span><br/><span class="hl-0">$</span><span class="hl-1"> </span><span class="hl-2">export</span><span class="hl-1"> </span><span class="hl-2">CHAT_GPT_KEY=your-api-key</span>
 </code><button>Copy</button></pre>
 <p>Example <code>app.ts</code></p>
@@ -111,11 +142,22 @@ Powered by TAI, Cloud Functions, Typesaurus, Jest, Prettier, and Google Cloud.</
 <li>
 <ul>
 <li><a href="#md:skeet-framework-plugin---ai"><span>Skeet <wbr/>Framework <wbr/>Plugin -<wbr/> AI</span></a></li>
-<li><a href="#md:installation"><span>Installation</span></a></li>
-<li><a href="#md:usage"><span>Usage</span></a></li>
+<li>
+<ul>
+<li><a href="#md:🧪-dependency-🧪"><span>🧪 <wbr/>Dependency 🧪</span></a></li>
+<li><a href="#md:installation"><span>Installation</span></a></li></ul></li>
+<li><a href="#md:initial-setup---vertex-ai-google-cloud"><span>Initial <wbr/>Setup -<wbr/> <wbr/>Vertex AI (<wbr/>Google <wbr/>Cloud)</span></a></li>
 <li>
 <ul>
 <li><a href="#md:vertex-ai"><span>Vertex AI</span></a></li>
+<li><a href="#md:vertex-ai---japanese-日本語"><span>Vertex AI -<wbr/> <wbr/>Japanese (日本語)</span></a></li></ul></li>
+<li><a href="#md:initial-setup---open-ai-chatgpt"><span>Initial <wbr/>Setup -<wbr/> <wbr/>Open AI (<wbr/>ChatGPT)</span></a></li>
+<li>
+<ul>
+<li><a href="#md:create-openai-api-key"><span>Create <wbr/>OpenAI API <wbr/>Key</span></a></li></ul></li>
+<li><a href="#md:usage"><span>Usage</span></a></li>
+<li>
+<ul>
 <li><a href="#md:openai"><span>OpenAI</span></a></li></ul></li>
 <li><a href="#md:skeet-ai-docs"><span>Skeet AI <wbr/>Docs</span></a></li>
 <li>

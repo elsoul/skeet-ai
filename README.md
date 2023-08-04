@@ -21,11 +21,23 @@
   </a>
 </p>
 
-# Skeet Framework Plugin - AI
+## Skeet Framework Plugin - AI
 
 Skeet AI Plugin for AI.
+This plugin is a wrapper for Google Cloud Vertex AI and Open AI.
+Fast and easy to deploy with Skeet Framework.
 
-# Installation
+- [Vertex AI(Google Cloud)](https://cloud.google.com/vertex-ai/)
+- [Open AI(ChatGPT)](https://openai.com/)
+
+## 🧪 Dependency 🧪
+
+- [TypeScript](https://www.typescriptlang.org/) ^5.0.0
+- [Node.js](https://nodejs.org/ja/) ^18.16.0
+- [Yarn](https://yarnpkg.com/) ^1.22.19
+- [Google Cloud SDK](https://cloud.google.com/sdk/docs/install) ^430.0.0
+
+## Installation
 
 ```bash
 $ yarn add @skeet-framework/ai
@@ -37,13 +49,14 @@ with Skeet Framework CLI
 $ skeet yarn add -p @skeet-framework/ai
 ```
 
-# Usage
+# Initial Setup - Vertex AI (Google Cloud)
 
 Enable API and Permissions on GCP.
 
 if you havent installed Skeet CLI, install it.
 
 ```bash
+$ gcloud auth login
 $ npm i -g @skeet-framework/cli
 ```
 
@@ -110,6 +123,82 @@ Run
 ```bash
 $ npx ts-node app.ts
 ```
+
+## Vertex AI - Japanese (日本語)
+
+以下のように `isJapanese` オプションを `true` にすることで、
+日本語をサポートしています。
+
+```ts
+const options = {
+  isJapanese: true,
+}
+const response = await vertexAi(prompt, options)
+```
+
+**デフォルトのモデルは `chat-bison@001` を使用していますが、
+このモデルは日本語をサポートしていないため、
+内部では Google 翻訳API を使用して、日本語を英語に変換してから、
+英語のモデルを使用しています。**
+
+Example `app.ts`
+
+```ts
+import { VertexAiOptions, VertexPromptParams } from '../types/vertexaiTypes'
+import { vertexAi } from './vertexAi'
+
+const run = async () => {
+  const prompt: VertexPromptParams = {
+    context:
+      'あなたは、Web アプリケーションを構築するためのフレームワークである Skeet フレームワークに精通している開発者です。',
+    examples: [
+      {
+        input: {
+          content:
+            'Skeet フレームワークとは何ですか?また、それがアプリ開発にどのようなメリットをもたらしますか?',
+        },
+        output: {
+          content:
+            'Skeet フレームワークは、アプリケーションの開発および運用コストを削減することを目的とした、オープンソースのフルスタック アプリケーション開発ソリューションです。これにより、開発者はインフラストラクチャについて心配する必要がなくなり、アプリケーション ロジックに集中できるようになります。このフレームワークは、SQL と NoSQL を組み合わせて構築できます。',
+        },
+      },
+    ],
+    messages: [
+      {
+        author: 'user',
+        content: 'Skeet フレームワークについて教えてください。',
+      },
+    ],
+  }
+
+  const options: VertexAiOptions = {
+    isJapanese: true,
+  }
+
+  const response = await vertexAi(prompt, options)
+  console.log(response)
+}
+
+run()
+```
+
+Run (実行)
+
+```bash
+$ npx ts-node app.ts
+```
+
+# Initial Setup - Open AI (ChatGPT)
+
+## Create OpenAI API Key
+
+- [https://beta.openai.com/](https://beta.openai.com/)
+
+![OpenAI ChatGPT API](https://storage.googleapis.com/skeet-assets/imgs/backend/openai-api-key.png)
+
+📕 [OpenAI API Document](https://platform.openai.com/docs/introduction)
+
+# Usage
 
 ## OpenAI
 
