@@ -1,0 +1,1 @@
+export declare const getChildCollectionItem: <Child, Parent>(parentCollectionName: string, childCollectionName: string, parentId: string, childCollectionId: string) => Promise<import("typesaurus").Doc<Child> | null>;
