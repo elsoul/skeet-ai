@@ -29,7 +29,6 @@ const dotenv = __importStar(require("dotenv"));
 const util_1 = require("util");
 const translateVertexPromptParams_1 = require("../translate/translateVertexPromptParams");
 const translate_1 = require("../translate");
-const logger_1 = require("../logger");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 const { helpers } = aiplatform;
@@ -131,11 +130,11 @@ const vertexAi = async (prompt, options = {}) => {
             publisher: options.publisher || 'google',
         };
         if (endpointParams.projectId === '') {
-            logger_1.Logger.info(`⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment. \n\nexample:\n\n$ export GCLOUD_PROJECT="my-project-id"`);
+            console.log(`⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment. \n\nexample:\n\n$ export GCLOUD_PROJECT="my-project-id"`);
             return '';
         }
         if (endpointParams.location === '') {
-            logger_1.Logger.info(`Please set location in options parameter or FIREBASE_CONFIG in your environment. \n\nexample:\n\n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`);
+            console.log(`Please set location in options parameter or FIREBASE_CONFIG in your environment. \n\nexample:\n\n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`);
             return '';
         }
         const vertexParameterParams = {
@@ -173,7 +172,7 @@ const vertexAi = async (prompt, options = {}) => {
             if (typeof error === 'object') {
                 const errorLog = String(error.details);
                 if (errorLog.includes('Permission')) {
-                    logger_1.Logger.info(`⚠️ Make sure if you login to your GCP project.\n\nexample:\n\n$ gcloud auth application-default login\n\nOr\n\n$ skeet iam ai \n\nTo activate service account.`);
+                    console.log(`⚠️ Make sure if you login to your GCP project.\n\nexample:\n\n$ gcloud auth application-default login\n\nOr\n\n$ skeet iam ai \n\nTo activate service account.`);
                     return '';
                 }
                 throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
