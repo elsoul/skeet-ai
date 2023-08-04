@@ -29,7 +29,6 @@ const dotenv = __importStar(require("dotenv"));
 const util_1 = require("util");
 const translateVertexPromptParams_1 = require("../translate/translateVertexPromptParams");
 const translate_1 = require("../translate");
-const logger_1 = require("../logger");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 const { helpers } = aiplatform;
@@ -104,10 +103,14 @@ const vertexAi = async (prompt, options = {}) => {
             model: options.model || 'chat-bison@001',
             publisher: options.publisher || 'google',
         };
-        if (endpointParams.projectId === '')
-            throw new Error(`Please set projectId in options parameter or GCLOUD_PROJECT in your environment. e.g. \n$ export GCLOUD_PROJECT="my-project-id"`);
-        if (endpointParams.location === '')
-            throw new Error(`Please set location in options parameter or FIREBASE_CONFIG in your environment. e.g. \n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`);
+        if (endpointParams.projectId === '') {
+            console.log(`⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment. \n\nexample:\n\n$ export GCLOUD_PROJECT="my-project-id"`);
+            return '';
+        }
+        if (endpointParams.location === '') {
+            console.log(`Please set location in options parameter or FIREBASE_CONFIG in your environment. \n\nexample:\n\n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`);
+            return '';
+        }
         const vertexParameterParams = {
             temperature: options.temperature || 0.2,
             maxOutputTokens: options.maxOutputTokens || 256,
@@ -136,11 +139,25 @@ const vertexAi = async (prompt, options = {}) => {
                 .values[0].structValue.fields.content.stringValue)
             : response.predictions[0].structValue.fields.candidates.listValue
                 .values[0].structValue.fields.content.stringValue;
-        return predictions;
+        return String(predictions);
     }
     catch (error) {
-        logger_1.Logger.error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
-        process.exit(1);
+        try {
+            if (typeof error === 'object') {
+                const errorLog = String(error.details);
+                if (errorLog.includes('Permission')) {
+                    console.log(`⚠️ Make sure if you login to your GCP project.\n\nexample:\n\n$ gcloud auth application-default login\n\nOr\n\n$ skeet iam ai \n\nTo activate service account.`);
+                    return '';
+                }
+                throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+            }
+            else {
+                throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+            }
+        }
+        catch (error) {
+            throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+        }
     }
 };
 exports.vertexAi = vertexAi;
