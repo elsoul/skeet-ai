@@ -1,5 +1,6 @@
 import { Configuration, OpenAIApi } from 'openai';
 import * as dotenv from 'dotenv';
+import { Logger } from '../logger';
 dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
@@ -83,7 +84,7 @@ export const openAi = async (prompt, options = {}) => {
         return String(result.content);
     }
     catch (error) {
-        throw new Error(`openAi error: ${error}`);
+        Logger.error(`openAi error: ${error}`);
     }
 };
 //# sourceMappingURL=openAi.js.map

@@ -1,6 +1,6 @@
 {
   "name": "@skeet-framework/ai",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Skeet Framework Plugin - AI",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -26,18 +26,19 @@
   "homepage": "https://elsoul.github.io/skeet-ai",
   "scripts": {
     "test": "jest --coverage=false --detectOpenHandles --maxWorkers=1",
-    "build": "yarn build-doc&& yarn version:update && yarn build:cjs && yarn build:esm",
+    "build": "yarn build-doc && yarn version:update && yarn build:cjs && yarn build:esm",
     "update:packages": "ncu -u && yarn",
     "version:update": "ts-node -r tsconfig-paths/register --transpile-only release.ts",
     "build:cjs": "tsc -b tsconfig.cjs.json",
     "build:esm": "tsc -b tsconfig.esm.json",
     "build-doc": "typedoc src/index.ts --out docs",
-    "publish": "yarn build && npm publish",
+    "publish": "npm publish",
     "dev": "npx ts-node -r tsconfig-paths/register --transpile-only src/index.ts"
   },
   "dependencies": {
     "@google-cloud/aiplatform": "2.17.0",
     "@google-cloud/translate": "7.2.2",
+    "chalk": "4",
     "dotenv": "16.3.1",
     "node-fetch": "2.6.9",
     "openai": "3.3.0"

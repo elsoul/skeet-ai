@@ -92,6 +92,7 @@ export const openAi = async (
       throw new Error('openAi error: result is undefined')
     return String(result.content)
   } catch (error) {
-    throw new Error(`openAi error: ${error}`)
+    console.error(`openAi error: ${error}`)
+    process.exit(1)
   }
 }

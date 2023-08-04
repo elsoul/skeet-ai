@@ -86,14 +86,19 @@ export const vertexAi = async (
       model: options.model || 'chat-bison@001',
       publisher: options.publisher || 'google',
     }
-    if (endpointParams.projectId === '')
-      throw new Error(
-        'Please set projectId in options parameter or GCLOUD_PROJECT in your environment',
+    if (endpointParams.projectId === '') {
+      console.log(
+        `⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment. \n\nexample:\n\n$ export GCLOUD_PROJECT="my-project-id"`,
       )
-    if (endpointParams.location === '')
-      throw new Error(
-        'Please set location in options parameter \nor FIREBASE_CONFIG in your environment. e.g. { "locationId": "us-central1" }',
+      return ''
+    }
+
+    if (endpointParams.location === '') {
+      console.log(
+        `Please set location in options parameter or FIREBASE_CONFIG in your environment. \n\nexample:\n\n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`,
       )
+      return ''
+    }
 
     const vertexParameterParams: VertexParameterParams = {
       temperature: options.temperature || 0.2,
@@ -122,15 +127,30 @@ export const vertexAi = async (
 
     // Predict request
     const [response] = await predictionServiceClient.predict(request)
-    const predictions: string = options.isJapanese
+    const predictions = options.isJapanese
       ? await translate(
           response.predictions[0].structValue.fields.candidates.listValue
             .values[0].structValue.fields.content.stringValue,
         )
       : response.predictions[0].structValue.fields.candidates.listValue
           .values[0].structValue.fields.content.stringValue
-    return predictions
-  } catch (error) {
-    throw new Error(`Error in vertexAi: ${inspect(error)}`)
+    return String(predictions)
+  } catch (error: any) {
+    try {
+      if (typeof error === 'object') {
+        const errorLog = String(error.details)
+        if (errorLog.includes('Permission')) {
+          console.log(
+            `⚠️ Make sure if you login to your GCP project.\n\nexample:\n\n$ gcloud auth application-default login\n\nOr\n\n$ skeet iam ai \n\nTo activate service account.`,
+          )
+          return ''
+        }
+        throw new Error(`Error in vertexAi: ${inspect(error)}`)
+      } else {
+        throw new Error(`Error in vertexAi: ${inspect(error)}`)
+      }
+    } catch (error) {
+      throw new Error(`Error in vertexAi: ${inspect(error)}`)
+    }
   }
 }

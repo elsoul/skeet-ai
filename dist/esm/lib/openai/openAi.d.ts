@@ -48,4 +48,4 @@ run()
 * @returns the response from the ChatGPT AI server.
 *
 */
-export declare const openAi: (prompt: OpenAIPromptParams, options?: OpenAIOptions) => Promise<string>;
+export declare const openAi: (prompt: OpenAIPromptParams, options?: OpenAIOptions) => Promise<string | undefined>;
