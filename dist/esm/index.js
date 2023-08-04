@@ -5,6 +5,6 @@ export { openai };
 export * from './lib/types/vertexaiTypes';
 export * from './lib/types/openaiTypes';
 export { generateChatRoomTitle, openAi, openAiStream } from './lib/openai';
-export { vertexAi } from './lib/vertexai';
-export { translate } from './lib/translate';
+export { vertexAi, vertexAiStream } from './lib/vertexai';
+export { translate, translateVertexPromptParams } from './lib/translate';
 //# sourceMappingURL=index.js.map

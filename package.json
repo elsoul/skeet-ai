@@ -1,6 +1,6 @@
 {
   "name": "@skeet-framework/ai",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Skeet Framework Plugin - AI",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -37,10 +37,10 @@
   },
   "dependencies": {
     "@google-cloud/aiplatform": "2.17.0",
-    "@google-cloud/translate": "^7.2.2",
+    "@google-cloud/translate": "7.2.2",
     "dotenv": "16.3.1",
     "node-fetch": "2.6.9",
-    "openai": "^3.3.0"
+    "openai": "3.3.0"
   },
   "devDependencies": {
     "@types/jest": "29.5.3",

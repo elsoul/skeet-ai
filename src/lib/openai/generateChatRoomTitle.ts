@@ -39,8 +39,7 @@ export const generateChatRoomTitle = async (
       )
 
     const result = await openAi(openAiPrompt, openaiKeys)
-    if (!result) throw new Error('result not found')
-    return result.content as string
+    return result
   } catch (error) {
     throw new Error(`generateChatRoomTitle: ${error}`)
   }

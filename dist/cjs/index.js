@@ -29,7 +29,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.translate = exports.vertexAi = exports.openAiStream = exports.openAi = exports.generateChatRoomTitle = exports.openai = exports.aiplatform = void 0;
+exports.translateVertexPromptParams = exports.translate = exports.vertexAiStream = exports.vertexAi = exports.openAiStream = exports.openAi = exports.generateChatRoomTitle = exports.openai = exports.aiplatform = void 0;
 const aiplatform_1 = __importDefault(require("@google-cloud/aiplatform"));
 exports.aiplatform = aiplatform_1.default;
 const openai = __importStar(require("openai"));
@@ -42,6 +42,8 @@ Object.defineProperty(exports, "openAi", { enumerable: true, get: function () { 
 Object.defineProperty(exports, "openAiStream", { enumerable: true, get: function () { return openai_1.openAiStream; } });
 var vertexai_1 = require("./lib/vertexai");
 Object.defineProperty(exports, "vertexAi", { enumerable: true, get: function () { return vertexai_1.vertexAi; } });
+Object.defineProperty(exports, "vertexAiStream", { enumerable: true, get: function () { return vertexai_1.vertexAiStream; } });
 var translate_1 = require("./lib/translate");
 Object.defineProperty(exports, "translate", { enumerable: true, get: function () { return translate_1.translate; } });
+Object.defineProperty(exports, "translateVertexPromptParams", { enumerable: true, get: function () { return translate_1.translateVertexPromptParams; } });
 //# sourceMappingURL=index.js.map

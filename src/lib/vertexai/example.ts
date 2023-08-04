@@ -1,6 +1,4 @@
-import { inspect } from 'util'
-import { translateVertexPromptParams } from '../translate/translateVertexPromptParams'
-import { VertexAiOptions, VertexPromptParams } from '../types/vertexaiTypes'
+import { VertexPromptParams } from '../types/vertexaiTypes'
 import { vertexAi } from './vertexAi'
 
 const run = async () => {
@@ -22,24 +20,12 @@ const run = async () => {
     messages: [
       {
         author: 'user',
-        content: 'Are you ok?',
+        content: 'Tell me about the Skeet framework.',
       },
     ],
   }
 
-  const project: string = 'figaro-cloud-387909'
-  const location: string = 'europe-west3'
-  const model: string = 'chat-bison@001'
-  const options: VertexAiOptions = {
-    projectId: project,
-    location,
-    model,
-    temperature: 0.2,
-    maxOutputTokens: 256,
-    topP: 0.95,
-    topK: 40,
-  }
-  const response = await vertexAi(prompt, options)
+  const response = await vertexAi(prompt)
   console.log(response)
 }
 

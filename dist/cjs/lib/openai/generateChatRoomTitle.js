@@ -53,9 +53,7 @@ const generateChatRoomTitle = async (content, options = {}) => {
         if (openaiKeys.apiKey === '')
             throw new Error('Please set apiKey in options parameter or CHAT_GPT_KEY in your environment');
         const result = await (0, openAi_1.openAi)(openAiPrompt, openaiKeys);
-        if (!result)
-            throw new Error('result not found');
-        return result.content;
+        return result;
     }
     catch (error) {
         throw new Error(`generateChatRoomTitle: ${error}`);
