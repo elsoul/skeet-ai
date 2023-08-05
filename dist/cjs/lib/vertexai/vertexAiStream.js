@@ -82,7 +82,8 @@ const vertexAiStream = async (prompt, options = {}) => {
                 .values[0].structValue.fields.content.stringValue)
             : response.predictions[0].structValue.fields.candidates.listValue
                 .values[0].structValue.fields.content.stringValue;
-        const readable = stream_1.Readable.from(predictions);
+        const words = predictions.split(' ');
+        const readable = stream_1.Readable.from(words);
         return readable;
     }
     catch (error) {

@@ -80,7 +80,8 @@ export const vertexAiStream = async (
       : response.predictions[0].structValue.fields.candidates.listValue
           .values[0].structValue.fields.content.stringValue
 
-    const readable = Readable.from(predictions)
+    const words = predictions.split(' ')
+    const readable = Readable.from(words)
     return readable as unknown as IncomingMessage
   } catch (error) {
     throw new Error(`Error in vertexAi: ${inspect(error)}`)
