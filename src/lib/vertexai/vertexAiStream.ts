@@ -8,8 +8,7 @@ import {
 } from '../types/vertexaiTypes'
 import { translateVertexPromptParams } from '../translate/translateVertexPromptParams'
 import { translate } from '../translate'
-import { Readable } from 'stream'
-import { IncomingMessage } from 'http'
+import { createReadStream } from 'fs'
 dotenv.config()
 
 const { PredictionServiceClient } = aiplatform.v1
@@ -20,7 +19,7 @@ const FIREBASE_CONFIG = process.env.FIREBASE_CONFIG || ''
 export const vertexAiStream = async (
   prompt: VertexPromptParams,
   options: VertexAiOptions = {},
-): Promise<IncomingMessage> => {
+) => {
   try {
     if (!options.location) {
       const { locationId } = JSON.parse(FIREBASE_CONFIG)
@@ -80,10 +79,12 @@ export const vertexAiStream = async (
       : response.predictions[0].structValue.fields.candidates.listValue
           .values[0].structValue.fields.content.stringValue
 
-    const words = predictions.split(' ')
-    const readable = Readable.from(words)
-    return readable as unknown as IncomingMessage
+    const readableStream = createReadStream(predictions, {
+      encoding: 'utf8',
+      highWaterMark: 6,
+    })
+    return readableStream
   } catch (error) {
-    throw new Error(`Error in vertexAi: ${inspect(error)}`)
+    throw new Error(`Error in vertexAiStream: ${inspect(error)}`)
   }
 }

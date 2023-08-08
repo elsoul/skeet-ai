@@ -3,7 +3,7 @@ import * as dotenv from 'dotenv';
 import { inspect } from 'util';
 import { translateVertexPromptParams } from '../translate/translateVertexPromptParams';
 import { translate } from '../translate';
-import { Readable } from 'stream';
+import { createReadStream } from 'fs';
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 const { helpers } = aiplatform;
@@ -56,12 +56,14 @@ export const vertexAiStream = async (prompt, options = {}) => {
                 .values[0].structValue.fields.content.stringValue)
             : response.predictions[0].structValue.fields.candidates.listValue
                 .values[0].structValue.fields.content.stringValue;
-        const words = predictions.split(' ');
-        const readable = Readable.from(words);
-        return readable;
+        const readableStream = createReadStream(predictions, {
+            encoding: 'utf8',
+            highWaterMark: 6,
+        });
+        return readableStream;
     }
     catch (error) {
-        throw new Error(`Error in vertexAi: ${inspect(error)}`);
+        throw new Error(`Error in vertexAiStream: ${inspect(error)}`);
     }
 };
 //# sourceMappingURL=vertexAiStream.js.map

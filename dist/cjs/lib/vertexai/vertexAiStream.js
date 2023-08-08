@@ -29,7 +29,7 @@ const dotenv = __importStar(require("dotenv"));
 const util_1 = require("util");
 const translateVertexPromptParams_1 = require("../translate/translateVertexPromptParams");
 const translate_1 = require("../translate");
-const stream_1 = require("stream");
+const fs_1 = require("fs");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 const { helpers } = aiplatform;
@@ -82,12 +82,14 @@ const vertexAiStream = async (prompt, options = {}) => {
                 .values[0].structValue.fields.content.stringValue)
             : response.predictions[0].structValue.fields.candidates.listValue
                 .values[0].structValue.fields.content.stringValue;
-        const words = predictions.split(' ');
-        const readable = stream_1.Readable.from(words);
-        return readable;
+        const readableStream = (0, fs_1.createReadStream)(predictions, {
+            encoding: 'utf8',
+            highWaterMark: 6,
+        });
+        return readableStream;
     }
     catch (error) {
-        throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+        throw new Error(`Error in vertexAiStream: ${(0, util_1.inspect)(error)}`);
     }
 };
 exports.vertexAiStream = vertexAiStream;
