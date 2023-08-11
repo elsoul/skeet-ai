@@ -30,10 +30,20 @@ export declare class VertexAI {
     protected options: VertexAiOptions;
     protected vertexParams: VertexParameterParams;
     constructor(options?: VertexAiOptions);
+    private initializeOptions;
+    private initializeVertexParams;
     private parseFirebaseConfig;
+    private getEndpoint;
     prompt(prompt: VertexPromptParams): Promise<string>;
-    promptStream(this: VertexAI, prompt: VertexPromptParams): Promise<NodeJS.ReadableStream>;
+    promptStream(prompt: VertexPromptParams): Promise<NodeJS.ReadableStream>;
+    private validateOptions;
+    private preparePredictRequest;
+    private processPredictions;
+    private createDelayedStream;
+    private splitIntoChunks;
     generateTitlePrompt(content: string, isJapanese?: boolean): Promise<VertexPromptParams>;
+    private promptTitleGenerationEn;
+    private promptTitleGenerationJa;
     private handleError;
     predictStream?(prompt: VertexPromptParams): Promise<NodeJS.ReadableStream>;
 }

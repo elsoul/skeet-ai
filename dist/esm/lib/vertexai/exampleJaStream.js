@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const vertexAI_1 = require("./vertexAI");
+import { VertexAI } from './vertexAI';
 const run = async () => {
     const prompt = {
         context: 'あなたは、Web アプリケーションを構築するためのフレームワークである Skeet フレームワークに精通している開発者です。',
@@ -24,15 +22,17 @@ const run = async () => {
     const options = {
         isJapanese: true,
     };
-    const vertexAi = new vertexAI_1.VertexAI(options);
-    const response = await vertexAi.prompt(prompt);
+    const vertexAi = new VertexAI(options);
+    const stream = await vertexAi.promptStream(prompt);
     console.log('AIへの質問:\n', prompt.messages[0].content);
-    console.log('\nAIの回答:\n', response);
-    const content = '"Skeet framework"は、アプリケーションの開発および運用コストを削減することを目的としたオープンソースのフルスタックアプリケーション開発ソリューションです。これにより、開発者はアプリケーションロジックにもっと集中し、インフラストラクチャについての心配を減少させることができます。このフレームワークは、SQLとNoSQLの組み合わせで組み立てることができます。';
-    const promptTitle = await vertexAi.generateTitlePrompt(content);
-    console.log('\n要約する前の文章:\n', content);
-    const title = await vertexAi.prompt(promptTitle);
-    console.log('\nAIがつけたタイトル:\n', title);
+    const result = [];
+    stream.on('data', (chunk) => {
+        console.log('chunk', chunk.toString());
+        result.push(chunk.toString());
+    });
+    stream.on('end', () => {
+        console.log('\nAIの回答:\n', result.join('').replace(/ /g, ''));
+    });
 };
 run();
-//# sourceMappingURL=exampleJa.js.map
+//# sourceMappingURL=exampleJaStream.js.map

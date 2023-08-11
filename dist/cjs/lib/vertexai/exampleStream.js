@@ -22,14 +22,9 @@ const run = async () => {
         ],
     };
     const vertexAi = new vertexAI_1.VertexAI();
-    const response = await vertexAi.prompt(prompt);
+    const stream = await vertexAi.promptStream(prompt);
     console.log('Question:\n', prompt.messages[0].content);
-    console.log('Answer:\n', response);
-    const content = 'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.';
-    const promptTitle = await vertexAi.generateTitlePrompt(content);
-    const title = await vertexAi.prompt(promptTitle);
-    console.log('\nOriginal content:\n', content);
-    console.log('\nGenerated title:\n', title);
+    stream.pipe(process.stdout);
 };
 run();
-//# sourceMappingURL=example.js.map
+//# sourceMappingURL=exampleStream.js.map

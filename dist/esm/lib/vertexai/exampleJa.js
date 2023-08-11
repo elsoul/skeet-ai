@@ -22,7 +22,7 @@ const run = async () => {
     const options = {
         isJapanese: true,
     };
-    const vertexAi = new VertexAI();
+    const vertexAi = new VertexAI(options);
     const response = await vertexAi.prompt(prompt);
     console.log('AIへの質問:\n', prompt.messages[0].content);
     console.log('\nAIの回答:\n', response);

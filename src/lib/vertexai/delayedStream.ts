@@ -18,12 +18,13 @@ export class DelayedStream extends Readable {
 
   _read() {
     if (this.currentIndex >= this.data.length) {
-      this.push(null) // ストリームの終了
+      this.push(null) // End of stream
       return
     }
 
     setTimeout(() => {
-      this.push(this.data[this.currentIndex])
+      // Send the current word followed by a space to keep words separated when read
+      this.push(this.data[this.currentIndex] + ' ')
       this.currentIndex += 1
       this._read()
     }, this.delay)

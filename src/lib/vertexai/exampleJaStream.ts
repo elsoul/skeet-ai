@@ -29,16 +29,17 @@ const run = async () => {
     isJapanese: true,
   }
   const vertexAi = new VertexAI(options)
-  const response = await vertexAi.prompt(prompt)
+  const stream = await vertexAi.promptStream(prompt)
   console.log('AIへの質問:\n', prompt.messages[0].content)
-  console.log('\nAIの回答:\n', response)
+  const result: any = []
+  stream.on('data', (chunk) => {
+    console.log('chunk', chunk.toString())
+    result.push(chunk.toString())
+  })
 
-  const content =
-    '"Skeet framework"は、アプリケーションの開発および運用コストを削減することを目的としたオープンソースのフルスタックアプリケーション開発ソリューションです。これにより、開発者はアプリケーションロジックにもっと集中し、インフラストラクチャについての心配を減少させることができます。このフレームワークは、SQLとNoSQLの組み合わせで組み立てることができます。'
-  const promptTitle = await vertexAi.generateTitlePrompt(content)
-  console.log('\n要約する前の文章:\n', content)
-  const title = await vertexAi.prompt(promptTitle)
-  console.log('\nAIがつけたタイトル:\n', title)
+  stream.on('end', () => {
+    console.log('\nAIの回答:\n', result.join('').replace(/ /g, ''))
+  })
 }
 
 run()
