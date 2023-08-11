@@ -88,7 +88,7 @@ And set environment variables following the console's output.
 Example `app.ts`
 
 ```ts
-import { vertexAi, VertexPromptParams } from '@skeet-framework/ai'
+import { VertexAI, VertexPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
   const prompt: VertexPromptParams = {
@@ -114,8 +114,15 @@ const run = async () => {
     ],
   }
 
-  const response = await vertexAi(prompt)
-  console.log(response)
+  const vertexAi = new VertexAI()
+  const response = await vertexAi.prompt(prompt)
+  console.log('Generated message:\n', response)
+
+  const content =
+    'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.'
+  const promptTitle = await vertexAi.generateTitlePrompt(content)
+  const title = await vertexAi.prompt(promptTitle)
+  console.log('\nGenerated title:\n', title)
 }
 
 run()
@@ -133,22 +140,7 @@ $ npx ts-node app.ts
 日本語をサポートしています。
 
 ```ts
-const options = {
-  isJapanese: true,
-}
-const response = await vertexAi(prompt, options)
-```
-
-**デフォルトのモデルは `chat-bison@001` を使用していますが、
-このモデルは日本語をサポートしていないため、
-内部では Google 翻訳API を使用して、日本語を英語に変換してから、
-英語のモデルを使用しています。**
-
-Example `app.ts`
-
-```ts
-import { VertexAiOptions, VertexPromptParams } from '../types/vertexaiTypes'
-import { vertexAi } from './vertexAi'
+import { VertexAI, VertexPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
   const prompt: VertexPromptParams = {
@@ -174,12 +166,20 @@ const run = async () => {
     ],
   }
 
-  const options: VertexAiOptions = {
+  const options = {
     isJapanese: true,
   }
+  const vertexAi = new VertexAI()
+  const response = await vertexAi.prompt(prompt)
+  console.log('AIへの質問:\n', prompt.messages[0].content)
+  console.log('\nAIの回答:\n', response)
 
-  const response = await vertexAi(prompt, options)
-  console.log(response)
+  const content =
+    '"Skeet framework"は、アプリケーションの開発および運用コストを削減することを目的としたオープンソースのフルスタックアプリケーション開発ソリューションです。これにより、開発者はアプリケーションロジックにもっと集中し、インフラストラクチャについての心配を減少させることができます。このフレームワークは、SQLとNoSQLの組み合わせで組み立てることができます。'
+  const promptTitle = await vertexAi.generateTitlePrompt(content)
+  console.log('\n要約する前の文章:\n', content)
+  const title = await vertexAi.prompt(promptTitle)
+  console.log('\nAIがつけたタイトル:\n', title)
 }
 
 run()
@@ -215,7 +215,7 @@ $ export CHAT_GPT_KEY=your-api-key
 Example `app.ts`
 
 ```ts
-import { openAi, OpenAIPromptParams } from '@skeet-framework/ai'
+import { OpenAI, OpenAIPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
   const prompt: OpenAIPromptParams = {
@@ -241,8 +241,15 @@ const run = async () => {
       },
     ],
   }
-  const result = await openAi(prompt)
-  console.log(result)
+  const openAi = new OpenAI()
+  const result = await openAi.prompt(prompt)
+  console.log('Question:\n', prompt.messages[3].content)
+  console.log('\nAnswer:\n', result)
+  const content =
+    'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.'
+  const title = await openAi.generateTitle(content)
+  console.log('\nOriginal content:\n', content)
+  console.log('\nGenerated title:\n', title)
 }
 
 run()

@@ -22,9 +22,11 @@ const run = async () => {
     };
     const openAi = new OpenAI();
     const result = await openAi.prompt(prompt);
-    console.log('Generated messages:\n', result);
+    console.log('Question:\n', prompt.messages[3].content);
+    console.log('\nAnswer:\n', result);
     const content = 'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.';
     const title = await openAi.generateTitle(content);
+    console.log('\nOriginal content:\n', content);
     console.log('\nGenerated title:\n', title);
 };
 run();
