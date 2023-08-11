@@ -1,2 +1,1 @@
-export * from './vertexAi';
-export * from './vertexAiStream';
+export * from './vertexAI';

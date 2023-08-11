@@ -1,49 +1,30 @@
+import { VertexAI } from './vertexAI';
 import * as aiplatform from '@google-cloud/aiplatform';
-import * as dotenv from 'dotenv';
-import { inspect } from 'util';
-import { translateVertexPromptParams } from '../translate/translateVertexPromptParams';
-import { translate } from '../translate';
 import { createReadStream } from 'fs';
-dotenv.config();
-const { PredictionServiceClient } = aiplatform.v1;
-const { helpers } = aiplatform;
-const project = process.env.GCLOUD_PROJECT || '';
-const FIREBASE_CONFIG = process.env.FIREBASE_CONFIG || '';
-export const vertexAiStream = async (prompt, options = {}) => {
+import { translate, translateVertexPromptParams } from '../translate';
+/**
+ * @class VertexAI
+ *
+ *
+ */
+VertexAI.prototype.predictStream = async function (prompt) {
     try {
-        if (!options.location) {
-            const { locationId } = JSON.parse(FIREBASE_CONFIG);
-            options.location = locationId;
-        }
-        if (!options.isJapanese)
-            options.isJapanese = false;
-        const endpointParams = {
-            projectId: options.projectId || project,
-            location: options.location,
-            apiEndpoint: options.apiEndpoint || 'us-central1-aiplatform.googleapis.com',
-            model: options.model || 'chat-bison@001',
-            publisher: options.publisher || 'google',
-        };
-        if (endpointParams.projectId === '')
+        if (!this.options.projectId) {
             throw new Error('Please set projectId in options parameter or GCLOUD_PROJECT in your environment');
-        if (endpointParams.location === '')
-            throw new Error('Please set location in options parameter \nor FIREBASE_CONFIG in your environment. e.g. { "locationId": "us-central1" }');
-        const vertexParameterParams = {
-            temperature: options.temperature || 0.2,
-            maxOutputTokens: options.maxOutputTokens || 256,
-            topP: options.topP || 0.95,
-            topK: options.topK || 40,
-        };
+        }
+        if (!this.options.location) {
+            throw new Error('Please set location in options parameter or FIREBASE_CONFIG in your environment');
+        }
         const clientOptions = {
-            apiEndpoint: endpointParams.apiEndpoint,
+            apiEndpoint: this.options.apiEndpoint,
         };
-        const predictionServiceClient = new PredictionServiceClient(clientOptions);
-        const endpoint = `projects/${endpointParams.projectId}/locations/${endpointParams.location}/publishers/${endpointParams.publisher}/models/${endpointParams.model}`;
-        const instanceValue = options.isJapanese
-            ? helpers.toValue(await translateVertexPromptParams(prompt))
-            : helpers.toValue(prompt);
+        const predictionServiceClient = new aiplatform.PredictionServiceClient(clientOptions);
+        const endpoint = `projects/${this.options.projectId}/locations/${this.options.location}/publishers/${this.options.publisher}/models/${this.options.model}`;
+        const instanceValue = this.options.isJapanese
+            ? aiplatform.helpers.toValue(await translateVertexPromptParams(prompt))
+            : aiplatform.helpers.toValue(prompt);
         const instances = [instanceValue];
-        const parameters = helpers.toValue(vertexParameterParams);
+        const parameters = aiplatform.helpers.toValue(this.vertexParams);
         const request = {
             endpoint,
             instances,
@@ -51,7 +32,7 @@ export const vertexAiStream = async (prompt, options = {}) => {
         };
         // Predict request
         const [response] = await predictionServiceClient.predict(request);
-        const predictions = options.isJapanese
+        const predictions = this.options.isJapanese
             ? await translate(response.predictions[0].structValue.fields.candidates.listValue
                 .values[0].structValue.fields.content.stringValue)
             : response.predictions[0].structValue.fields.candidates.listValue
@@ -63,7 +44,7 @@ export const vertexAiStream = async (prompt, options = {}) => {
         return readableStream;
     }
     catch (error) {
-        throw new Error(`Error in vertexAiStream: ${inspect(error)}`);
+        throw new Error(`Error in predictStream: ${error}`);
     }
 };
 //# sourceMappingURL=vertexAiStream.js.map

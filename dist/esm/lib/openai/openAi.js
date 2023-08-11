@@ -1,90 +1,107 @@
 import { Configuration, OpenAIApi } from 'openai';
 import * as dotenv from 'dotenv';
+import { systemContentJA } from './sytemContexts';
 dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
-/**
- * This function is used to send a ChatGPT AI request to the server.
-
- * Example:
- * ```ts
-import { openAi, OpenAIPromptParams } from '@skeet-framework/ai'
-
-const run = async () => {
-  const prompt: OpenAIPromptParams = {
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
-      },
-      {
-        role: 'user',
-        content:
-          'What is the Skeet framework and what benefits does it offer for app development?',
-      },
-      {
-        role: 'assistant',
-        content:
-          'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
-      },
-      {
-        role: 'user',
-        content: 'Tell me about the Skeet framework.',
-      },
-    ],
-  }
-  const result = await openAi(prompt)
-  console.log(result)
-}
-
-run()
-* ```
-* @remarks Both `options.organizationKey` and `options.apiKey` are required, unless you have `CHAT_GPT_ORG` and `CHAT_GPT_KEY` set in your environment variables. Please note that values in options will override these environment variables.
-
-* e.g. `.env`
-* ```bash
-* CHAT_GPT_ORG="org-your-org-id"
-* CHAT_GPT_KEY="key-your-key"
-* ```
-* @param prompt the message to send to the server.
-* @param options the options to use when sending the request.
-* @returns the response from the ChatGPT AI server.
-*
-*/
-export const openAi = async (prompt, options = {}) => {
-    try {
-        const openaiConfig = {
+export class OpenAI {
+    constructor(options = {}) {
+        this.options = {
             model: options.model || 'gpt-3.5-turbo',
             temperature: options.temperature || 0.2,
-            max_tokens: options.maxTokens || 256,
-            top_p: options.topP || 0.95,
+            maxTokens: options.maxTokens || 256,
+            topP: options.topP || 0.95,
             n: options.n || 1,
             stream: options.stream || false,
-            messages: prompt.messages,
-        };
-        const openaiKeys = {
-            organization: options.organizationKey || organization,
+            organizationKey: options.organizationKey || organization,
             apiKey: options.apiKey || apiKey,
         };
-        if (openaiKeys.organization === '')
-            throw new Error('Please set organizationKey in options parameter or CHAT_GPT_ORG in your environment');
-        if (openaiKeys.apiKey === '')
-            throw new Error('Please set apiKey in options parameter or CHAT_GPT_KEY in your environment');
-        const configuration = new Configuration({
-            organization: openaiKeys.organization,
-            apiKey: openaiKeys.apiKey,
-        });
-        const openai = new OpenAIApi(configuration);
-        const completion = await openai.createChatCompletion(openaiConfig);
-        const result = completion.data.choices[0].message;
-        if (result === undefined)
-            throw new Error('openAi error: result is undefined');
-        return String(result.content);
+        if (!this.options.organizationKey) {
+            throw new Error('Please set organizationKey in options or CHAT_GPT_ORG in your environment');
+        }
+        if (!this.options.apiKey) {
+            throw new Error('Please set apiKey in options or CHAT_GPT_KEY in your environment');
+        }
     }
-    catch (error) {
-        console.error(`openAi error: ${error}`);
-        process.exit(1);
+    async prompt(promptParams) {
+        try {
+            const openaiConfig = {
+                model: this.options.model,
+                temperature: this.options.temperature,
+                max_tokens: this.options.maxTokens,
+                top_p: this.options.topP,
+                n: this.options.n,
+                stream: this.options.stream,
+                messages: promptParams.messages,
+            };
+            const configuration = new Configuration({
+                organization: this.options.organizationKey,
+                apiKey: this.options.apiKey,
+            });
+            const openai = new OpenAIApi(configuration);
+            const completion = await openai.createChatCompletion(openaiConfig);
+            const result = completion.data.choices[0].message;
+            if (result === undefined) {
+                throw new Error('openAi error: result is undefined');
+            }
+            return String(result.content);
+        }
+        catch (error) {
+            console.error(`openAi error: ${error}`);
+            process.exit(1);
+        }
     }
-};
-//# sourceMappingURL=openAi.js.map
+    async generateTitle(content) {
+        try {
+            const systemContent = systemContentJA;
+            const openAiPrompt = {
+                messages: [
+                    {
+                        role: 'system',
+                        content: systemContent,
+                    },
+                    {
+                        role: 'user',
+                        content,
+                    },
+                ],
+            };
+            const result = await this.prompt(openAiPrompt);
+            return result;
+        }
+        catch (error) {
+            throw new Error(`generateChatRoomTitle: ${error}`);
+        }
+    }
+    async promptStream(prompt) {
+        try {
+            const openaiConfig = {
+                model: 'gpt-3.5-turbo',
+                temperature: this.options.temperature,
+                max_tokens: this.options.maxTokens,
+                top_p: this.options.topP,
+                n: this.options.n,
+                stream: true,
+                messages: prompt.messages,
+            };
+            if (!this.options.organizationKey)
+                throw new Error('Please set organizationKey in options parameter or CHAT_GPT_ORG in your environment');
+            if (!this.options.apiKey)
+                throw new Error('Please set apiKey in options parameter or CHAT_GPT_KEY in your environment');
+            const configuration = new Configuration({
+                organization: this.options.organizationKey,
+                apiKey: this.options.apiKey,
+            });
+            const openai = new OpenAIApi(configuration);
+            const result = await openai.createChatCompletion(openaiConfig, {
+                responseType: 'stream',
+            });
+            const stream = result.data;
+            return stream;
+        }
+        catch (error) {
+            throw new Error(`openAiStream error: ${error}`);
+        }
+    }
+}
+//# sourceMappingURL=openAI.js.map

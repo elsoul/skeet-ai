@@ -31,4 +31,5 @@ export type VertexAiOptions = {
     topP?: number;
     topK?: number;
     isJapanese?: boolean;
+    delay?: number;
 };

@@ -1,77 +1,39 @@
-import { VertexAiOptions, VertexPromptParams } from '../types/vertexaiTypes';
 /**
- * This function is used to send a Vertex AI request to the server.
-
- * Example:
- * ```ts
-import { vertexAi, VertexPromptParams } from '@skeet-framework/ai'
-
-const run = async () => {
-  const prompt: VertexPromptParams = {
-    context:
-      'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
-    examples: [
-      {
-        input: {
-          content:
-            'What is the Skeet framework and what benefits does it offer for app development?',
-        },
-        output: {
-          content:
-            'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
-        },
-      },
-    ],
-    messages: [
-      {
-        author: 'user',
-        content: 'Tell me about the Skeet framework.',
-      },
-    ],
-  }
-
-  const response = await vertexAi(prompt)
-  console.log(response)
-}
-
-run()
- * ```
- * @remarks Both `options.projectId` and `options.location` are required, unless you have `GCLOUD_PROJECT` and `FIREBASE_CONFIG` set in your environment variables. Please note that values in options will override these environment variables.
- 
- * e.g. `.env`
- * ```bash
- * GCLOUD_PROJECT="my-project-id"
- * FIREBASE_CONFIG='{ "locationId": "us-central1" }'
- * ```
- * @param prompt the message to send to the server.
- * ```ts
- * type VertexPromptParams {
- *  context: string
- *  examples: VertexExample[]
- *  messages: VertexMessage[]
- * }
+ * `VertexAI` provides an interface to interact with Google's Vertex AI service.
+ * This class simplifies the process of making predictions using Vertex AI, allowing
+ * for easy configuration and prediction.
  *
- * type VertexExample {
- *  input: VertexParameterParams
- *  output: VertexParameterParams
- * }
+ * Usage:
+ * ```typescript
+ * const vertexService = new VertexAI({
+ *   projectId: 'your-project-id',
+ *   location: 'your-location',
+ *   // ... other options
+ * });
  *
- * type VertexParameterParams {
- *  content: string
- * }
- * ```
- * @param options the options to use when sending the request.
- * ```ts
- * type VertexAiOptions {
- *  projectId?: string
- *  location?: string
- *  apiEndpoint?: string
- *  model?: string
- *  publisher?: string
- *  isJapanese?: boolean
- * }
- * ```
- * @returns the response from the Vertex AI server.
+ * const prompt = {
+ *   //... your prompt data
+ * };
  *
+ * const response = await vertexService.predict(prompt);
+ * console.log(response);
+ * ```
+ *
+ * @remarks
+ * Make sure to set the appropriate environment variables or pass them as options to the constructor.
+ *
+ * @class
  */
-export declare const vertexAi: (prompt: VertexPromptParams, options?: VertexAiOptions) => Promise<string>;
+/// <reference types="node" />
+import { VertexAiOptions, VertexParameterParams, VertexPromptParams } from '../types/vertexaiTypes';
+export declare class VertexAI {
+    protected options: VertexAiOptions;
+    protected vertexParams: VertexParameterParams;
+    constructor(options?: VertexAiOptions);
+    private parseFirebaseConfig;
+    prompt(prompt: VertexPromptParams): Promise<string>;
+    promptStream(this: VertexAI, prompt: VertexPromptParams): Promise<NodeJS.ReadableStream>;
+    generateTitlePrompt(content: string, isJapanese?: boolean): Promise<VertexPromptParams>;
+    private handleError;
+    predictStream?(prompt: VertexPromptParams): Promise<NodeJS.ReadableStream>;
+}

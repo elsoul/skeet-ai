@@ -1,5 +1,6 @@
-import { VertexAiOptions, VertexPromptParams } from '../types/vertexaiTypes'
-import { vertexAi } from './vertexAi'
+import { ReadStream, read } from 'fs'
+import { VertexPromptParams } from '../types/vertexaiTypes'
+import { VertexAI } from './vertexAI'
 
 const run = async () => {
   const prompt: VertexPromptParams = {
@@ -25,12 +26,15 @@ const run = async () => {
     ],
   }
 
-  const options: VertexAiOptions = {
+  const options = {
     isJapanese: true,
   }
-
-  const response = await vertexAi(prompt, options)
-  console.log(response)
+  const vertexAi = new VertexAI(options)
+  const response = await vertexAi.promptStream(prompt)
+  response.pipe(process.stdout)
+  response.on('end', () => {
+    console.log('end')
+  })
 }
 
 run()

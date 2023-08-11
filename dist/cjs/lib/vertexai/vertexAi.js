@@ -1,4 +1,30 @@
 "use strict";
+/**
+ * `VertexAI` provides an interface to interact with Google's Vertex AI service.
+ * This class simplifies the process of making predictions using Vertex AI, allowing
+ * for easy configuration and prediction.
+ *
+ * Usage:
+ * ```typescript
+ * const vertexService = new VertexAI({
+ *   projectId: 'your-project-id',
+ *   location: 'your-location',
+ *   // ... other options
+ * });
+ *
+ * const prompt = {
+ *   //... your prompt data
+ * };
+ *
+ * const response = await vertexService.predict(prompt);
+ * console.log(response);
+ * ```
+ *
+ * @remarks
+ * Make sure to set the appropriate environment variables or pass them as options to the constructor.
+ *
+ * @class
+ */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     var desc = Object.getOwnPropertyDescriptor(m, k);
@@ -23,168 +49,208 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.vertexAi = void 0;
+exports.VertexAI = void 0;
 const aiplatform = __importStar(require("@google-cloud/aiplatform"));
 const dotenv = __importStar(require("dotenv"));
 const util_1 = require("util");
 const translateVertexPromptParams_1 = require("../translate/translateVertexPromptParams");
 const translate_1 = require("../translate");
+const delayedStream_1 = require("./delayedStream");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 const { helpers } = aiplatform;
-const project = process.env.GCLOUD_PROJECT || '';
-const FIREBASE_CONFIG = process.env.FIREBASE_CONFIG || '';
-/**
- * This function is used to send a Vertex AI request to the server.
-
- * Example:
- * ```ts
-import { vertexAi, VertexPromptParams } from '@skeet-framework/ai'
-
-const run = async () => {
-  const prompt: VertexPromptParams = {
-    context:
-      'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
-    examples: [
-      {
-        input: {
-          content:
-            'What is the Skeet framework and what benefits does it offer for app development?',
-        },
-        output: {
-          content:
-            'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
-        },
-      },
-    ],
-    messages: [
-      {
-        author: 'user',
-        content: 'Tell me about the Skeet framework.',
-      },
-    ],
-  }
-
-  const response = await vertexAi(prompt)
-  console.log(response)
-}
-
-run()
- * ```
- * @remarks Both `options.projectId` and `options.location` are required, unless you have `GCLOUD_PROJECT` and `FIREBASE_CONFIG` set in your environment variables. Please note that values in options will override these environment variables.
- 
- * e.g. `.env`
- * ```bash
- * GCLOUD_PROJECT="my-project-id"
- * FIREBASE_CONFIG='{ "locationId": "us-central1" }'
- * ```
- * @param prompt the message to send to the server.
- * ```ts
- * type VertexPromptParams {
- *  context: string
- *  examples: VertexExample[]
- *  messages: VertexMessage[]
- * }
- *
- * type VertexExample {
- *  input: VertexParameterParams
- *  output: VertexParameterParams
- * }
- *
- * type VertexParameterParams {
- *  content: string
- * }
- * ```
- * @param options the options to use when sending the request.
- * ```ts
- * type VertexAiOptions {
- *  projectId?: string
- *  location?: string
- *  apiEndpoint?: string
- *  model?: string
- *  publisher?: string
- *  isJapanese?: boolean
- * }
- * ```
- * @returns the response from the Vertex AI server.
- *
- */
-const vertexAi = async (prompt, options = {}) => {
-    try {
-        if (!options.location) {
-            try {
-                const { locationId } = JSON.parse(FIREBASE_CONFIG);
-                options.location = locationId;
-            }
-            catch (error) {
-                options.location = '';
-            }
-        }
-        if (!options.isJapanese)
-            options.isJapanese = false;
-        const endpointParams = {
-            projectId: options.projectId || project,
-            location: options.location,
+class VertexAI {
+    constructor(options = {}) {
+        const defaultConfig = this.parseFirebaseConfig();
+        this.options = {
+            projectId: options.projectId || process.env.GCLOUD_PROJECT || '',
+            location: options.location || defaultConfig.locationId || '',
             apiEndpoint: options.apiEndpoint || 'us-central1-aiplatform.googleapis.com',
             model: options.model || 'chat-bison@001',
             publisher: options.publisher || 'google',
+            isJapanese: options.isJapanese || false,
+            delay: options.delay || 200,
         };
-        if (endpointParams.projectId === '') {
-            console.log(`⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment. \n\nexample:\n\n$ export GCLOUD_PROJECT="my-project-id"`);
-            return '';
-        }
-        if (endpointParams.location === '') {
-            console.log(`Please set location in options parameter or FIREBASE_CONFIG in your environment. \n\nexample:\n\n$ export FIREBASE_CONFIG='{ "locationId": "us-central1" }'`);
-            return '';
-        }
-        const vertexParameterParams = {
+        this.vertexParams = {
             temperature: options.temperature || 0.2,
             maxOutputTokens: options.maxOutputTokens || 256,
             topP: options.topP || 0.95,
             topK: options.topK || 40,
         };
-        const clientOptions = {
-            apiEndpoint: endpointParams.apiEndpoint,
-        };
-        const predictionServiceClient = new PredictionServiceClient(clientOptions);
-        const endpoint = `projects/${endpointParams.projectId}/locations/${endpointParams.location}/publishers/${endpointParams.publisher}/models/${endpointParams.model}`;
-        const instanceValue = options.isJapanese
-            ? helpers.toValue(await (0, translateVertexPromptParams_1.translateVertexPromptParams)(prompt))
-            : helpers.toValue(prompt);
-        const instances = [instanceValue];
-        const parameters = helpers.toValue(vertexParameterParams);
-        const request = {
-            endpoint,
-            instances,
-            parameters,
-        };
-        // Predict request
-        const [response] = await predictionServiceClient.predict(request);
-        const predictions = options.isJapanese
-            ? await (0, translate_1.translate)(response.predictions[0].structValue.fields.candidates.listValue
-                .values[0].structValue.fields.content.stringValue)
-            : response.predictions[0].structValue.fields.candidates.listValue
-                .values[0].structValue.fields.content.stringValue;
-        return String(predictions);
     }
-    catch (error) {
+    parseFirebaseConfig() {
         try {
-            if (typeof error === 'object') {
-                const errorLog = String(error.details);
-                if (errorLog.includes('Permission')) {
-                    console.log(`⚠️ Make sure if you login to your GCP project.\n\nexample:\n\n$ gcloud auth application-default login\n\nOr\n\n$ skeet iam ai \n\nTo activate service account.`);
-                    return '';
-                }
-                throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
-            }
-            else {
-                throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
-            }
+            return JSON.parse(process.env.FIREBASE_CONFIG || '');
         }
         catch (error) {
-            throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+            return {};
         }
     }
+    async prompt(prompt) {
+        try {
+            if (!this.options.projectId) {
+                console.log(`⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment.`);
+                return '';
+            }
+            if (!this.options.location) {
+                console.log(`Please set location in options parameter or FIREBASE_CONFIG in your environment.`);
+                return '';
+            }
+            const clientOptions = {
+                apiEndpoint: this.options.apiEndpoint,
+            };
+            const predictionServiceClient = new PredictionServiceClient(clientOptions);
+            const endpoint = `projects/${this.options.projectId}/locations/${this.options.location}/publishers/${this.options.publisher}/models/${this.options.model}`;
+            const instanceValue = this.options.isJapanese
+                ? helpers.toValue(await (0, translateVertexPromptParams_1.translateVertexPromptParams)(prompt))
+                : helpers.toValue(prompt);
+            const instances = [instanceValue];
+            const parameters = helpers.toValue(this.vertexParams);
+            const request = {
+                endpoint,
+                instances,
+                parameters,
+            };
+            // Predict request
+            const [response] = await predictionServiceClient.predict(request);
+            const predictions = this.options.isJapanese
+                ? await (0, translate_1.translate)(response.predictions[0].structValue.fields.candidates.listValue
+                    .values[0].structValue.fields.content.stringValue)
+                : response.predictions[0].structValue.fields.candidates.listValue
+                    .values[0].structValue.fields.content.stringValue;
+            return String(predictions);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
+    async promptStream(prompt) {
+        try {
+            if (!this.options.projectId) {
+                throw new Error('Please set projectId in options parameter or GCLOUD_PROJECT in your environment');
+            }
+            if (!this.options.location) {
+                throw new Error('Please set location in options parameter or FIREBASE_CONFIG in your environment');
+            }
+            const clientOptions = {
+                apiEndpoint: this.options.apiEndpoint,
+            };
+            const predictionServiceClient = new aiplatform.PredictionServiceClient(clientOptions);
+            const endpoint = `projects/${this.options.projectId}/locations/${this.options.location}/publishers/${this.options.publisher}/models/${this.options.model}`;
+            const instanceValue = this.options.isJapanese
+                ? aiplatform.helpers.toValue(await (0, translateVertexPromptParams_1.translateVertexPromptParams)(prompt))
+                : aiplatform.helpers.toValue(prompt);
+            const instances = [instanceValue];
+            const parameters = aiplatform.helpers.toValue(this.vertexParams);
+            const request = {
+                endpoint,
+                instances,
+                parameters,
+            };
+            // Predict request
+            const [response] = await predictionServiceClient.predict(request);
+            const predictions = this.options.isJapanese
+                ? await (0, translate_1.translate)(response.predictions[0].structValue.fields.candidates.listValue
+                    .values[0].structValue.fields.content.stringValue)
+                : response.predictions[0].structValue.fields.candidates.listValue
+                    .values[0].structValue.fields.content.stringValue;
+            const chunkSize = 1;
+            const chunks = [];
+            for (let i = 0; i < predictions.length; i += chunkSize) {
+                chunks.push(predictions.substring(i, i + chunkSize));
+            }
+            const stream = new delayedStream_1.DelayedStream(chunks, this.options.delay);
+            return stream;
+        }
+        catch (error) {
+            throw new Error(`Error in predictStream: ${error}`);
+        }
+    }
+    async generateTitlePrompt(content, isJapanese = false) {
+        const res = isJapanese
+            ? promptTitleGenerationJa(content)
+            : {
+                context: "Give a title to the content of the message coming from the user. The maximum number of characters for the title is 50 characters. Please make the title as short and descriptive as possible. Do not ask users questions in interrogative sentences. Be sure to respond with only the title. Don't answer questions from users.",
+                examples: [
+                    {
+                        input: {
+                            content: 'I want to start learning Javascript',
+                        },
+                        output: {
+                            content: 'How to start learning Javascript',
+                        },
+                    },
+                    {
+                        input: {
+                            content: 'Can you write the code to create the file in Javascript?',
+                        },
+                        output: {
+                            content: 'How to create a file with JavaScript',
+                        },
+                    },
+                ],
+                messages: [
+                    {
+                        author: 'user',
+                        content,
+                    },
+                ],
+            };
+        return res;
+    }
+    handleError(error) {
+        if (typeof error === 'object' &&
+            String(error.details).includes('Permission')) {
+            console.log(`⚠️ Make sure if you login to your GCP project.`);
+        }
+        throw new Error(`Error in vertexAi: ${(0, util_1.inspect)(error)}`);
+    }
+}
+exports.VertexAI = VertexAI;
+const promptTitleGenerationJa = (content) => {
+    const res = {
+        context: 'ユーザーから来るメッセージの内容にタイトルをつけます。タイトルの文字数は最大で50文字です。できるだけ短くわかりやすいタイトルをつけてください。疑問文でユーザーには質問しないでください。必ずタイトルのみをレスポンスしてください。ユーザーから来る質問には答えてはいけません。以下にいくつかの例を示します。絶対にユーザーの質問に答えてはいけません。すべて英語でメッセージが来た場合は英語のタイトルを付けてください。',
+        examples: [
+            {
+                input: {
+                    content: 'Javascriptの勉強を始めたいのですが、どうすればいいですか?',
+                },
+                output: {
+                    content: 'Javascriptの勉強の始め方',
+                },
+            },
+            {
+                input: {
+                    content: 'Javascriptでファイルを作成するコードを書いてくれますか?',
+                },
+                output: {
+                    content: 'JavaScriptでファイルを作成する方法',
+                },
+            },
+            {
+                input: {
+                    content: '今日も1日がんばるぞ!',
+                },
+                output: {
+                    content: '気合表明',
+                },
+            },
+            {
+                input: {
+                    content: 'あなたの今日の予定は？',
+                },
+                output: {
+                    content: '今日の予定',
+                },
+            },
+        ],
+        messages: [
+            {
+                author: 'user',
+                content,
+            },
+        ],
+    };
+    return res;
 };
-exports.vertexAi = vertexAi;
-//# sourceMappingURL=vertexAi.js.map
+//# sourceMappingURL=vertexAI.js.map

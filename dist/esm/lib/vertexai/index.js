@@ -1,3 +1,2 @@
-export * from './vertexAi';
-export * from './vertexAiStream';
+export * from './vertexAI';
 //# sourceMappingURL=index.js.map

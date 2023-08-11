@@ -1,4 +1,4 @@
-import { openAi } from './openAi';
+import { OpenAI } from './openAI';
 const run = async () => {
     const prompt = {
         messages: [
@@ -20,8 +20,12 @@ const run = async () => {
             },
         ],
     };
-    const result = await openAi(prompt);
-    console.log(result);
+    const openAi = new OpenAI();
+    const result = await openAi.prompt(prompt);
+    console.log('Generated messages:\n', result);
+    const content = 'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.';
+    const title = await openAi.generateTitle(content);
+    console.log('\nGenerated title:\n', title);
 };
 run();
 //# sourceMappingURL=exapmle.js.map

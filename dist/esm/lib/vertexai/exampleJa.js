@@ -1,4 +1,4 @@
-import { vertexAi } from './vertexAi';
+import { VertexAI } from './vertexAI';
 const run = async () => {
     const prompt = {
         context: 'あなたは、Web アプリケーションを構築するためのフレームワークである Skeet フレームワークに精通している開発者です。',
@@ -22,8 +22,12 @@ const run = async () => {
     const options = {
         isJapanese: true,
     };
-    const response = await vertexAi(prompt, options);
-    console.log(response);
+    const vertexAi = new VertexAI(options);
+    const response = await vertexAi.promptStream(prompt);
+    response.pipe(process.stdout);
+    response.on('end', () => {
+        console.log('end');
+    });
 };
 run();
 //# sourceMappingURL=exampleJa.js.map

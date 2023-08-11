@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vertexAi_1 = require("./vertexAi");
+const vertexAI_1 = require("./vertexAI");
 const run = async () => {
     const prompt = {
         context: 'あなたは、Web アプリケーションを構築するためのフレームワークである Skeet フレームワークに精通している開発者です。',
@@ -24,8 +24,12 @@ const run = async () => {
     const options = {
         isJapanese: true,
     };
-    const response = await (0, vertexAi_1.vertexAi)(prompt, options);
-    console.log(response);
+    const vertexAi = new vertexAI_1.VertexAI(options);
+    const response = await vertexAi.promptStream(prompt);
+    response.pipe(process.stdout);
+    response.on('end', () => {
+        console.log('end');
+    });
 };
 run();
 //# sourceMappingURL=exampleJa.js.map
