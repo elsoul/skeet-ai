@@ -27,12 +27,8 @@
 import * as aiplatform from '@google-cloud/aiplatform';
 import * as dotenv from 'dotenv';
 import { inspect } from 'util';
-import { translateVertexPromptParams } from '../translate/translateVertexPromptParams';
-import { translate } from '../translate';
-import { DelayedStream } from './delayedStream';
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
-const { helpers } = aiplatform;
 export class VertexAI {
     constructor(options = {}) {
         this.promptTitleGenerationJa = (content) => {
@@ -85,14 +81,12 @@ export class VertexAI {
         this.vertexParams = this.initializeVertexParams(options);
     }
     initializeOptions(options) {
-        const defaultConfig = this.parseFirebaseConfig();
         return {
             projectId: options.projectId || process.env.GCLOUD_PROJECT || '',
-            location: options.location || defaultConfig.locationId || '',
+            location: options.location || process.env.REGION || '',
             apiEndpoint: options.apiEndpoint || 'us-central1-aiplatform.googleapis.com',
             model: options.model || 'chat-bison@001',
             publisher: options.publisher || 'google',
-            isJapanese: options.isJapanese || false,
             delay: options.delay || 200,
         };
     }
@@ -103,14 +97,6 @@ export class VertexAI {
             topP: options.topP || 0.95,
             topK: options.topK || 40,
         };
-    }
-    parseFirebaseConfig() {
-        try {
-            return JSON.parse(process.env.FIREBASE_CONFIG || '');
-        }
-        catch (error) {
-            return {};
-        }
     }
     getEndpoint() {
         return `projects/${this.options.projectId}/locations/${this.options.location}/publishers/${this.options.publisher}/models/${this.options.model}`;
@@ -133,66 +119,24 @@ export class VertexAI {
             this.handleError(error);
         }
     }
-    async promptStream(prompt) {
-        try {
-            this.validateOptions();
-            const predictionServiceClient = new aiplatform.PredictionServiceClient({
-                apiEndpoint: this.options.apiEndpoint,
-            });
-            const { endpoint, instanceValue, parameters } = await this.preparePredictRequest(prompt);
-            const [response] = await predictionServiceClient.predict({
-                endpoint,
-                instances: [instanceValue],
-                parameters,
-            });
-            const predictions = await this.processPredictions(response);
-            return this.createDelayedStream(predictions);
-        }
-        catch (error) {
-            this.handleError(error);
-        }
-    }
     validateOptions() {
         if (!this.options.projectId) {
             throw new Error('Please set projectId in options parameter or GCLOUD_PROJECT in your environment');
         }
         if (!this.options.location) {
-            throw new Error('Please set location in options parameter or FIREBASE_CONFIG in your environment');
+            throw new Error('Please set location in options parameter or REGION in your environment');
         }
     }
     async preparePredictRequest(prompt) {
         const endpoint = this.getEndpoint();
-        const instanceValue = this.options.isJapanese
-            ? aiplatform.helpers.toValue(await translateVertexPromptParams(prompt))
-            : aiplatform.helpers.toValue(prompt);
+        const instanceValue = aiplatform.helpers.toValue(prompt);
         const parameters = aiplatform.helpers.toValue(this.vertexParams);
         return { endpoint, instanceValue, parameters };
     }
     async processPredictions(response) {
         const rawPrediction = response.predictions[0].structValue.fields.candidates.listValue.values[0]
             .structValue.fields.content.stringValue;
-        return this.options.isJapanese
-            ? await translate(rawPrediction)
-            : String(rawPrediction);
-    }
-    createDelayedStream(predictions) {
-        let chunks;
-        if (this.options.isJapanese) {
-            // 日本語の場合、3文字ごとに分割
-            chunks = this.splitIntoChunks(predictions, 3);
-        }
-        else {
-            // 英語の場合、スペースで分割
-            chunks = predictions.split(' ');
-        }
-        return new DelayedStream(chunks, this.options.delay);
-    }
-    splitIntoChunks(text, chunkSize) {
-        const chunks = [];
-        for (let i = 0; i < text.length; i += chunkSize) {
-            chunks.push(text.substring(i, i + chunkSize));
-        }
-        return chunks;
+        return String(rawPrediction);
     }
     async generateTitlePrompt(content, isJapanese = false) {
         const res = isJapanese

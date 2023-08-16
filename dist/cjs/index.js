@@ -29,7 +29,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.translateVertexPromptParams = exports.translate = exports.VertexAI = exports.OpenAI = exports.openai = exports.aiplatform = void 0;
+exports.translate = exports.VertexAI = exports.OpenAI = exports.openai = exports.aiplatform = void 0;
 const aiplatform_1 = __importDefault(require("@google-cloud/aiplatform"));
 exports.aiplatform = aiplatform_1.default;
 const openai = __importStar(require("openai"));
@@ -42,5 +42,4 @@ var vertexai_1 = require("./lib/vertexai");
 Object.defineProperty(exports, "VertexAI", { enumerable: true, get: function () { return vertexai_1.VertexAI; } });
 var translate_1 = require("./lib/translate");
 Object.defineProperty(exports, "translate", { enumerable: true, get: function () { return translate_1.translate; } });
-Object.defineProperty(exports, "translateVertexPromptParams", { enumerable: true, get: function () { return translate_1.translateVertexPromptParams; } });
 //# sourceMappingURL=index.js.map

@@ -33,14 +33,10 @@ import {
   VertexParameterParams,
   VertexPromptParams,
 } from '../types/vertexaiTypes'
-import { translateVertexPromptParams } from '../translate/translateVertexPromptParams'
-import { translate } from '../translate'
-import { DelayedStream } from './delayedStream'
 
 dotenv.config()
 
 const { PredictionServiceClient } = aiplatform.v1
-const { helpers } = aiplatform
 
 export class VertexAI {
   protected options: VertexAiOptions
@@ -52,15 +48,13 @@ export class VertexAI {
   }
 
   private initializeOptions(options: VertexAiOptions): VertexAiOptions {
-    const defaultConfig = this.parseFirebaseConfig()
     return {
       projectId: options.projectId || process.env.GCLOUD_PROJECT || '',
-      location: options.location || defaultConfig.locationId || '',
+      location: options.location || process.env.REGION || '',
       apiEndpoint:
         options.apiEndpoint || 'us-central1-aiplatform.googleapis.com',
       model: options.model || 'chat-bison@001',
       publisher: options.publisher || 'google',
-      isJapanese: options.isJapanese || false,
       delay: options.delay || 200,
     }
   }
@@ -73,14 +67,6 @@ export class VertexAI {
       maxOutputTokens: options.maxOutputTokens || 256,
       topP: options.topP || 0.95,
       topK: options.topK || 40,
-    }
-  }
-
-  private parseFirebaseConfig() {
-    try {
-      return JSON.parse(process.env.FIREBASE_CONFIG || '')
-    } catch (error) {
-      return {}
     }
   }
 
@@ -111,34 +97,6 @@ export class VertexAI {
     }
   }
 
-  async promptStream(
-    prompt: VertexPromptParams,
-  ): Promise<NodeJS.ReadableStream> {
-    try {
-      this.validateOptions()
-
-      const predictionServiceClient: any =
-        new aiplatform.PredictionServiceClient({
-          apiEndpoint: this.options.apiEndpoint,
-        })
-
-      const { endpoint, instanceValue, parameters } =
-        await this.preparePredictRequest(prompt)
-
-      const [response] = await predictionServiceClient.predict({
-        endpoint,
-        instances: [instanceValue],
-        parameters,
-      })
-
-      const predictions: string = await this.processPredictions(response)
-
-      return this.createDelayedStream(predictions)
-    } catch (error) {
-      this.handleError(error)
-    }
-  }
-
   private validateOptions(): void {
     if (!this.options.projectId) {
       throw new Error(
@@ -147,16 +105,14 @@ export class VertexAI {
     }
     if (!this.options.location) {
       throw new Error(
-        'Please set location in options parameter or FIREBASE_CONFIG in your environment',
+        'Please set location in options parameter or REGION in your environment',
       )
     }
   }
 
   private async preparePredictRequest(prompt: VertexPromptParams) {
     const endpoint = this.getEndpoint()
-    const instanceValue: any = this.options.isJapanese
-      ? aiplatform.helpers.toValue(await translateVertexPromptParams(prompt))
-      : aiplatform.helpers.toValue(prompt)
+    const instanceValue: any = aiplatform.helpers.toValue(prompt)
     const parameters: any = aiplatform.helpers.toValue(this.vertexParams)
 
     return { endpoint, instanceValue, parameters }
@@ -166,31 +122,7 @@ export class VertexAI {
     const rawPrediction =
       response.predictions[0].structValue.fields.candidates.listValue.values[0]
         .structValue.fields.content.stringValue
-    return this.options.isJapanese
-      ? await translate(rawPrediction)
-      : String(rawPrediction)
-  }
-
-  private createDelayedStream(predictions: string): NodeJS.ReadableStream {
-    let chunks: string[]
-
-    if (this.options.isJapanese) {
-      // 日本語の場合、3文字ごとに分割
-      chunks = this.splitIntoChunks(predictions, 3)
-    } else {
-      // 英語の場合、スペースで分割
-      chunks = predictions.split(' ')
-    }
-
-    return new DelayedStream(chunks, this.options.delay!)
-  }
-
-  private splitIntoChunks(text: string, chunkSize: number): string[] {
-    const chunks: string[] = []
-    for (let i = 0; i < text.length; i += chunkSize) {
-      chunks.push(text.substring(i, i + chunkSize))
-    }
-    return chunks
+    return String(rawPrediction)
   }
 
   async generateTitlePrompt(content: string, isJapanese = false) {
@@ -290,5 +222,4 @@ export class VertexAI {
     }
     throw new Error(`Error in vertexAi: ${inspect(error)}`)
   }
-  predictStream?(prompt: VertexPromptParams): Promise<NodeJS.ReadableStream>
 }

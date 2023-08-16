@@ -6,5 +6,5 @@ export * from './lib/types/vertexaiTypes';
 export * from './lib/types/openaiTypes';
 export { OpenAI } from './lib/openai';
 export { VertexAI } from './lib/vertexai';
-export { translate, translateVertexPromptParams } from './lib/translate';
+export { translate } from './lib/translate';
 //# sourceMappingURL=index.js.map

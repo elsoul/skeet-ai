@@ -74,14 +74,14 @@ $ skeet iam ai
 🚸 === Copy & Paste below command to your terminal === 🚸
 
 export GCLOUD_PROJECT=your-project-id
-export FIREBASE_CONFIG='{ "locationId": "us-central1" }'
+export REGION="us-central1"
 
 🚸 =========           END           ========= 🚸
 ```
 
 And set environment variables following the console's output.
 
-**Note: If you deploy to Firebase Functions in a production environment, both the `GCLOUD_PROJECT` and `FIREBASE_CONFIG` environment variables will be automatically set.**
+**Note: options overwrite the environment variables**
 
 ## Vertex AI
 
@@ -138,9 +138,6 @@ $ npx ts-node app.ts
 
 ## Vertex AI - Japanese (日本語)
 
-以下のように `isJapanese` オプションを `true` にすることで、
-日本語をサポートしています。
-
 ```ts
 import { VertexAI, VertexPromptParams } from '@skeet-framework/ai'
 
@@ -168,10 +165,7 @@ const run = async () => {
     ],
   }
 
-  const options = {
-    isJapanese: true,
-  }
-  const vertexAi = new VertexAI(options)
+  const vertexAi = new VertexAI()
   const response = await vertexAi.prompt(prompt)
   console.log('AIへの質問:\n', prompt.messages[0].content)
   console.log('\nAIの回答:\n', response)
