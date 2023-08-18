@@ -1,6 +1,7 @@
 import { Configuration, OpenAIApi } from 'openai';
 import * as dotenv from 'dotenv';
 import { systemContentJA } from './sytemContexts';
+import { randomChat } from './randomChat';
 dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
@@ -49,6 +50,16 @@ export class OpenAI {
         catch (error) {
             console.error(`openAi error: ${error}`);
             process.exit(1);
+        }
+    }
+    async chat(content) {
+        try {
+            const prompt = randomChat(content);
+            const response = await this.prompt(prompt);
+            return response;
+        }
+        catch (error) {
+            throw new Error(`chat: ${error}`);
         }
     }
     async generateTitle(content) {

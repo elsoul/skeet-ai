@@ -27,6 +27,7 @@ exports.OpenAI = void 0;
 const openai_1 = require("openai");
 const dotenv = __importStar(require("dotenv"));
 const sytemContexts_1 = require("./sytemContexts");
+const randomChat_1 = require("./randomChat");
 dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
@@ -75,6 +76,16 @@ class OpenAI {
         catch (error) {
             console.error(`openAi error: ${error}`);
             process.exit(1);
+        }
+    }
+    async chat(content) {
+        try {
+            const prompt = (0, randomChat_1.randomChat)(content);
+            const response = await this.prompt(prompt);
+            return response;
+        }
+        catch (error) {
+            throw new Error(`chat: ${error}`);
         }
     }
     async generateTitle(content) {

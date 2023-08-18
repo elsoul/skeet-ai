@@ -5,6 +5,7 @@ export declare class OpenAI {
     private options;
     constructor(options?: OpenAIOptions);
     prompt(promptParams: OpenAIPromptParams): Promise<string>;
+    chat(content: string): Promise<string>;
     generateTitle(content: string): Promise<string>;
     promptStream(prompt: OpenAIPromptParams): Promise<IncomingMessage>;
 }

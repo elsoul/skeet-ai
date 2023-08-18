@@ -23,6 +23,24 @@
  * Make sure to set the appropriate environment variables or pass them as options to the constructor.
  *
  * @class
+ * @example
+ * VertexAI
+ * ```typescript
+ * import { VertexAI } from '@skeet-framework/ai'
+ *
+ * const vertexAi = new VertexAI()
+ * const result = await vertexAi.chat('Hello')
+ * console.log(result)
+ * ```
+ *
+ * OpenAI
+ * ```typescript
+ * import { OpenAI } from '@skeet-framework/ai'
+ *
+ * const openAi = new OpenAI()
+ * const result = await openAi.chat('Hello')
+ * console.log(result)
+ * ```
  */
 import { VertexAiOptions, VertexParameterParams, VertexPromptParams } from '../types/vertexaiTypes';
 export declare class VertexAI {
@@ -33,11 +51,10 @@ export declare class VertexAI {
     private initializeVertexParams;
     private getEndpoint;
     prompt(prompt: VertexPromptParams): Promise<string>;
+    chat(content: string): Promise<string>;
     private validateOptions;
     private preparePredictRequest;
     private processPredictions;
     generateTitlePrompt(content: string, isJapanese?: boolean): Promise<VertexPromptParams>;
-    private promptTitleGenerationEn;
-    private promptTitleGenerationJa;
     private handleError;
 }

@@ -83,7 +83,31 @@ And set environment variables following the console's output.
 
 **Note: options overwrite the environment variables**
 
-## Vertex AI
+## Quick Start
+
+VertexAI
+
+```ts
+import { VertexAI } from '@skeet-framework/ai'
+
+const vertexAi = new VertexAI()
+const result = await vertexAi.chat('Hello')
+console.log(result)
+```
+
+OpenAI
+
+**Note: You need finished [Initial Setup - Open AI (ChatGPT)](/README.md#initial-setup---open-ai-chatgpt) to use OpenAI API**
+
+```ts
+import { OpenAI } from '@skeet-framework/ai'
+
+const openAi = new OpenAI()
+const result = await openAi.chat('Hello')
+console.log(result)
+```
+
+## Vertex AI - Prompt Example
 
 Example `app.ts`
 
@@ -136,7 +160,7 @@ Run
 $ npx ts-node app.ts
 ```
 
-## Vertex AI - Japanese (日本語)
+## Vertex AI - Japanese (日本語) プロンプトの例
 
 ```ts
 import { VertexAI, VertexPromptParams } from '@skeet-framework/ai'

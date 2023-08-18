@@ -3,6 +3,7 @@ import { OpenAIOptions, OpenAIPromptParams } from '../types/openaiTypes'
 import * as dotenv from 'dotenv'
 import { systemContentJA } from './sytemContexts'
 import { IncomingMessage } from 'http'
+import { randomChat } from './randomChat'
 
 dotenv.config()
 
@@ -65,6 +66,16 @@ export class OpenAI {
     } catch (error) {
       console.error(`openAi error: ${error}`)
       process.exit(1)
+    }
+  }
+
+  async chat(content: string): Promise<string> {
+    try {
+      const prompt: OpenAIPromptParams = randomChat(content)
+      const response = await this.prompt(prompt)
+      return response
+    } catch (error) {
+      throw new Error(`chat: ${error}`)
     }
   }
 
