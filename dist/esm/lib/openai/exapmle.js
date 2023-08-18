@@ -1,31 +1,17 @@
+import { readFileSync } from 'fs';
 import { OpenAI } from './openAI';
+import { generatePrompt } from '../genPrompt';
+const exampleJosn = JSON.parse(readFileSync('./src/lib/examplePrompt.json', 'utf8'));
 const run = async () => {
-    const prompt = {
-        messages: [
-            {
-                role: 'system',
-                content: 'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
-            },
-            {
-                role: 'user',
-                content: 'What is the Skeet framework and what benefits does it offer for app development?',
-            },
-            {
-                role: 'assistant',
-                content: 'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
-            },
-            {
-                role: 'user',
-                content: 'Tell me about the Skeet framework.',
-            },
-        ],
-    };
+    const content = 'Tell me about the Skeet framework.';
+    const prompt = generatePrompt(exampleJosn.context, exampleJosn.examples, content, 'OpenAI');
     const openAi = new OpenAI();
     const result = await openAi.prompt(prompt);
+    console.log(JSON.stringify(result, null, 2));
     console.log('Question:\n', prompt.messages[3].content);
     console.log('\nAnswer:\n', result);
-    const content = 'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.';
-    const title = await openAi.generateTitle(content);
+    const content2 = 'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.';
+    const title = await openAi.generateTitle(content2);
     console.log('\nOriginal content:\n', content);
     console.log('\nGenerated title:\n', title);
 };
