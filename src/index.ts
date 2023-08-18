@@ -10,10 +10,4 @@ export { VertexAI } from './lib/vertexai'
 export { translate } from './lib/translate'
 export { generatePrompt } from './lib/genPrompt'
 export { SkeetAI } from './lib/skeetai'
-
-const run = async () => {
-  const ai = new SkeetAI({ ai: 'OpenAI' })
-  const res = await ai.prisma('I need to make app for hair salon.')
-  console.log(res)
-}
-run()
+export { AIPrompt, AIType, AIExample } from './lib/genPrompt'

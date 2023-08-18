@@ -34,7 +34,6 @@ const aiplatform_1 = __importDefault(require("@google-cloud/aiplatform"));
 exports.aiplatform = aiplatform_1.default;
 const openai = __importStar(require("openai"));
 exports.openai = openai;
-const skeetai_1 = __importDefault(require("./lib/skeetai"));
 __exportStar(require("./lib/types/vertexaiTypes"), exports);
 __exportStar(require("./lib/types/openaiTypes"), exports);
 var openai_1 = require("./lib/openai");
@@ -45,12 +44,6 @@ var translate_1 = require("./lib/translate");
 Object.defineProperty(exports, "translate", { enumerable: true, get: function () { return translate_1.translate; } });
 var genPrompt_1 = require("./lib/genPrompt");
 Object.defineProperty(exports, "generatePrompt", { enumerable: true, get: function () { return genPrompt_1.generatePrompt; } });
-var skeetai_2 = require("./lib/skeetai");
-Object.defineProperty(exports, "SkeetAI", { enumerable: true, get: function () { return skeetai_2.SkeetAI; } });
-const run = async () => {
-    const ai = new skeetai_1.default({ ai: 'OpenAI' });
-    const res = await ai.prisma('I need to make app for hair salon.');
-    console.log(res);
-};
-run();
+var skeetai_1 = require("./lib/skeetai");
+Object.defineProperty(exports, "SkeetAI", { enumerable: true, get: function () { return skeetai_1.SkeetAI; } });
 //# sourceMappingURL=index.js.map
