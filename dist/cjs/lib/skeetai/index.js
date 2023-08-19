@@ -4,6 +4,7 @@ exports.SkeetAI = void 0;
 const openai_1 = require("../openai");
 const vertexai_1 = require("../vertexai");
 const prisma_1 = require("./prisma/prisma");
+const skeet_1 = require("./skeet");
 /**
  * The main SkeetAI class for handling AI interactions.
  */
@@ -48,6 +49,14 @@ class SkeetAI {
         }
         catch (error) {
             this.handleError(error);
+        }
+    }
+    async skeet(content) {
+        try {
+            return await (0, skeet_1.skeetPrompt)(content, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            throw new Error(`skeet: ${error}`);
         }
     }
     handleError(error) {

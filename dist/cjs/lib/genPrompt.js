@@ -17,23 +17,29 @@ function generatePrompt(context, examples, content, ai) {
             messages: [
                 {
                     author: 'user',
-                    content: content,
+                    content,
                 },
             ],
         };
     }
     else if (ai === 'OpenAI') {
+        const exampleMessages = [];
+        for (const example of examples) {
+            exampleMessages.push({
+                role: 'user',
+                content: example.input,
+            });
+            exampleMessages.push({
+                role: 'assistant',
+                content: example.output,
+            });
+        }
         const messages = [
             {
                 role: 'system',
                 content: context,
             },
-            ...examples.flatMap((example, index) => [
-                {
-                    role: index % 2 === 0 ? 'user' : 'assistant',
-                    content: index % 2 === 0 ? example.input : example.output,
-                },
-            ]),
+            ...exampleMessages,
             {
                 role: 'user',
                 content,

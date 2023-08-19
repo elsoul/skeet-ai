@@ -47,6 +47,7 @@ export declare class SkeetAI {
      */
     constructor(options?: SkeetAIOptions);
     prisma(content: string): Promise<string | undefined>;
+    skeet(content: string): Promise<string>;
     private handleError;
 }
 export default SkeetAI;

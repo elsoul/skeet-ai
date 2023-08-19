@@ -1,6 +1,7 @@
 import { OpenAI } from '../openai';
 import { VertexAI } from '../vertexai';
 import { skeetAiPrisma } from './prisma/prisma';
+import { skeetPrompt } from './skeet';
 /**
  * The main SkeetAI class for handling AI interactions.
  */
@@ -45,6 +46,14 @@ export class SkeetAI {
         }
         catch (error) {
             this.handleError(error);
+        }
+    }
+    async skeet(content) {
+        try {
+            return await skeetPrompt(content, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            throw new Error(`skeet: ${error}`);
         }
     }
     handleError(error) {
