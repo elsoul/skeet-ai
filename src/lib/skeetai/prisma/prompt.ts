@@ -1,4 +1,4 @@
-import { AIPrompt } from '@/lib/genPrompt'
+import { AIPrompt } from 'src/lib/genPrompt'
 
 export const prismaPrompt = () => {
   const prompt: AIPrompt = {

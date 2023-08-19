@@ -53,12 +53,13 @@ import {
 } from '../types/vertexaiTypes'
 import { randomChat } from './randomChat'
 import { promptTitleGenerationEn, promptTitleGenerationJa } from './genTitle'
+import { AIPromptable } from '../skeetai'
 
 dotenv.config()
 
 const { PredictionServiceClient } = aiplatform.v1
 
-export class VertexAI {
+export class VertexAI implements AIPromptable {
   protected options: VertexAiOptions
   protected vertexParams: VertexParameterParams
 
@@ -94,7 +95,7 @@ export class VertexAI {
     return `projects/${this.options.projectId}/locations/${this.options.location}/publishers/${this.options.publisher}/models/${this.options.model}`
   }
 
-  async prompt(prompt: VertexPromptParams): Promise<string> {
+  async prompt(prompt: any): Promise<string> {
     try {
       this.validateOptions()
 

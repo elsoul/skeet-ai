@@ -4,13 +4,13 @@ import * as dotenv from 'dotenv'
 import { systemContentJA } from './sytemContexts'
 import { IncomingMessage } from 'http'
 import { randomChat } from './randomChat'
-
+import { AIPromptable } from '../skeetai'
 dotenv.config()
 
 const organization = process.env.CHAT_GPT_ORG || ''
 const apiKey = process.env.CHAT_GPT_KEY || ''
 
-export class OpenAI {
+export class OpenAI implements AIPromptable {
   private options: OpenAIOptions
 
   constructor(options: OpenAIOptions = {}) {
@@ -37,7 +37,7 @@ export class OpenAI {
     }
   }
 
-  async prompt(promptParams: OpenAIPromptParams): Promise<string> {
+  async prompt(promptParams: any): Promise<string> {
     try {
       const openaiConfig = {
         model: this.options.model!,

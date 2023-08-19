@@ -17,6 +17,9 @@ interface SkeetAIOptions {
      */
     maxTokens?: number;
 }
+export interface AIPromptable {
+    prompt(input: string): Promise<any>;
+}
 /**
  * The main SkeetAI class for handling AI interactions.
  */

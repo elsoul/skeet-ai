@@ -43,14 +43,15 @@
  * ```
  */
 import { VertexAiOptions, VertexParameterParams, VertexPromptParams } from '../types/vertexaiTypes';
-export declare class VertexAI {
+import { AIPromptable } from '../skeetai';
+export declare class VertexAI implements AIPromptable {
     protected options: VertexAiOptions;
     protected vertexParams: VertexParameterParams;
     constructor(options?: VertexAiOptions);
     private initializeOptions;
     private initializeVertexParams;
     private getEndpoint;
-    prompt(prompt: VertexPromptParams): Promise<string>;
+    prompt(prompt: any): Promise<string>;
     chat(content: string): Promise<string>;
     private validateOptions;
     private preparePredictRequest;

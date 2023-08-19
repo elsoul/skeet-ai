@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.skeetAiPrisma = void 0;
 const prompt_1 = require("./prompt");
-const genPrompt_1 = require("@/lib/genPrompt");
+const genPrompt_1 = require("src/lib/genPrompt");
 const skeetAiPrisma = async (content, thisAi, thisAiInstance) => {
     try {
         const example = (0, prompt_1.prismaPrompt)();
