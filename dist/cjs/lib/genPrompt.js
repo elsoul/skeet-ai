@@ -2,13 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generatePrompt = void 0;
 function generatePrompt(context, examples, content, ai) {
+    var _a;
     if (ai === 'VertexAI') {
+        const vertexExamples = [];
+        for (let i = 0; i < examples.length; i += 2) {
+            vertexExamples.push({
+                input: { content: examples[i].input },
+                output: { content: ((_a = examples[i + 1]) === null || _a === void 0 ? void 0 : _a.output) || '' },
+            });
+        }
         return {
             context,
-            examples: examples.map((example) => ({
-                input: { content: example.input },
-                output: { content: example.output },
-            })),
+            examples: vertexExamples,
             messages: [
                 {
                     author: 'user',
@@ -23,9 +28,11 @@ function generatePrompt(context, examples, content, ai) {
                 role: 'system',
                 content: context,
             },
-            ...examples.flatMap((example) => [
-                { role: 'user', content: example.input },
-                { role: 'assistant', content: example.output },
+            ...examples.flatMap((example, index) => [
+                {
+                    role: index % 2 === 0 ? 'user' : 'assistant',
+                    content: index % 2 === 0 ? example.input : example.output,
+                },
             ]),
             {
                 role: 'user',

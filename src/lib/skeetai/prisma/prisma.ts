@@ -1,8 +1,8 @@
-import { OpenAI } from 'src/lib/openai/openAI'
-import { VertexAI } from 'src/lib/vertexai'
+import { OpenAI } from '../../../lib/openai/openAI'
+import { VertexAI } from '../../../lib/vertexai'
 import { prismaPrompt } from './prompt'
-import { AIType, generatePrompt } from 'src/lib/genPrompt'
-import { OpenAIPromptParams, VertexPromptParams } from 'src/lib/types'
+import { AIType, generatePrompt } from '../../genPrompt'
+import { OpenAIPromptParams, VertexPromptParams } from '../../../lib/types'
 
 export const skeetAiPrisma = async (
   content: string,

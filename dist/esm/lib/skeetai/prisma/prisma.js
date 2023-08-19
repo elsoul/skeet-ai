@@ -1,5 +1,5 @@
 import { prismaPrompt } from './prompt';
-import { generatePrompt } from 'src/lib/genPrompt';
+import { generatePrompt } from '../../genPrompt';
 export const skeetAiPrisma = async (content, thisAi, thisAiInstance) => {
     try {
         const example = prismaPrompt();

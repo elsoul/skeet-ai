@@ -1,4 +1,4 @@
-import { OpenAIPromptParams, VertexPromptParams } from './types'
+import { OpenAIPromptParams, VertexExample, VertexPromptParams } from './types'
 
 /**
  * Represents the AI platforms supported by the generatePrompt function.
@@ -42,12 +42,16 @@ export function generatePrompt(
   ai: AIType,
 ): VertexPromptParams | OpenAIPromptParams {
   if (ai === 'VertexAI') {
+    const vertexExamples: VertexExample[] = []
+    for (let i = 0; i < examples.length; i += 2) {
+      vertexExamples.push({
+        input: { content: examples[i].input },
+        output: { content: examples[i + 1]?.output || '' },
+      })
+    }
     return {
       context,
-      examples: examples.map((example) => ({
-        input: { content: example.input },
-        output: { content: example.output },
-      })),
+      examples: vertexExamples,
       messages: [
         {
           author: 'user',
@@ -61,9 +65,11 @@ export function generatePrompt(
         role: 'system',
         content: context,
       },
-      ...examples.flatMap((example) => [
-        { role: 'user', content: example.input },
-        { role: 'assistant', content: example.output },
+      ...examples.flatMap((example, index) => [
+        {
+          role: index % 2 === 0 ? 'user' : 'assistant',
+          content: index % 2 === 0 ? example.input : example.output,
+        },
       ]),
       {
         role: 'user',
