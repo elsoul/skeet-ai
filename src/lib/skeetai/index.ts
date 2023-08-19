@@ -1,6 +1,7 @@
 import { OpenAI } from '../openai'
 import { VertexAI } from '../vertexai'
 import { skeetAiPrisma } from './prisma/prisma'
+import { skeetPrompt } from './skeet'
 
 /**
  * Configuration options for initializing a SkeetAI instance.
@@ -77,6 +78,14 @@ export class SkeetAI {
       return await skeetAiPrisma(content, this.ai, this.aiInstance)
     } catch (error: any) {
       this.handleError(error)
+    }
+  }
+
+  async skeet(content: string) {
+    try {
+      return await skeetPrompt(content, this.ai, this.aiInstance)
+    } catch (error: any) {
+      throw new Error(`skeet: ${error}`)
     }
   }
 

@@ -6,7 +6,7 @@ export type VertexPromptParams = {
 
 export type VertexExample = {
   input: VertexExampleMessage
-  output: VertexExampleMessage
+  output?: VertexExampleMessage
 }
 
 export type VertexExampleMessage = {
