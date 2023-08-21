@@ -1,4 +1,4 @@
-import { VertexAI } from './vertexAI';
+import { VertexAI } from './';
 const run = async () => {
     const prompt = {
         context: 'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',

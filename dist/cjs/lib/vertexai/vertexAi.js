@@ -163,4 +163,4 @@ class VertexAI {
     }
 }
 exports.VertexAI = VertexAI;
-//# sourceMappingURL=vertexAI.js.map
+//# sourceMappingURL=vertexAi.js.map

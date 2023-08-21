@@ -1,4 +1,4 @@
-import { OpenAI } from '../../../lib/openai/openAI'
+import { OpenAI } from '../../../lib/openai'
 import { VertexAI } from '../../../lib/vertexai'
 import { prismaPrompt } from './prompt'
 import { AIType, generatePrompt } from '../../genPrompt'

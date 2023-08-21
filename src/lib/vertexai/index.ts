@@ -1,1 +1,1 @@
-export * from './vertexAI'
+export * from './vertexAi'

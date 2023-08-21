@@ -1,5 +1,5 @@
 import { VertexPromptParams } from '../types/vertexaiTypes'
-import { VertexAI } from './vertexAI'
+import { VertexAI } from './'
 
 const run = async () => {
   const prompt: VertexPromptParams = {

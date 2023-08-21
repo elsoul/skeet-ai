@@ -115,4 +115,4 @@ export class OpenAI {
         }
     }
 }
-//# sourceMappingURL=openAI.js.map
+//# sourceMappingURL=openAi.js.map

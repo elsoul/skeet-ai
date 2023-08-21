@@ -1,4 +1,4 @@
-import { OpenAI } from './openAI';
+import { OpenAI } from './';
 const run = async () => {
     const prompt = {
         messages: [

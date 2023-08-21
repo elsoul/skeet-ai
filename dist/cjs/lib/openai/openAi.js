@@ -142,4 +142,4 @@ class OpenAI {
     }
 }
 exports.OpenAI = OpenAI;
-//# sourceMappingURL=openAI.js.map
+//# sourceMappingURL=openAi.js.map

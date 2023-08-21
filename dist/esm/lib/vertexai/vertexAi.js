@@ -136,4 +136,4 @@ export class VertexAI {
         throw new Error(`Error in vertexAi: ${inspect(error)}`);
     }
 }
-//# sourceMappingURL=vertexAI.js.map
+//# sourceMappingURL=vertexAi.js.map

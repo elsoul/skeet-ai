@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const openAI_1 = require("./openAI");
+const _1 = require("./");
 const run = async () => {
     const prompt = {
         messages: [
@@ -22,7 +22,7 @@ const run = async () => {
             },
         ],
     };
-    const openAi = new openAI_1.OpenAI();
+    const openAi = new _1.OpenAI();
     const stream = await openAi.promptStream(prompt);
     console.log('Question:\n', prompt.messages[3].content);
     stream.pipe(process.stdout);
