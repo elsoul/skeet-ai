@@ -1,7 +1,22 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prismaPrompt = void 0;
+const __1 = __importDefault(require(".."));
+const fs_1 = require("fs");
+function readPrismaSchema() {
+    try {
+        return (0, fs_1.readFileSync)(__1.default.PRISMA_SCHEMA_PATH, 'utf8');
+    }
+    catch (error) {
+        console.log(error);
+        return null;
+    }
+}
 const prismaPrompt = () => {
+    const prismaSchema = readPrismaSchema();
     const prompt = {
         context: `
 You are a specialist in generating Prisma's \`schema.prisma\`. Your responses should strictly adhere to the \`schema.prisma\` format when introducing new models. The returned \`schema.prisma\` will be used to produce the Prisma schema. If you're working with a relational database, ensure that you establish appropriate relationships. In such cases, support for composite unique keys is essential. Also, please add indices to columns that are likely to be queried frequently. Please add the timestamp fields \`createdAt\` and \`updatedAt\` to all models.
@@ -14,7 +29,11 @@ model Post {
 
 ...define here...
 ---
-Note: Current \`schema.prisma\` file is below.If you want to user User model, please add it and make relationship with that model.`,
+Note: Current \`schema.prisma\` file is below.
+---
+${prismaSchema}
+---
+`,
         examples: [
             {
                 input: 'I want to create a blog app.',

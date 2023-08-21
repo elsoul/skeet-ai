@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const vertexAI_1 = require("./vertexAI");
+const _1 = require("./");
 const run = async () => {
     const prompt = {
         context: 'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
@@ -21,7 +21,7 @@ const run = async () => {
             },
         ],
     };
-    const vertexAi = new vertexAI_1.VertexAI();
+    const vertexAi = new _1.VertexAI();
     const response = await vertexAi.prompt(prompt);
     console.log('Question:\n', prompt.messages[0].content);
     console.log('Answer:\n', response);

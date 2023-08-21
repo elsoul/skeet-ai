@@ -1,5 +1,5 @@
 import { OpenAIPromptParams } from '../types/openaiTypes'
-import { OpenAI } from './openAI'
+import { OpenAI } from './'
 
 const run = async () => {
   const prompt: OpenAIPromptParams = {

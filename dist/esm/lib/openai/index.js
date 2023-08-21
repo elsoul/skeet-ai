@@ -1,2 +1,2 @@
-export * from './openAI';
+export * from './openAi';
 //# sourceMappingURL=index.js.map

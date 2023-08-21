@@ -1,5 +1,5 @@
 import { readFileSync } from 'fs';
-import { OpenAI } from './openAI';
+import { OpenAI } from './';
 import { generatePrompt } from '../genPrompt';
 const exampleJosn = JSON.parse(readFileSync('./src/lib/examplePrompt.json', 'utf8'));
 const run = async () => {
