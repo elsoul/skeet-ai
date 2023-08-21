@@ -25,14 +25,15 @@ model ModelName {
 }
 ...define here...
 ---
-Note: Current \`schema.prisma\` file is below.
+Note: Current \`schema.prisma\` is below.
 ---
 ${prismaSchema}
 ---
-You have to answer the schema.prisma based on the current schema.prisma and user needs.
+You must create the schema.prisma based on the current schema.prisma and user's needs.
 You must not declare a new model name that already exists.
 You are a model name declaration professional, so you can create a model name that meets the user's needs.
-You should answer only the new parts of the schema.prisma.
+You must not answer the existing parts of the schema.prisma.
+You must answer only the new parts of the schema.prisma.
 `,
     examples: [
       {
