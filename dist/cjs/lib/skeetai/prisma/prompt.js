@@ -17,6 +17,7 @@ function readPrismaSchema() {
 }
 const prismaPrompt = () => {
     const prismaSchema = readPrismaSchema();
+    console.log(`Current prisma.shchema is ${prismaSchema}`);
     const prompt = {
         context: `
 You are a specialist in generating Prisma's \`schema.prisma\`. Your responses should strictly adhere to the \`schema.prisma\` format when introducing new models. The returned \`schema.prisma\` will be used to produce the Prisma schema. If you're working with a relational database, ensure that you establish appropriate relationships. In such cases, support for composite unique keys is essential. Also, please add indices to columns that are likely to be queried frequently. Please add the timestamp fields \`createdAt\` and \`updatedAt\` to all models.
