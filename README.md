@@ -88,10 +88,12 @@ And set environment variables following the console's output.
 VertexAI
 
 ```ts
-import { VertexAI } from '@skeet-framework/ai'
+import { SkeetAI } from '@skeet-framework/ai'
 
-const vertexAi = new VertexAI()
-const result = await vertexAi.chat('Hello')
+const skeetAi = new SkeetAI({
+  ai: 'VetexAI',
+})
+const result = await skeetAi.chat('Hello')
 console.log(result)
 ```
 
@@ -100,10 +102,12 @@ OpenAI
 **Note: You need finished [Initial Setup - Open AI (ChatGPT)](/README.md#initial-setup---open-ai-chatgpt) to use OpenAI API**
 
 ```ts
-import { OpenAI } from '@skeet-framework/ai'
+import { SkeetAI } from '@skeet-framework/ai'
 
-const openAi = new OpenAI()
-const result = await openAi.chat('Hello')
+const skeetAi = new SkeetAI({
+  ai: 'OpenAI',
+})
+const result = await skeetAi.chat('Hello')
 console.log(result)
 ```
 
@@ -115,30 +119,27 @@ Example `app.ts`
 import { VertexAI, VertexPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
-  const prompt: VertexPromptParams = {
-    context:
-      'You are a developer who is knowledgeable about the Skeet framework, a framework for building web applications.',
-    examples: [
-      {
-        input: {
-          content:
-            'What is the Skeet framework and what benefits does it offer for app development?',
-        },
-        output: {
-          content:
-            'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
-        },
-      },
-    ],
-    messages: [
-      {
-        author: 'user',
-        content: 'Tell me about the Skeet framework.',
-      },
-    ],
-  }
+  const context =
+    'You are a developer familiar with the Skeet framework for building web applications.'
+  const examples = [
+    {
+      input:
+        'What is the Skeet framework and what benefits does it offer for app development?',
+      output:
+        'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
+    },
+  ]
+  const content = 'Tell me about the Skeet framework.'
+  const prompt = generatePrompt(
+    context,
+    examples,
+    content,
+    'VertexAI',
+  ) as VertexPromptParams
 
-  const vertexAi = new VertexAI()
+  const vertexAi = new SkeetAI({
+    ai: 'VertexAI',
+  })
   const response = await vertexAi.prompt(prompt)
   console.log('Question:\n', prompt.messages[0].content)
   console.log('Answer:\n', response)
@@ -155,57 +156,6 @@ run()
 ```
 
 Run
-
-```bash
-$ npx ts-node app.ts
-```
-
-## Vertex AI - Japanese (日本語) プロンプトの例
-
-```ts
-import { VertexAI, VertexPromptParams } from '@skeet-framework/ai'
-
-const run = async () => {
-  const prompt: VertexPromptParams = {
-    context:
-      'あなたは、Web アプリケーションを構築するためのフレームワークである Skeet フレームワークに精通している開発者です。',
-    examples: [
-      {
-        input: {
-          content:
-            'Skeet フレームワークとは何ですか?また、それがアプリ開発にどのようなメリットをもたらしますか?',
-        },
-        output: {
-          content:
-            'Skeet フレームワークは、アプリケーションの開発および運用コストを削減することを目的とした、オープンソースのフルスタック アプリケーション開発ソリューションです。これにより、開発者はインフラストラクチャについて心配する必要がなくなり、アプリケーション ロジックに集中できるようになります。このフレームワークは、SQL と NoSQL を組み合わせて構築できます。',
-        },
-      },
-    ],
-    messages: [
-      {
-        author: 'user',
-        content: 'Skeet フレームワークについて教えてください。',
-      },
-    ],
-  }
-
-  const vertexAi = new VertexAI()
-  const response = await vertexAi.prompt(prompt)
-  console.log('AIへの質問:\n', prompt.messages[0].content)
-  console.log('\nAIの回答:\n', response)
-
-  const content =
-    '"Skeet framework"は、アプリケーションの開発および運用コストを削減することを目的としたオープンソースのフルスタックアプリケーション開発ソリューションです。これにより、開発者はアプリケーションロジックにもっと集中し、インフラストラクチャについての心配を減少させることができます。このフレームワークは、SQLとNoSQLの組み合わせで組み立てることができます。'
-  const promptTitle = await vertexAi.generateTitlePrompt(content)
-  console.log('\n要約する前の文章:\n', content)
-  const title = await vertexAi.prompt(promptTitle)
-  console.log('\nAIがつけたタイトル:\n', title)
-}
-
-run()
-```
-
-Run (実行)
 
 ```bash
 $ npx ts-node app.ts
@@ -238,19 +188,36 @@ Example `app.ts`
 import { OpenAI, OpenAIPromptParams } from '@skeet-framework/ai'
 
 const run = async () => {
-  ske
-  const openAi = new OpenAI()
-  const result = await openAi.prompt(prompt)
-  console.log('Question:\n', prompt.messages[3].content)
-  console.log('\nAnswer:\n', result)
+  const context = 'You are a developer familiar with the Skeet framework for building web applications.'
+  const examples = [
+    {
+      input:
+        'What is the Skeet framework and what benefits does it offer for app development?',
+      output:
+        'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.',
+    },
+  ]
+  const content = 'Tell me about the Skeet framework.'
+  const prompt = generatePrompt(
+    context,
+    examples,
+    content,
+    'OpenAI'
+  ) as OpenAIPromptParams
+
+  const openAi = new SkeetAI({
+    ai: 'OpenAI',
+  })
+  const response = await openAi.prompt(prompt)
+  console.log('Question:\n', prompt.messages[0].content)
+  console.log('Answer:\n', response)
+
   const content =
     'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.'
-  const title = await openAi.generateTitle(content)
+  const promptTitle = await openAi.generateTitlePrompt(content)
+  const title = await openAi.prompt(promptTitle)
   console.log('\nOriginal content:\n', content)
   console.log('\nGenerated title:\n', title)
-}
-
-run()
 ```
 
 Run
@@ -258,6 +225,41 @@ Run
 ```bash
 $ npx ts-node app.ts
 ```
+
+## Fine-tuning
+
+Fine-tuning is a technique that allows you to customize the model to your specific use case by providing examples of the desired behavior.
+
+### Fine-tuning - OpenAI
+
+Create a JSONL file with the following format.
+
+_./fine-tuning.jsonl_
+
+```jsonl
+{"messages":[{"role":"system","content":"You are a senior engineer specialized in assisting developers."},{"role":"user","content":"Give an example of what the Skeet framework could be used for?"},{"role":"assistant","content":"The Skeet framework can be used for a variety of web applications, such as building a Chatbot"}]}
+{"messages":[{"role":"system","content":"You are a senior engineer specialized in assisting developers."},{"role":"user","content":"I got a credentials error while trying to use the Skeet framework. What should I do?"},{"role":"assistant","content":"The Skeet framework uses Google Cloud. You might need to login using `gcloud auth application-default login` to use the framework."}]}
+```
+
+```ts
+const openAi = new SkeetAI({
+  ai: 'OpenAI',
+})
+
+// Upload JSONL file
+const filePath = './fine-tuning.jsonl'
+const uploadFile = await openAi.uploadFile(filePath)
+
+// Create Fine-tuning Job
+const model = 'gpt-3.5-turbo-0613'
+const job = await openAi.createFineTuningJob(uploadFile.id, model)
+
+// Check Fine-tuning Job Status
+const jobStatus = await openAi.showFineTuningJob(job.id)
+console.log(jobStatus)
+```
+
+You can use the fine-tuned model after the job is completed.
 
 # Skeet AI Docs
 
