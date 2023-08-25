@@ -1,5 +1,6 @@
 import { OpenAI } from '../openai'
 import { VertexAI } from '../vertexai'
+import { uploadFile } from './fineTune/uploadFile'
 import { skeetAiPrisma } from './prisma/prisma'
 import { skeetPrompt } from './skeet'
 
@@ -86,6 +87,14 @@ export class SkeetAI {
       return await skeetPrompt(content, this.ai, this.aiInstance)
     } catch (error: any) {
       throw new Error(`skeet: ${error}`)
+    }
+  }
+
+  async uploadFile(filePath: string) {
+    try {
+      return await uploadFile(filePath, this.ai)
+    } catch (error: any) {
+      this.handleError(error)
     }
   }
 
