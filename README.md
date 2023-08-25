@@ -241,7 +241,11 @@ _./fine-tuning.jsonl_
 {"messages":[{"role":"system","content":"You are a senior engineer specialized in assisting developers."},{"role":"user","content":"I got a credentials error while trying to use the Skeet framework. What should I do?"},{"role":"assistant","content":"The Skeet framework uses Google Cloud. You might need to login using `gcloud auth application-default login` to use the framework."}]}
 ```
 
+Example `tuning.ts`
+
 ```ts
+import { OpenAI } from '@skeet-framework/ai'
+
 const openAi = new SkeetAI({
   ai: 'OpenAI',
 })
