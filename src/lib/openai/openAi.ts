@@ -1,10 +1,11 @@
-import { Configuration, OpenAIApi } from 'openai'
+import { OpenAI as OpenAIApi } from 'openai'
 import { OpenAIOptions, OpenAIPromptParams } from '../types/openaiTypes'
-import * as dotenv from 'dotenv'
 import { systemContentJA } from './sytemContexts'
-import { IncomingMessage } from 'http'
 import { randomChat } from './randomChat'
 import { AIPromptable } from '../skeetai'
+import { ChatCompletion, ChatCompletionChunk } from 'openai/resources/chat'
+import { Stream } from 'openai/streaming'
+import * as dotenv from 'dotenv'
 dotenv.config()
 
 const organization = process.env.CHAT_GPT_ORG || ''
@@ -26,14 +27,16 @@ export class OpenAI implements AIPromptable {
     }
 
     if (!this.options.organizationKey) {
-      throw new Error(
+      console.log(
         'Please set organizationKey in options or CHAT_GPT_ORG in your environment',
       )
+      return
     }
     if (!this.options.apiKey) {
-      throw new Error(
+      console.log(
         'Please set apiKey in options or CHAT_GPT_KEY in your environment',
       )
+      return
     }
   }
 
@@ -45,18 +48,18 @@ export class OpenAI implements AIPromptable {
         max_tokens: this.options.maxTokens!,
         top_p: this.options.topP!,
         n: this.options.n!,
-        stream: this.options.stream!,
+        stream: false,
         messages: promptParams.messages,
       }
 
-      const configuration = new Configuration({
-        organization: this.options.organizationKey,
+      const openai = new OpenAIApi({
         apiKey: this.options.apiKey,
+        organization: this.options.organizationKey,
       })
-
-      const openai = new OpenAIApi(configuration)
-      const completion = await openai.createChatCompletion(openaiConfig)
-      const result = completion.data.choices[0].message
+      const completion = (await openai.chat.completions.create(
+        openaiConfig,
+      )) as ChatCompletion
+      const result = completion.choices[0].message
 
       if (result === undefined) {
         throw new Error('openAi error: result is undefined')
@@ -102,7 +105,7 @@ export class OpenAI implements AIPromptable {
     }
   }
 
-  async promptStream(prompt: OpenAIPromptParams): Promise<IncomingMessage> {
+  async promptStream(prompt: OpenAIPromptParams) {
     try {
       const openaiConfig = {
         model: 'gpt-3.5-turbo',
@@ -114,25 +117,10 @@ export class OpenAI implements AIPromptable {
         messages: prompt.messages,
       }
 
-      if (!this.options.organizationKey)
-        throw new Error(
-          'Please set organizationKey in options parameter or CHAT_GPT_ORG in your environment',
-        )
-
-      if (!this.options.apiKey)
-        throw new Error(
-          'Please set apiKey in options parameter or CHAT_GPT_KEY in your environment',
-        )
-
-      const configuration = new Configuration({
-        organization: this.options.organizationKey,
-        apiKey: this.options.apiKey,
-      })
-      const openai = new OpenAIApi(configuration)
-      const result = await openai.createChatCompletion(openaiConfig, {
-        responseType: 'stream',
-      })
-      const stream = result.data as unknown as IncomingMessage
+      const openai = new OpenAIApi({ apiKey: this.options.apiKey })
+      const stream = (await openai.chat.completions.create(
+        openaiConfig,
+      )) as Stream<ChatCompletionChunk>
       return stream
     } catch (error) {
       throw new Error(`openAiStream error: ${error}`)
