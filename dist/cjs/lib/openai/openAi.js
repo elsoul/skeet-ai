@@ -25,9 +25,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OpenAI = void 0;
 const openai_1 = require("openai");
-const dotenv = __importStar(require("dotenv"));
 const sytemContexts_1 = require("./sytemContexts");
 const randomChat_1 = require("./randomChat");
+const dotenv = __importStar(require("dotenv"));
+const fs_1 = require("fs");
 dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
@@ -43,11 +44,17 @@ class OpenAI {
             organizationKey: options.organizationKey || organization,
             apiKey: options.apiKey || apiKey,
         };
+        this.aiInstance = new openai_1.OpenAI({
+            apiKey: this.options.apiKey,
+            organization: this.options.organizationKey,
+        });
         if (!this.options.organizationKey) {
-            throw new Error('Please set organizationKey in options or CHAT_GPT_ORG in your environment');
+            console.log('Please set organizationKey in options or CHAT_GPT_ORG in your environment');
+            return;
         }
         if (!this.options.apiKey) {
-            throw new Error('Please set apiKey in options or CHAT_GPT_KEY in your environment');
+            console.log('Please set apiKey in options or CHAT_GPT_KEY in your environment');
+            return;
         }
     }
     async prompt(promptParams) {
@@ -58,16 +65,11 @@ class OpenAI {
                 max_tokens: this.options.maxTokens,
                 top_p: this.options.topP,
                 n: this.options.n,
-                stream: this.options.stream,
+                stream: false,
                 messages: promptParams.messages,
             };
-            const configuration = new openai_1.Configuration({
-                organization: this.options.organizationKey,
-                apiKey: this.options.apiKey,
-            });
-            const openai = new openai_1.OpenAIApi(configuration);
-            const completion = await openai.createChatCompletion(openaiConfig);
-            const result = completion.data.choices[0].message;
+            const completion = (await this.aiInstance.chat.completions.create(openaiConfig));
+            const result = completion.choices[0].message;
             if (result === undefined) {
                 throw new Error('openAi error: result is undefined');
             }
@@ -121,24 +123,28 @@ class OpenAI {
                 stream: true,
                 messages: prompt.messages,
             };
-            if (!this.options.organizationKey)
-                throw new Error('Please set organizationKey in options parameter or CHAT_GPT_ORG in your environment');
-            if (!this.options.apiKey)
-                throw new Error('Please set apiKey in options parameter or CHAT_GPT_KEY in your environment');
-            const configuration = new openai_1.Configuration({
-                organization: this.options.organizationKey,
-                apiKey: this.options.apiKey,
-            });
-            const openai = new openai_1.OpenAIApi(configuration);
-            const result = await openai.createChatCompletion(openaiConfig, {
-                responseType: 'stream',
-            });
-            const stream = result.data;
+            const stream = (await this.aiInstance.chat.completions.create(openaiConfig));
             return stream;
         }
         catch (error) {
             throw new Error(`openAiStream error: ${error}`);
         }
+    }
+    async uploadFile(filePath) {
+        return await this.aiInstance.files.create({
+            file: (0, fs_1.createReadStream)(filePath),
+            purpose: 'fine-tune',
+        });
+    }
+    async createFineTuningJob(fileId, model) {
+        const fileTuneOptions = {
+            training_file: fileId,
+            model: model || 'gpt-3.5-turbo-0613',
+        };
+        return await this.aiInstance.fineTuning.jobs.create(fileTuneOptions);
+    }
+    async showFineTuningJob(jobId) {
+        return await this.aiInstance.fineTuning.jobs.retrieve(jobId);
     }
 }
 exports.OpenAI = OpenAI;

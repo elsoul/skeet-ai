@@ -1,11 +1,13 @@
 import { readFileSync } from 'fs';
-import { OpenAI } from './';
 import { generatePrompt } from '../genPrompt';
+import SkeetAI from '../skeetai';
 const exampleJosn = JSON.parse(readFileSync('./src/lib/examplePrompt.json', 'utf8'));
 const run = async () => {
     const content = 'Tell me about the Skeet framework.';
     const prompt = generatePrompt(exampleJosn.context, exampleJosn.examples, content, 'OpenAI');
-    const openAi = new OpenAI();
+    const openAi = new SkeetAI({
+        ai: 'OpenAI',
+    }).aiInstance;
     const result = await openAi.prompt(prompt);
     console.log(JSON.stringify(result, null, 2));
     console.log('Question:\n', prompt.messages[3].content);

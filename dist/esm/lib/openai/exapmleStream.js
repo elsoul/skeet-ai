@@ -22,8 +22,9 @@ const run = async () => {
     };
     const openAi = new OpenAI();
     const stream = await openAi.promptStream(prompt);
-    console.log('Question:\n', prompt.messages[3].content);
-    stream.pipe(process.stdout);
+    for await (const part of stream) {
+        console.log(part.choices[0].delta);
+    }
 };
 run();
 //# sourceMappingURL=exapmleStream.js.map

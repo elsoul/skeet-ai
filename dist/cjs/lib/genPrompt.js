@@ -25,10 +25,13 @@ function generatePrompt(context, examples, content, ai) {
     else if (ai === 'OpenAI') {
         const exampleMessages = [];
         for (const example of examples) {
-            exampleMessages.push({
-                role: 'user',
-                content: example.input,
-            });
+            if (example.input)
+                exampleMessages.push({
+                    role: 'user',
+                    content: example.input,
+                });
+            if (!example.output)
+                continue;
             exampleMessages.push({
                 role: 'assistant',
                 content: example.output,

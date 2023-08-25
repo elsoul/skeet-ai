@@ -1,18 +1,21 @@
-import { AIType, generatePrompt } from '../../genPrompt'
-import OpenAI from 'openai'
-import { createReadStream } from 'fs'
+import { AIType } from '../../genPrompt'
+import * as dotenv from 'dotenv'
+import { OpenAI } from '../../openai'
+import { VertexAI } from '../../vertexai'
+dotenv.config()
 
-export const uploadFile = async (filePath: string, thisAi: AIType) => {
+export const uploadJsonlFile = async (
+  filePath: string,
+  thisAi: AIType,
+  thisAiInstance: VertexAI | OpenAI,
+) => {
   try {
     if (thisAi === 'VertexAI') {
       console.log(`Coming soon...`)
       return
     } else {
-      const openai = new OpenAI()
-      return await openai.files.create({
-        file: createReadStream(filePath),
-        purpose: 'fine-tune',
-      })
+      const openai = thisAiInstance as OpenAI
+      return await openai.uploadFile(filePath)
     }
   } catch (error) {
     throw new Error(`uploadFile: ${error}`)

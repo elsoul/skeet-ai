@@ -48,6 +48,9 @@ export declare class SkeetAI {
     constructor(options?: SkeetAIOptions);
     prisma(content: string): Promise<string | undefined>;
     skeet(content: string): Promise<string>;
+    uploadFile(filePath: string): Promise<import("openai/resources").FileObject | undefined>;
+    createFineTuningJob(fileId: string, model?: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
+    showFineTuningJob(jobId: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     private handleError;
 }
 export default SkeetAI;

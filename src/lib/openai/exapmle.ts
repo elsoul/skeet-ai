@@ -2,6 +2,7 @@ import { readFileSync } from 'fs'
 import { OpenAIPromptParams } from '../types/openaiTypes'
 import { OpenAI } from './'
 import { generatePrompt } from '../genPrompt'
+import SkeetAI from '../skeetai'
 const exampleJosn = JSON.parse(
   readFileSync('./src/lib/examplePrompt.json', 'utf8'),
 )
@@ -14,7 +15,9 @@ const run = async () => {
     content,
     'OpenAI',
   ) as OpenAIPromptParams
-  const openAi = new OpenAI()
+  const openAi = new SkeetAI({
+    ai: 'OpenAI',
+  }).aiInstance as OpenAI
   const result = await openAi.prompt(prompt)
 
   console.log(JSON.stringify(result, null, 2))
