@@ -6,6 +6,8 @@ import { AIPromptable } from '../skeetai'
 import { ChatCompletion, ChatCompletionChunk } from 'openai/resources/chat'
 import { Stream } from 'openai/streaming'
 import * as dotenv from 'dotenv'
+import { createReadStream } from 'fs'
+import { JobCreateParams } from 'openai/resources/fine-tuning'
 dotenv.config()
 
 const organization = process.env.CHAT_GPT_ORG || ''
@@ -13,6 +15,7 @@ const apiKey = process.env.CHAT_GPT_KEY || ''
 
 export class OpenAI implements AIPromptable {
   private options: OpenAIOptions
+  aiInstance: OpenAIApi
 
   constructor(options: OpenAIOptions = {}) {
     this.options = {
@@ -25,6 +28,10 @@ export class OpenAI implements AIPromptable {
       organizationKey: options.organizationKey || organization,
       apiKey: options.apiKey || apiKey,
     }
+    this.aiInstance = new OpenAIApi({
+      apiKey: this.options.apiKey,
+      organization: this.options.organizationKey,
+    }) as OpenAIApi
 
     if (!this.options.organizationKey) {
       console.log(
@@ -52,11 +59,7 @@ export class OpenAI implements AIPromptable {
         messages: promptParams.messages,
       }
 
-      const openai = new OpenAIApi({
-        apiKey: this.options.apiKey,
-        organization: this.options.organizationKey,
-      })
-      const completion = (await openai.chat.completions.create(
+      const completion = (await this.aiInstance.chat.completions.create(
         openaiConfig,
       )) as ChatCompletion
       const result = completion.choices[0].message
@@ -116,14 +119,31 @@ export class OpenAI implements AIPromptable {
         stream: true,
         messages: prompt.messages,
       }
-
-      const openai = new OpenAIApi({ apiKey: this.options.apiKey })
-      const stream = (await openai.chat.completions.create(
+      const stream = (await this.aiInstance.chat.completions.create(
         openaiConfig,
       )) as Stream<ChatCompletionChunk>
       return stream
     } catch (error) {
       throw new Error(`openAiStream error: ${error}`)
     }
+  }
+
+  async uploadFile(filePath: string) {
+    return await this.aiInstance.files.create({
+      file: createReadStream(filePath),
+      purpose: 'fine-tune',
+    })
+  }
+
+  async createFineTuningJob(fileId: string, model?: string) {
+    const fileTuneOptions = {
+      training_file: fileId,
+      model: model || 'gpt-3.5-turbo-0613',
+    } as JobCreateParams
+    return await this.aiInstance.fineTuning.jobs.create(fileTuneOptions)
+  }
+
+  async showFineTuningJob(jobId: string) {
+    return await this.aiInstance.fineTuning.jobs.retrieve(jobId)
   }
 }

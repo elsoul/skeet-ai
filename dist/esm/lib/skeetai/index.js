@@ -1,7 +1,10 @@
 import { OpenAI } from '../openai';
 import { VertexAI } from '../vertexai';
+import { createFineTuningJob, showFineTuningJob, uploadJsonlFile, } from './fineTune';
 import { skeetAiPrisma } from './prisma/prisma';
 import { skeetPrompt } from './skeet';
+import * as dotenv from 'dotenv';
+dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
  */
@@ -37,6 +40,8 @@ export class SkeetAI {
             this.aiInstance = new OpenAI({
                 model: this.model,
                 maxTokens: this.maxTokens,
+                apiKey: process.env.CHAT_GPT_KEY || '',
+                organizationKey: process.env.CHAT_GPT_ORG || '',
             });
         }
     }
@@ -54,6 +59,30 @@ export class SkeetAI {
         }
         catch (error) {
             throw new Error(`skeet: ${error}`);
+        }
+    }
+    async uploadFile(filePath) {
+        try {
+            return await uploadJsonlFile(filePath, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
+    async createFineTuningJob(fileId, model = 'gpt-3.5-turbo-0613') {
+        try {
+            return await createFineTuningJob(fileId, model, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
+    async showFineTuningJob(jobId) {
+        try {
+            return await showFineTuningJob(jobId, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            this.handleError(error);
         }
     }
     handleError(error) {
