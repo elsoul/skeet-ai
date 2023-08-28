@@ -13,6 +13,8 @@ export class SkeetAI {
     ai;
     model;
     maxTokens;
+    temperature;
+    _initOptions;
     static PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
     aiInstance;
     /**
@@ -36,6 +38,7 @@ export class SkeetAI {
         this.model =
             options.model || (this.ai === 'VertexAI' ? 'chat-bison@001' : 'gpt-4');
         this.maxTokens = options.maxTokens || 1000;
+        this.temperature = options.temperature || 0;
         if (this.ai === 'VertexAI') {
             this.aiInstance = new VertexAI({
                 model: this.model,
@@ -50,6 +53,10 @@ export class SkeetAI {
                 organizationKey: process.env.CHAT_GPT_ORG || '',
             });
         }
+        this._initOptions = options;
+    }
+    get initOptions() {
+        return this._initOptions;
     }
     async prisma(content) {
         try {

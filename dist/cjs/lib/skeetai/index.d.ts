@@ -16,6 +16,11 @@ interface SkeetAIOptions {
      * Maximum number of tokens to be returned in the response. Default is 1000.
      */
     maxTokens?: number;
+    /**
+     * Temperature parameter for the AI platform. Default is 0.2.
+     * @see https://beta.openai.com/docs/api-reference/completions/create#temperature
+     */
+    temperature?: number;
 }
 export interface AIPromptable {
     prompt(input: string): Promise<any>;
@@ -27,6 +32,8 @@ export declare class SkeetAI {
     ai: 'VertexAI' | 'OpenAI';
     model: string;
     maxTokens: number;
+    temperature: number;
+    private _initOptions;
     static readonly PRISMA_SCHEMA_PATH: string;
     aiInstance: VertexAI | OpenAI;
     /**
@@ -46,6 +53,7 @@ export declare class SkeetAI {
      * ```
      */
     constructor(options?: SkeetAIOptions);
+    get initOptions(): SkeetAIOptions;
     prisma(content: string): Promise<string | undefined>;
     skeet(content: string): Promise<string>;
     uploadFile(filePath: string): Promise<import("openai/resources").FileObject | undefined>;
