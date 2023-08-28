@@ -1,5 +1,7 @@
+import { IncomingMessage } from 'http'
 import { OpenAIPromptParams } from '../types/openaiTypes'
 import { OpenAI } from './'
+import { ReadStream, read } from 'fs'
 
 const run = async () => {
   const prompt: OpenAIPromptParams = {
@@ -27,9 +29,10 @@ const run = async () => {
   }
   const openAi = new OpenAI()
   const stream = await openAi.promptStream(prompt)
-  for await (const part of stream) {
-    console.log(part.choices[0].delta)
-  }
+  const stream2 = ReadStream.from(stream)
+  stream2.on('data', (part) => {
+    console.log(part.choices[0].delta.content)
+  })
 }
 
 run()

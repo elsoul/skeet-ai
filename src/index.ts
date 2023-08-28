@@ -1,7 +1,8 @@
 import aiplatform from '@google-cloud/aiplatform'
 export { aiplatform }
 import * as openai from 'openai'
-import SkeetAI from './lib/skeetai'
+export { ChatCompletionChunk, ChatCompletion } from 'openai/resources/chat'
+export { Stream } from 'openai/streaming'
 export { openai }
 export * from './lib/types/vertexaiTypes'
 export * from './lib/types/openaiTypes'
