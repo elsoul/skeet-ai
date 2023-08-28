@@ -2,13 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.generatePrompt = void 0;
 function generatePrompt(context, examples, content, ai) {
-    var _a;
     if (ai === 'VertexAI') {
         const vertexExamples = [];
         for (let i = 0; i < examples.length; i += 2) {
             vertexExamples.push({
                 input: { content: examples[i].input },
-                output: { content: ((_a = examples[i + 1]) === null || _a === void 0 ? void 0 : _a.output) || '' },
+                output: { content: examples[i + 1]?.output || '' },
             });
         }
         return {
