@@ -1,6 +1,7 @@
 import aiplatform from '@google-cloud/aiplatform';
 export { aiplatform };
 import * as openai from 'openai';
+export { Stream } from 'openai/streaming';
 export { openai };
 export * from './lib/types/vertexaiTypes';
 export * from './lib/types/openaiTypes';

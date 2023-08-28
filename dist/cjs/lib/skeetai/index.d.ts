@@ -51,6 +51,7 @@ export declare class SkeetAI {
     uploadFile(filePath: string): Promise<import("openai/resources").FileObject | undefined>;
     createFineTuningJob(fileId: string, model?: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     showFineTuningJob(jobId: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
+    typedoc(content: string): Promise<string | undefined>;
     private handleError;
 }
 export default SkeetAI;

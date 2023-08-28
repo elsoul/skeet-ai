@@ -73,9 +73,12 @@ const dotenv = __importStar(require("dotenv"));
 const util_1 = require("util");
 const randomChat_1 = require("./randomChat");
 const genTitle_1 = require("./genTitle");
+const fs_1 = require("fs");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 class VertexAI {
+    options;
+    vertexParams;
     constructor(options = {}) {
         this.options = this.initializeOptions(options);
         this.vertexParams = this.initializeVertexParams(options);
@@ -119,6 +122,26 @@ class VertexAI {
             this.handleError(error);
         }
     }
+    async promptStream(prompt) {
+        try {
+            this.validateOptions();
+            const predictionServiceClient = new PredictionServiceClient({
+                apiEndpoint: this.options.apiEndpoint,
+            });
+            const { endpoint, instanceValue, parameters } = await this.preparePredictRequest(prompt);
+            const [response] = await predictionServiceClient.predict({
+                endpoint,
+                instances: [instanceValue],
+                parameters,
+            });
+            const result = await this.processPredictions(response);
+            const stream = fs_1.ReadStream.from(result);
+            return stream;
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
     async chat(content) {
         try {
             const prompt = (0, randomChat_1.randomChat)(content);
@@ -131,10 +154,12 @@ class VertexAI {
     }
     validateOptions() {
         if (!this.options.projectId) {
-            throw new Error('Please set projectId in options parameter or GCLOUD_PROJECT in your environment');
+            console.log('⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment ⚠️');
+            return;
         }
         if (!this.options.location) {
-            throw new Error('Please set location in options parameter or REGION in your environment');
+            console.log('⚠️ Please set location in options parameter or REGION in your environment ⚠️');
+            return;
         }
     }
     async preparePredictRequest(prompt) {

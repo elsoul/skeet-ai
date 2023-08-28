@@ -1,5 +1,8 @@
 import { Readable } from 'stream';
 export class DelayedStream extends Readable {
+    data;
+    delay;
+    currentIndex;
     constructor(data, delay, options = { highWaterMark: 1 }) {
         super(options);
         this.data = data;

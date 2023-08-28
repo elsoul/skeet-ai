@@ -4,11 +4,17 @@ import { createFineTuningJob, showFineTuningJob, uploadJsonlFile, } from './fine
 import { skeetAiPrisma } from './prisma/prisma';
 import { skeetPrompt } from './skeet';
 import * as dotenv from 'dotenv';
+import { skeetGenTypedoc } from './typedoc';
 dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
  */
 export class SkeetAI {
+    ai;
+    model;
+    maxTokens;
+    static PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
+    aiInstance;
     /**
      * Creates an instance of SkeetAI.
      * @param options - Configuration options for initializing the SkeetAI.
@@ -85,10 +91,17 @@ export class SkeetAI {
             this.handleError(error);
         }
     }
+    async typedoc(content) {
+        try {
+            return await skeetGenTypedoc(content, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
     handleError(error) {
         console.error('Error:', error);
     }
 }
-SkeetAI.PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
 export default SkeetAI;
 //# sourceMappingURL=index.js.map

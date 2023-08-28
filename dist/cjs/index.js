@@ -29,11 +29,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkeetAI = exports.generatePrompt = exports.translate = exports.VertexAI = exports.OpenAI = exports.openai = exports.aiplatform = void 0;
+exports.SkeetAI = exports.generatePrompt = exports.translate = exports.VertexAI = exports.OpenAI = exports.openai = exports.Stream = exports.aiplatform = void 0;
 const aiplatform_1 = __importDefault(require("@google-cloud/aiplatform"));
 exports.aiplatform = aiplatform_1.default;
 const openai = __importStar(require("openai"));
 exports.openai = openai;
+var streaming_1 = require("openai/streaming");
+Object.defineProperty(exports, "Stream", { enumerable: true, get: function () { return streaming_1.Stream; } });
 __exportStar(require("./lib/types/vertexaiTypes"), exports);
 __exportStar(require("./lib/types/openaiTypes"), exports);
 var openai_1 = require("./lib/openai");

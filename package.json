@@ -5,6 +5,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/elsoul/skeet-ai.git"
@@ -27,7 +28,7 @@
   "homepage": "https://elsoul.github.io/skeet-ai",
   "scripts": {
     "test": "jest --coverage=false --detectOpenHandles --maxWorkers=1",
-    "build": "yarn build-doc && yarn version:update && yarn build:cjs && yarn build:esm",
+    "build": "yarn build-doc && yarn build:cjs && yarn build:esm",
     "update:packages": "ncu -u && yarn",
     "version:update": "ts-node -r tsconfig-paths/register --transpile-only release.ts",
     "build:cjs": "tsc -b tsconfig.cjs.json",
@@ -40,13 +41,17 @@
     "@google-cloud/aiplatform": "2.17.0",
     "@google-cloud/translate": "7.2.2",
     "dotenv": "16.3.1",
+    "inquirer": "^9.2.10",
     "node-fetch": "2.6.9",
-    "openai": "4.2.0"
+    "openai": "4.2.0",
+    "semver": "^7.5.4"
   },
   "devDependencies": {
+    "@types/inquirer": "^9.0.3",
     "@types/jest": "29.5.3",
     "@types/node": "20.4.7",
     "@types/node-fetch": "2.6.4",
+    "@types/semver": "^7.5.0",
     "babel-loader": "9.1.3",
     "esbuild": "0.18.17",
     "eslint": "8.46.0",

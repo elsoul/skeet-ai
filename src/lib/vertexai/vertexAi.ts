@@ -54,6 +54,8 @@ import {
 import { randomChat } from './randomChat'
 import { promptTitleGenerationEn, promptTitleGenerationJa } from './genTitle'
 import { AIPromptable } from '../skeetai'
+import { ReadStream } from 'fs'
+import { Stream } from 'stream'
 
 dotenv.config()
 
@@ -118,6 +120,31 @@ export class VertexAI implements AIPromptable {
     }
   }
 
+  async promptStream(prompt: any) {
+    try {
+      this.validateOptions()
+
+      const predictionServiceClient: any = new PredictionServiceClient({
+        apiEndpoint: this.options.apiEndpoint,
+      })
+
+      const { endpoint, instanceValue, parameters } =
+        await this.preparePredictRequest(prompt)
+
+      const [response] = await predictionServiceClient.predict({
+        endpoint,
+        instances: [instanceValue],
+        parameters,
+      })
+
+      const result = await this.processPredictions(response)
+      const stream = ReadStream.from(result)
+      return stream
+    } catch (error: any) {
+      this.handleError(error)
+    }
+  }
+
   async chat(content: string): Promise<string> {
     try {
       const prompt = randomChat(content)
@@ -130,14 +157,16 @@ export class VertexAI implements AIPromptable {
 
   private validateOptions(): void {
     if (!this.options.projectId) {
-      throw new Error(
-        'Please set projectId in options parameter or GCLOUD_PROJECT in your environment',
+      console.log(
+        '⚠️ Please set projectId in options parameter or GCLOUD_PROJECT in your environment ⚠️',
       )
+      return
     }
     if (!this.options.location) {
-      throw new Error(
-        'Please set location in options parameter or REGION in your environment',
+      console.log(
+        '⚠️ Please set location in options parameter or REGION in your environment ⚠️',
       )
+      return
     }
   }
 

@@ -3,6 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DelayedStream = void 0;
 const stream_1 = require("stream");
 class DelayedStream extends stream_1.Readable {
+    data;
+    delay;
+    currentIndex;
     constructor(data, delay, options = { highWaterMark: 1 }) {
         super(options);
         this.data = data;

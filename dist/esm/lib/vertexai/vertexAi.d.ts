@@ -42,6 +42,7 @@
  * console.log(result)
  * ```
  */
+/// <reference types="node" />
 import { VertexAiOptions, VertexParameterParams, VertexPromptParams } from '../types/vertexaiTypes';
 import { AIPromptable } from '../skeetai';
 export declare class VertexAI implements AIPromptable {
@@ -52,6 +53,7 @@ export declare class VertexAI implements AIPromptable {
     private initializeVertexParams;
     private getEndpoint;
     prompt(prompt: any): Promise<string>;
+    promptStream(prompt: any): Promise<import("stream").Readable>;
     chat(content: string): Promise<string>;
     private validateOptions;
     private preparePredictRequest;

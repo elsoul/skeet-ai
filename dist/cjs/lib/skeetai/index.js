@@ -30,11 +30,17 @@ const fineTune_1 = require("./fineTune");
 const prisma_1 = require("./prisma/prisma");
 const skeet_1 = require("./skeet");
 const dotenv = __importStar(require("dotenv"));
+const typedoc_1 = require("./typedoc");
 dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
  */
 class SkeetAI {
+    ai;
+    model;
+    maxTokens;
+    static PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
+    aiInstance;
     /**
      * Creates an instance of SkeetAI.
      * @param options - Configuration options for initializing the SkeetAI.
@@ -111,11 +117,18 @@ class SkeetAI {
             this.handleError(error);
         }
     }
+    async typedoc(content) {
+        try {
+            return await (0, typedoc_1.skeetGenTypedoc)(content, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
     handleError(error) {
         console.error('Error:', error);
     }
 }
 exports.SkeetAI = SkeetAI;
-SkeetAI.PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
 exports.default = SkeetAI;
 //# sourceMappingURL=index.js.map
