@@ -29,6 +29,12 @@ interface SkeetAIOptions {
    * Maximum number of tokens to be returned in the response. Default is 1000.
    */
   maxTokens?: number
+
+  /**
+   * Temperature parameter for the AI platform. Default is 0.2.
+   * @see https://beta.openai.com/docs/api-reference/completions/create#temperature
+   */
+  temperature?: number
 }
 
 export interface AIPromptable {
@@ -42,6 +48,9 @@ export class SkeetAI {
   ai: 'VertexAI' | 'OpenAI'
   model: string
   maxTokens: number
+  temperature: number
+
+  private _initOptions: SkeetAIOptions
 
   static readonly PRISMA_SCHEMA_PATH: string = './graphql/prisma/schema.prisma'
   aiInstance: VertexAI | OpenAI
@@ -67,6 +76,7 @@ export class SkeetAI {
     this.model =
       options.model || (this.ai === 'VertexAI' ? 'chat-bison@001' : 'gpt-4')
     this.maxTokens = options.maxTokens || 1000
+    this.temperature = options.temperature || 0
 
     if (this.ai === 'VertexAI') {
       this.aiInstance = new VertexAI({
@@ -81,6 +91,11 @@ export class SkeetAI {
         organizationKey: process.env.CHAT_GPT_ORG || '',
       })
     }
+    this._initOptions = options
+  }
+
+  get initOptions(): SkeetAIOptions {
+    return this._initOptions
   }
 
   async prisma(content: string) {
