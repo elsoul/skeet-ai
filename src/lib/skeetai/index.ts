@@ -8,6 +8,7 @@ import {
 import { skeetAiPrisma } from './prisma/prisma'
 import { skeetPrompt } from './skeet'
 import * as dotenv from 'dotenv'
+import { skeetGenTypedoc } from './typedoc'
 dotenv.config()
 
 /**
@@ -118,6 +119,14 @@ export class SkeetAI {
     try {
       return await showFineTuningJob(jobId, this.ai, this.aiInstance)
     } catch (error) {
+      this.handleError(error)
+    }
+  }
+
+  async typedoc(content: string) {
+    try {
+      return await skeetGenTypedoc(content, this.ai, this.aiInstance)
+    } catch (error: any) {
       this.handleError(error)
     }
   }
