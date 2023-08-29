@@ -1,13 +1,43 @@
 export const migrationPrompt = {
-  context: `You are a specialist in naming database migration files. Users will provide you with a brief description of the database change they want to implement. Your task is to return a migration filename in camelCase that aptly describes the task. For example, when creating a new table, it's common to start the filename with "add". However, the prefix might vary based on the specific operation.`,
+  context: `You are a specialist in naming functions based on Prisma schemas. Users will provide you with a brief description of the database change they want to implement, primarily focusing on the model name within the Prisma schema. Your task is to return a function name in camelCase that aptly describes the operation and prominently incorporates the model name. For example, when creating a new table or model named "User", it's common to start the function name with "add" like "addUser". The prefix might vary depending on the specific operation described, but the model name should always be central to your naming convention.If you get multiple model names, you can combine them in the function name. For example, if you get "User" and "Post", you can return "addUserAndPost".`,
   examples: [
     {
-      input: 'Create a new users table',
-      output: 'addUsersTable',
+      input: `model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User     @relation(fields: [userId], references: [id])
+  userId    Int
+
+  @@unique([userId, title])
+}`,
+      output: 'addPost',
     },
     {
-      input: 'Remove the email column from the users table',
-      output: 'removeEmailFromUsers',
+      input: `model Post {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Comment   Comment[]
+  User      User      @relation(fields: [userId], references: [id])
+  userId    Int
+
+  @@unique([userId, title])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  postId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Post      Post     @relation(fields: [postId], references: [id])
+}`,
+      output: 'addPostAndComment',
     },
     {
       input: 'Add a foreign key to posts referencing users',
