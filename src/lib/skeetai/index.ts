@@ -9,6 +9,7 @@ import { skeetAiPrisma } from './prisma/prisma'
 import { skeetPrompt } from './skeet'
 import * as dotenv from 'dotenv'
 import { skeetGenTypedoc } from './typedoc'
+import { skeetNaming } from './naming'
 dotenv.config()
 
 /**
@@ -141,6 +142,14 @@ export class SkeetAI {
   async typedoc(content: string) {
     try {
       return await skeetGenTypedoc(content, this.ai, this.aiInstance)
+    } catch (error: any) {
+      this.handleError(error)
+    }
+  }
+
+  async naming(content: string, isMigration = false) {
+    try {
+      return await skeetNaming(content, this.ai, this.aiInstance, isMigration)
     } catch (error: any) {
       this.handleError(error)
     }

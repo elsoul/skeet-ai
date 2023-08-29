@@ -5,18 +5,12 @@ import { skeetAiPrisma } from './prisma/prisma';
 import { skeetPrompt } from './skeet';
 import * as dotenv from 'dotenv';
 import { skeetGenTypedoc } from './typedoc';
+import { skeetNaming } from './naming';
 dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
  */
 export class SkeetAI {
-    ai;
-    model;
-    maxTokens;
-    temperature;
-    _initOptions;
-    static PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
-    aiInstance;
     /**
      * Creates an instance of SkeetAI.
      * @param options - Configuration options for initializing the SkeetAI.
@@ -106,9 +100,18 @@ export class SkeetAI {
             this.handleError(error);
         }
     }
+    async naming(content, isMigration = false) {
+        try {
+            return await skeetNaming(content, this.ai, this.aiInstance, isMigration);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
     handleError(error) {
         console.error('Error:', error);
     }
 }
+SkeetAI.PRISMA_SCHEMA_PATH = './graphql/prisma/schema.prisma';
 export default SkeetAI;
 //# sourceMappingURL=index.js.map

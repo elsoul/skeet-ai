@@ -60,6 +60,7 @@ export declare class SkeetAI {
     createFineTuningJob(fileId: string, model?: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     showFineTuningJob(jobId: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     typedoc(content: string): Promise<string | undefined>;
+    naming(content: string, isMigration?: boolean): Promise<string | undefined>;
     private handleError;
 }
 export default SkeetAI;

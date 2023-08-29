@@ -30,3 +30,17 @@ export interface AIPrompt {
     examples: AIExample[];
 }
 export declare function generatePrompt(context: string, examples: AIExample[], content: string, ai: AIType): VertexPromptParams | OpenAIPromptParams;
+export declare const migrationPrompt: {
+    context: string;
+    examples: {
+        input: string;
+        output: string;
+    }[];
+};
+export declare const namingPrompt: {
+    context: string;
+    examples: {
+        input: string;
+        output: string;
+    }[];
+};

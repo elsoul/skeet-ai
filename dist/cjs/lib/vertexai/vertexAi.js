@@ -77,8 +77,6 @@ const fs_1 = require("fs");
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 class VertexAI {
-    options;
-    vertexParams;
     constructor(options = {}) {
         this.options = this.initializeOptions(options);
         this.vertexParams = this.initializeVertexParams(options);
