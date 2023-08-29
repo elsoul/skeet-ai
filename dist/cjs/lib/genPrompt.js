@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.namingPrompt = exports.migrationPrompt = exports.generatePrompt = void 0;
-const util_1 = require("util");
 function generatePrompt(context, examples, content, ai) {
     if (ai === 'VertexAI') {
         const exampleMessages = [];
@@ -119,6 +118,4 @@ exports.namingPrompt = {
         },
     ],
 };
-const res = generatePrompt(exports.namingPrompt.context, exports.namingPrompt.examples, 'Create a function that returns the sum of two numbers', 'VertexAI');
-console.log((0, util_1.inspect)(res, false, null, true));
 //# sourceMappingURL=genPrompt.js.map

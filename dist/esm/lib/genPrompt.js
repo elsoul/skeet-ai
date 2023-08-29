@@ -1,4 +1,3 @@
-import { inspect } from 'util';
 export function generatePrompt(context, examples, content, ai) {
     if (ai === 'VertexAI') {
         const exampleMessages = [];
@@ -115,6 +114,4 @@ export const namingPrompt = {
         },
     ],
 };
-const res = generatePrompt(namingPrompt.context, namingPrompt.examples, 'Create a function that returns the sum of two numbers', 'VertexAI');
-console.log(inspect(res, false, null, true));
 //# sourceMappingURL=genPrompt.js.map
