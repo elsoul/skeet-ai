@@ -7,8 +7,6 @@ dotenv.config();
 const organization = process.env.CHAT_GPT_ORG || '';
 const apiKey = process.env.CHAT_GPT_KEY || '';
 export class OpenAI {
-    options;
-    aiInstance;
     constructor(options = {}) {
         this.options = {
             model: options.model || 'gpt-4',

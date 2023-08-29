@@ -51,8 +51,6 @@ import { ReadStream } from 'fs';
 dotenv.config();
 const { PredictionServiceClient } = aiplatform.v1;
 export class VertexAI {
-    options;
-    vertexParams;
     constructor(options = {}) {
         this.options = this.initializeOptions(options);
         this.vertexParams = this.initializeVertexParams(options);
