@@ -14,7 +14,7 @@ dotenv.config()
 /**
  * Configuration options for initializing a SkeetAI instance.
  */
-interface SkeetAIOptions {
+export interface SkeetAIOptions {
   /**
    * AI platform type (either 'VertexAI' or 'OpenAI'). Default is 'VertexAI'.
    */
