@@ -86,7 +86,7 @@ export class VertexAI implements AIPromptable {
     options: VertexAiOptions,
   ): VertexParameterParams {
     return {
-      temperature: options.temperature || 0.2,
+      temperature: options.temperature || 0,
       maxOutputTokens: options.maxOutputTokens || 256,
       topP: options.topP || 0.95,
       topK: options.topK || 40,

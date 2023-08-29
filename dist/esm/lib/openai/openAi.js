@@ -11,8 +11,8 @@ export class OpenAI {
     aiInstance;
     constructor(options = {}) {
         this.options = {
-            model: options.model || 'gpt-3.5-turbo',
-            temperature: options.temperature || 0.2,
+            model: options.model || 'gpt-4',
+            temperature: options.temperature || 0,
             maxTokens: options.maxTokens || 256,
             topP: options.topP || 0.95,
             n: options.n || 1,
@@ -91,7 +91,7 @@ export class OpenAI {
     async promptStream(prompt) {
         try {
             const openaiConfig = {
-                model: 'gpt-3.5-turbo',
+                model: this.options.model,
                 temperature: this.options.temperature,
                 max_tokens: this.options.maxTokens,
                 top_p: this.options.topP,

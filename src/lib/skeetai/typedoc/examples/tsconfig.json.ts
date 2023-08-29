@@ -1,4 +1,5 @@
-{
+export const tsconfig = () => {
+  return `{
   "compilerOptions": {
     "module": "commonjs",
     "noImplicitReturns": true,
@@ -24,4 +25,5 @@
   },
   "compileOnSave": true,
   "include": ["src/*", "src/**/*"]
+}`
 }

@@ -1,13 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.typedocPrompt = void 0;
-const fs_1 = require("fs");
+const tsconfig_json_1 = require("./examples/tsconfig.json");
+const prettierrc_1 = require("./examples/prettierrc");
+const eslintrc_json_1 = require("./examples/eslintrc.json");
 function readTscofigSet() {
     try {
-        const exampleDir = `${__dirname}/examples`;
-        const tsconfigJson = (0, fs_1.readFileSync)(`${exampleDir}/tsconfig.json`, 'utf8');
-        const prettierrcFile = (0, fs_1.readFileSync)(`${exampleDir}/.prettierrc`, 'utf8');
-        const eslintrcJson = (0, fs_1.readFileSync)(`${exampleDir}/.eslintrc.json`, 'utf8');
+        const tsconfigJson = (0, tsconfig_json_1.tsconfig)();
+        const prettierrcFile = (0, prettierrc_1.prettierrc)();
+        const eslintrcJson = (0, eslintrc_json_1.eslintrc)();
         return {
             tsconfigJson,
             prettierrcFile,

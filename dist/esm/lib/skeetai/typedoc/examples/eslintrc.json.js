@@ -1,4 +1,5 @@
-{
+export const eslintrc = () => {
+    return `{
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
@@ -23,3 +24,6 @@
     ]
   }
 }
+`;
+};
+//# sourceMappingURL=eslintrc.json.js.map

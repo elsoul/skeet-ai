@@ -1,10 +1,11 @@
-import { readFileSync } from 'fs';
+import { tsconfig } from './examples/tsconfig.json';
+import { prettierrc } from './examples/prettierrc';
+import { eslintrc } from './examples/eslintrc.json';
 function readTscofigSet() {
     try {
-        const exampleDir = `${__dirname}/examples`;
-        const tsconfigJson = readFileSync(`${exampleDir}/tsconfig.json`, 'utf8');
-        const prettierrcFile = readFileSync(`${exampleDir}/.prettierrc`, 'utf8');
-        const eslintrcJson = readFileSync(`${exampleDir}/.eslintrc.json`, 'utf8');
+        const tsconfigJson = tsconfig();
+        const prettierrcFile = prettierrc();
+        const eslintrcJson = eslintrc();
         return {
             tsconfigJson,
             prettierrcFile,
