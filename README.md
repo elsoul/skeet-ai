@@ -265,6 +265,30 @@ console.log(jobStatus)
 
 You can use the fine-tuned model after the job is completed.
 
+## Skeet AI Transration
+
+This method is used to translate .json/.md files from one language to another.
+
+```ts
+import { SkeetAI } from '@skeet-framework/ai'
+
+const skeetAi = new SkeetAI()
+
+const translatePaths = {
+  paths: ['./README.md', './doc.json'],
+  langFrom: 'en',
+  langTo: 'ja',
+}
+
+await skeetAi.translates(
+  translatePaths.paths,
+  translatePaths.langFrom,
+  translatePaths.langTo,
+)
+```
+
+This function will generate a translated file in the same directory as the original file.
+
 # Skeet AI Docs
 
 - [Skeet AI TypeDoc](https://elsoul.github.io/skeet-ai/)

@@ -9,10 +9,14 @@ export const translateDocument = async (
   thisAi: AIType,
   thisAiInstance: VertexAI | OpenAI,
   mode: 'markdown' | 'json',
+  langFrom = 'ja',
+  langTo = 'en',
 ) => {
   try {
     const example =
-      mode === 'markdown' ? markdownTranslatePrompt() : jsonTranslatePrompt()
+      mode === 'markdown'
+        ? markdownTranslatePrompt(langFrom, langTo)
+        : jsonTranslatePrompt(langFrom, langTo)
 
     const prompt = generatePrompt(
       example.context,
