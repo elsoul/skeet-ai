@@ -5,11 +5,14 @@ const extractSectionsFromMd_1 = require("./extractSectionsFromMd");
 const translateDocument_1 = require("./translateDocument");
 const fs_1 = require("fs");
 const translateJsonDocuments_1 = require("./translateJsonDocuments");
-const skeetAiTranslates = async (paths, langFrom, langTo, thisAi, thisAiInstance, mode) => {
+const organizePaths_1 = require("./organizePaths");
+const skeetAiTranslates = async (paths, langFrom, langTo, thisAi, thisAiInstance) => {
     try {
-        mode === 'markdown'
-            ? await translateMarkdownDocuments(paths, langFrom, langTo, thisAi, thisAiInstance)
-            : await (0, translateJsonDocuments_1.translateJsonDocuments)(paths, langFrom, langTo, thisAi, thisAiInstance);
+        const organizedPaths = (0, organizePaths_1.organizeFilesByExtension)(paths);
+        if (organizedPaths.mdFiles.length !== 0)
+            await translateMarkdownDocuments(organizedPaths.mdFiles, langFrom, langTo, thisAi, thisAiInstance);
+        if (organizedPaths.jsonFiles.length !== 0)
+            await (0, translateJsonDocuments_1.translateJsonDocuments)(organizedPaths.jsonFiles, langFrom, langTo, thisAi, thisAiInstance);
     }
     catch (error) {
         throw new Error(`skeetDocument: ${error}`);

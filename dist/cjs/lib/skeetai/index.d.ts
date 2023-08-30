@@ -61,7 +61,7 @@ export declare class SkeetAI {
     showFineTuningJob(jobId: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     typedoc(content: string): Promise<string | undefined>;
     naming(content: string, isMigration?: boolean): Promise<string | undefined>;
-    translates(paths: string[], mode: 'markdown' | 'json', langFrom?: string, langTo?: string): Promise<void>;
+    translates(paths: string[], langFrom?: string, langTo?: string): Promise<void>;
     private handleError;
 }
 export default SkeetAI;

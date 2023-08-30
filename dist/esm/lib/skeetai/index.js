@@ -109,9 +109,9 @@ export class SkeetAI {
             this.handleError(error);
         }
     }
-    async translates(paths, mode, langFrom = 'ja', langTo = 'en') {
+    async translates(paths, langFrom = 'ja', langTo = 'en') {
         try {
-            return await skeetAiTranslates(paths, langFrom, langTo, this.ai, this.aiInstance, mode);
+            return await skeetAiTranslates(paths, langFrom, langTo, this.ai, this.aiInstance);
         }
         catch (error) {
             this.handleError(error);

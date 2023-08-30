@@ -2,11 +2,14 @@ import { extractSectionsFromMd } from './extractSectionsFromMd';
 import { translateDocument } from './translateDocument';
 import { writeFileSync } from 'fs';
 import { translateJsonDocuments } from './translateJsonDocuments';
-export const skeetAiTranslates = async (paths, langFrom, langTo, thisAi, thisAiInstance, mode) => {
+import { organizeFilesByExtension } from './organizePaths';
+export const skeetAiTranslates = async (paths, langFrom, langTo, thisAi, thisAiInstance) => {
     try {
-        mode === 'markdown'
-            ? await translateMarkdownDocuments(paths, langFrom, langTo, thisAi, thisAiInstance)
-            : await translateJsonDocuments(paths, langFrom, langTo, thisAi, thisAiInstance);
+        const organizedPaths = organizeFilesByExtension(paths);
+        if (organizedPaths.mdFiles.length !== 0)
+            await translateMarkdownDocuments(organizedPaths.mdFiles, langFrom, langTo, thisAi, thisAiInstance);
+        if (organizedPaths.jsonFiles.length !== 0)
+            await translateJsonDocuments(organizedPaths.jsonFiles, langFrom, langTo, thisAi, thisAiInstance);
     }
     catch (error) {
         throw new Error(`skeetDocument: ${error}`);
