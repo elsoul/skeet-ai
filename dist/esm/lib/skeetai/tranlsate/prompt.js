@@ -1,6 +1,6 @@
 export const markdownTranslatePrompt = (langFrom = 'ja', langTo = 'en') => {
     return {
-        context: `以下のようなマークダウン形式のドキュメントを翻訳して下さい。
+        context: `以下のようなマークダウン形式のドキュメントを ${langFrom} 語(ISO 639‑1) から ${langTo} 語(ISO 639‑1) へ翻訳して下さい。
 翻訳前の文章の言語： ${langFrom}
 翻訳後の文章の言語： ${langTo}
 必須条件： # の数は変更せずに、翻訳して下さい。マークダウン形式では # は見出しを表します。# の数が変わると見出しのレベルが変わってしまいます。
@@ -50,9 +50,9 @@ All CRUD operations are supported with Firestore converters. The createdAt and u
 };
 export const jsonTranslatePrompt = (langFrom = 'ja', langTo = 'en') => {
     return {
-        context: `これから JSON形式のファイルが 20行ごとに区切られた形の文字列が送られてきます。形式は決して崩さずに、JSONの value にあたる部分を翻訳して下さい。改行はそのままにして下さい。valueの値以外は絶対に変えないで下さい。
-翻訳前の文章の言語： ${langFrom}
-翻訳後の文章の言語： ${langTo}
+        context: `これから JSON形式のファイルが 20行ごとに区切られた形の文字列が送られてきます。形式は決して崩さずに、JSONの value にあたる部分を ${langFrom} 語(ISO 639‑1) から ${langTo} 語(ISO 639‑1) へ翻訳して下さい。改行はそのままにして下さい。valueの値以外は絶対に変えないで下さい。
+翻訳前の文章の言語(ISO 639‑1)： ${langFrom}
+翻訳後の文章の言語(ISO 639‑1)： ${langTo}
 必須条件： JSONの構造は変更せずに、翻訳して下さい。JSON形式では構造が変わるとプログラムにエラーが発生します。
 必須条件2: JSONの key にあたる名前は翻訳しないでください。JSON形式では key が変わるとプログラムにエラーが発生します。value にあたる値は必ず翻訳してください。
 追加条件： 改善できる文章があれば改善して下さい。
