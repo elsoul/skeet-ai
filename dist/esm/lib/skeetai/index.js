@@ -6,6 +6,7 @@ import { skeetPrompt } from './skeet';
 import * as dotenv from 'dotenv';
 import { skeetGenTypedoc } from './typedoc';
 import { skeetNaming } from './naming';
+import { skeetAiTranslates } from './tranlsate';
 dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
@@ -103,6 +104,14 @@ export class SkeetAI {
     async naming(content, isMigration = false) {
         try {
             return await skeetNaming(content, this.ai, this.aiInstance, isMigration);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
+    async translates(paths, mode, langFrom = 'ja', langTo = 'en') {
+        try {
+            return await skeetAiTranslates(paths, langFrom, langTo, this.ai, this.aiInstance, mode);
         }
         catch (error) {
             this.handleError(error);
