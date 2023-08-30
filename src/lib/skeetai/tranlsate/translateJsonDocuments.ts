@@ -41,6 +41,8 @@ export const translateJsonDocuments = async (
         ai,
         aiInstance,
         'json',
+        langFrom,
+        langTo,
       )
       translatedChunks.push(translatedChunk)
       j++
