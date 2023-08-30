@@ -24,15 +24,15 @@ const translateMarkdownDocuments = async (paths, langFrom = 'ja', langTo = 'en',
     console.log(`From ${langFrom} to ${langTo}`);
     const outputPaths = [];
     for (const path of paths) {
-        console.log(`Translating document: ${i + 1}/${paths.length} paths`);
+        console.log(`\nTranslating document: ${i + 1}/${paths.length} paths`);
         const sections = (0, extractSectionsFromMd_1.extractSectionsFromMd)(path);
         let j = 0;
         const outputPath = path.replace('.md', `-${langTo}.md`);
         outputPaths.push(outputPath);
         const mdContents = [];
         for (const section of sections) {
-            console.log(`Translating section: ${j + 1}/${sections.length}`);
-            const translatedContent = await (0, translateDocument_1.translateDocument)(section, ai, aiInstance, 'markdown');
+            console.log(`\nTranslating section: ${j + 1}/${sections.length}`);
+            const translatedContent = await (0, translateDocument_1.translateDocument)(section, ai, aiInstance, 'markdown', langFrom, langTo);
             mdContents.push(translatedContent);
             console.log(translatedContent);
             j++;

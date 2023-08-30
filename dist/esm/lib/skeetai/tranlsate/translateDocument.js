@@ -1,8 +1,10 @@
 import { generatePrompt } from '../../genPrompt';
 import { markdownTranslatePrompt, jsonTranslatePrompt } from './prompt';
-export const translateDocument = async (content, thisAi, thisAiInstance, mode) => {
+export const translateDocument = async (content, thisAi, thisAiInstance, mode, langFrom = 'ja', langTo = 'en') => {
     try {
-        const example = mode === 'markdown' ? markdownTranslatePrompt() : jsonTranslatePrompt();
+        const example = mode === 'markdown'
+            ? markdownTranslatePrompt(langFrom, langTo)
+            : jsonTranslatePrompt(langFrom, langTo);
         const prompt = generatePrompt(example.context, example.examples, content, thisAi);
         if (thisAi === 'VertexAI') {
             const aiInstance = thisAiInstance;

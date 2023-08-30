@@ -25,7 +25,7 @@ const translateJsonDocuments = async (paths, langFrom = 'ja', langTo = 'en', ai,
         let j = 0;
         for (const chunk of chunks) {
             console.log(`Translating chunk: ${j + 1}/${chunks.length} chunks`);
-            const translatedChunk = await (0, translateDocument_1.translateDocument)(chunk, ai, aiInstance, 'json');
+            const translatedChunk = await (0, translateDocument_1.translateDocument)(chunk, ai, aiInstance, 'json', langFrom, langTo);
             translatedChunks.push(translatedChunk);
             j++;
         }
