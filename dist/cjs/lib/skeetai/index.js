@@ -32,6 +32,7 @@ const skeet_1 = require("./skeet");
 const dotenv = __importStar(require("dotenv"));
 const typedoc_1 = require("./typedoc");
 const naming_1 = require("./naming");
+const tranlsate_1 = require("./tranlsate");
 dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
@@ -129,6 +130,14 @@ class SkeetAI {
     async naming(content, isMigration = false) {
         try {
             return await (0, naming_1.skeetNaming)(content, this.ai, this.aiInstance, isMigration);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
+    async translates(paths, mode, langFrom = 'ja', langTo = 'en') {
+        try {
+            return await (0, tranlsate_1.skeetAiTranslates)(paths, langFrom, langTo, this.ai, this.aiInstance, mode);
         }
         catch (error) {
             this.handleError(error);

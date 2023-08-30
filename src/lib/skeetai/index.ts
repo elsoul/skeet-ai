@@ -10,6 +10,7 @@ import { skeetPrompt } from './skeet'
 import * as dotenv from 'dotenv'
 import { skeetGenTypedoc } from './typedoc'
 import { skeetNaming } from './naming'
+import { skeetAiTranslates } from './tranlsate'
 dotenv.config()
 
 /**
@@ -150,6 +151,26 @@ export class SkeetAI {
   async naming(content: string, isMigration = false) {
     try {
       return await skeetNaming(content, this.ai, this.aiInstance, isMigration)
+    } catch (error: any) {
+      this.handleError(error)
+    }
+  }
+
+  async translates(
+    paths: string[],
+    mode: 'markdown' | 'json',
+    langFrom = 'ja',
+    langTo = 'en',
+  ) {
+    try {
+      return await skeetAiTranslates(
+        paths,
+        langFrom,
+        langTo,
+        this.ai,
+        this.aiInstance,
+        mode,
+      )
     } catch (error: any) {
       this.handleError(error)
     }
