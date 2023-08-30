@@ -156,12 +156,7 @@ export class SkeetAI {
     }
   }
 
-  async translates(
-    paths: string[],
-    mode: 'markdown' | 'json',
-    langFrom = 'ja',
-    langTo = 'en',
-  ) {
+  async translates(paths: string[], langFrom = 'ja', langTo = 'en') {
     try {
       return await skeetAiTranslates(
         paths,
@@ -169,7 +164,6 @@ export class SkeetAI {
         langTo,
         this.ai,
         this.aiInstance,
-        mode,
       )
     } catch (error: any) {
       this.handleError(error)
