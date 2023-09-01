@@ -27,11 +27,9 @@
   "homepage": "https://elsoul.github.io/skeet-ai",
   "scripts": {
     "test": "jest --coverage=false --detectOpenHandles --maxWorkers=1",
-    "build": "yarn build-doc && yarn build:cjs && yarn build:esm",
+    "build": "yarn build-doc && npx ts-node build.ts && npx ts-node add-line.ts",
     "update:packages": "ncu -u && yarn",
     "version:update": "ts-node -r tsconfig-paths/register --transpile-only release.ts",
-    "build:cjs": "tsc -b tsconfig.cjs.json",
-    "build:esm": "tsc -b tsconfig.esm.json",
     "build-doc": "typedoc src/index.ts --out docs",
     "publish": "npm publish",
     "dev": "npx ts-node -r tsconfig-paths/register --transpile-only src/index.ts"
