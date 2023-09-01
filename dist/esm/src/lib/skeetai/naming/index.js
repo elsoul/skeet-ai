@@ -1,4 +1,4 @@
-import { generatePrompt } from '../../genPrompt';
+import { generatePrompt } from '@/lib/genPrompt';
 import { migrationNamingPrompt, functionNamingPrompt, modelNamingPrompt, } from './prompt';
 import { NamingEnum } from '../../../lib/types/skeetaiTypes';
 export const skeetNaming = async (content, thisAi, thisAiInstance, namingEnum) => {

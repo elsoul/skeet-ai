@@ -1,4 +1,4 @@
-import { generatePrompt } from '../../genPrompt';
+import { generatePrompt } from '@/lib/genPrompt';
 import { firestorePrompt } from './prompt';
 export const skeetFirestore = async (content, thisAi, thisAiInstance) => {
     try {

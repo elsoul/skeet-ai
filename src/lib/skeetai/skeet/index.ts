@@ -1,8 +1,8 @@
-import { AIType, generatePrompt } from '../../../lib/genPrompt'
+import { AIType, generatePrompt } from '@/lib/genPrompt'
 import { readFileSync } from 'fs'
-import { VertexAI } from '../../../lib/vertexai'
-import { OpenAI } from '../../../lib/openai'
-import { OpenAIPromptParams, VertexPromptParams } from '../../../lib/types'
+import { VertexAI } from '@/lib/vertexai'
+import { OpenAI } from '@/lib/openai'
+import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
 
 export const skeetPrompt = async (
   content: string,

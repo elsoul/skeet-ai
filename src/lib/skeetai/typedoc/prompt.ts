@@ -1,4 +1,4 @@
-import { AIPrompt } from '../../genPrompt'
+import { AIPrompt } from '@/lib/genPrompt'
 import { tsconfig } from './examples/tsconfig.json'
 import { prettierrc } from './examples/prettierrc'
 import { eslintrc } from './examples/eslintrc.json'

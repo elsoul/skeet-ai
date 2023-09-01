@@ -1,5 +1,5 @@
-import SkeetAI from '..'
-import { AIPrompt } from '../../genPrompt'
+import SkeetAI from '@/lib/skeetai'
+import { AIPrompt } from '@/lib/genPrompt'
 import { readFileSync } from 'fs'
 
 function readPrismaSchema(): string | null {

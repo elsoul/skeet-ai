@@ -1,7 +1,7 @@
-import { AIType, generatePrompt } from '../../../lib/genPrompt'
-import { VertexAI } from '../../../lib/vertexai'
-import { OpenAI } from '../../../lib/openai'
-import { OpenAIPromptParams, VertexPromptParams } from '../../../lib/types'
+import { AIType, generatePrompt } from '@/lib/genPrompt'
+import { VertexAI } from '@/lib/vertexai'
+import { OpenAI } from '@/lib/openai'
+import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
 import { typedocPrompt } from './prompt'
 
 export const skeetGenTypedoc = async (

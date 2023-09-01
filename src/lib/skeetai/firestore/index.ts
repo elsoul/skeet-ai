@@ -1,7 +1,7 @@
-import { AIPrompt, AIType, generatePrompt } from '../../genPrompt'
-import { VertexAI } from '../../vertexai'
-import { OpenAI } from '../../openai'
-import { OpenAIPromptParams, VertexPromptParams } from '../../types'
+import { AIPrompt, AIType, generatePrompt } from '@/lib/genPrompt'
+import { VertexAI } from '@/lib/vertexai'
+import { OpenAI } from '@/lib/openai'
+import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
 import { firestorePrompt } from './prompt'
 
 export const skeetFirestore = async (

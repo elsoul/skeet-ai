@@ -1,4 +1,4 @@
-import SkeetAI from '../skeetai';
+import SkeetAI from '@/lib/skeetai';
 import * as dotenv from 'dotenv';
 dotenv.config();
 const run = async () => {

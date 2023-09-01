@@ -1,7 +1,7 @@
-import { AIType } from '../../genPrompt'
+import { AIType } from '@/lib/genPrompt'
 import * as dotenv from 'dotenv'
-import { OpenAI } from '../../openai'
-import { VertexAI } from '../../vertexai'
+import { OpenAI } from '@/lib/openai'
+import { VertexAI } from '@/lib/vertexai'
 dotenv.config()
 
 export const showFineTuningJob = async (

@@ -44,7 +44,7 @@
  */
 /// <reference types="node" />
 import { VertexAiOptions, VertexParameterParams, VertexPromptParams } from '../types/vertexaiTypes';
-import { AIPromptable } from '../skeetai';
+import { AIPromptable } from '@/lib/skeetai';
 export declare class VertexAI implements AIPromptable {
     protected options: VertexAiOptions;
     protected vertexParams: VertexParameterParams;

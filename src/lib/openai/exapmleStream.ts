@@ -1,7 +1,6 @@
-import { IncomingMessage } from 'http'
-import { OpenAIPromptParams } from '../types/openaiTypes'
+import { OpenAIPromptParams } from '@/lib/types/openaiTypes'
 import { OpenAI } from './'
-import { ReadStream, read } from 'fs'
+import { ReadStream } from 'fs'
 
 const run = async () => {
   const prompt: OpenAIPromptParams = {
