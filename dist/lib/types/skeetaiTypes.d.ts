@@ -11,4 +11,4 @@ export declare enum NamingEnum {
     FUNCTION = "function",
     MODEL = "model"
 }
-export declare const MODEL_PATH = "./functions/skeet/src/models";
+export declare const MODEL_PATH: string;
