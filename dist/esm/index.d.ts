@@ -12,4 +12,5 @@ export { translate } from './lib/translate';
 export { generatePrompt } from './lib/genPrompt';
 export { SkeetAI, type SkeetAIOptions } from './lib/skeetai';
 export type { AIPrompt, AIType, AIExample } from './lib/genPrompt';
-export type { NamingEnum, Example, InputOutput, MODEL_PATH, } from './lib/types/skeetaiTypes';
+export type { Example, InputOutput, MODEL_PATH } from './lib/types/skeetaiTypes';
+export { NamingEnum } from './lib/types/skeetaiTypes';

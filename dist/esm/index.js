@@ -10,4 +10,5 @@ export { VertexAI } from './lib/vertexai';
 export { translate } from './lib/translate';
 export { generatePrompt } from './lib/genPrompt';
 export { SkeetAI } from './lib/skeetai';
+export { NamingEnum } from './lib/types/skeetaiTypes';
 //# sourceMappingURL=index.js.map

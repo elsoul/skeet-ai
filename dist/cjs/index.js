@@ -29,7 +29,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SkeetAI = exports.generatePrompt = exports.translate = exports.VertexAI = exports.OpenAI = exports.openai = exports.Stream = exports.aiplatform = void 0;
+exports.NamingEnum = exports.SkeetAI = exports.generatePrompt = exports.translate = exports.VertexAI = exports.OpenAI = exports.openai = exports.Stream = exports.aiplatform = void 0;
 const aiplatform_1 = __importDefault(require("@google-cloud/aiplatform"));
 exports.aiplatform = aiplatform_1.default;
 const openai = __importStar(require("openai"));
@@ -48,4 +48,6 @@ var genPrompt_1 = require("./lib/genPrompt");
 Object.defineProperty(exports, "generatePrompt", { enumerable: true, get: function () { return genPrompt_1.generatePrompt; } });
 var skeetai_1 = require("./lib/skeetai");
 Object.defineProperty(exports, "SkeetAI", { enumerable: true, get: function () { return skeetai_1.SkeetAI; } });
+var skeetaiTypes_1 = require("./lib/types/skeetaiTypes");
+Object.defineProperty(exports, "NamingEnum", { enumerable: true, get: function () { return skeetaiTypes_1.NamingEnum; } });
 //# sourceMappingURL=index.js.map
