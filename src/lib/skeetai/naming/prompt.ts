@@ -1,4 +1,4 @@
-import { MODEL_PATH } from '../../../lib/types/skeetaiTypes'
+import { MODEL_PATH } from '@/lib/types/skeetaiTypes'
 import { readdirSync } from 'fs'
 
 export const migrationNamingPrompt = {

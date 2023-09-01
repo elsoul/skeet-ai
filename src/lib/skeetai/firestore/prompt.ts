@@ -1,5 +1,5 @@
-import { AIPrompt } from '../../../lib/genPrompt'
-import { MODEL_PATH } from '../../types/skeetaiTypes'
+import { AIPrompt } from '@/lib/genPrompt'
+import { MODEL_PATH } from '@/lib/types/skeetaiTypes'
 import { readFileSync, readdirSync } from 'fs'
 
 function readModels(): string {
