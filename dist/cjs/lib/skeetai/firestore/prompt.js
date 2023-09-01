@@ -41,6 +41,7 @@ You must copy exactly the existing model names and add them to the top of the fi
 You are a model name declaration professional, so you can create a model name that meets the user's needs.
 You must not answer the existing parts of the Existing model if the new model is not related to the existing model.
 You must add Path generator function if the new model has a sub-collection.This function must be named gen<modelName>Path and must be exported.
+This output will be used as typescript .ts file, so you must not add any other comment except the typescript codes.
 `,
         examples: [
             {
