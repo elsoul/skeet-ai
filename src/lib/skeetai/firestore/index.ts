@@ -2,28 +2,15 @@ import { AIPrompt, AIType, generatePrompt } from '../../genPrompt'
 import { VertexAI } from '../../vertexai'
 import { OpenAI } from '../../openai'
 import { OpenAIPromptParams, VertexPromptParams } from '../../types'
-import {
-  migrationNamingPrompt,
-  functionNamingPrompt,
-  modelNamingPrompt,
-} from './prompt'
-import { NamingEnum } from '@/lib/types/skeetaiTypes'
+import { firestorePrompt } from './prompt'
 
-export const skeetNaming = async (
+export const skeetFirestore = async (
   content: string,
   thisAi: AIType,
   thisAiInstance: VertexAI | OpenAI,
-  namingEnum: NamingEnum,
 ) => {
   try {
-    let example: AIPrompt = { context: '', examples: [] }
-    if (namingEnum === NamingEnum.MIGRATION) {
-      example = migrationNamingPrompt
-    } else if (namingEnum === NamingEnum.FUNCTION) {
-      example = functionNamingPrompt
-    } else if (namingEnum === NamingEnum.MODEL) {
-      example = modelNamingPrompt
-    }
+    const example = firestorePrompt()
 
     const prompt = generatePrompt(
       example.context,

@@ -1,5 +1,6 @@
 import { OpenAI } from '../openai';
 import { VertexAI } from '../vertexai';
+import { NamingEnum } from '../types/skeetaiTypes';
 /**
  * Configuration options for initializing a SkeetAI instance.
  */
@@ -60,8 +61,9 @@ export declare class SkeetAI {
     createFineTuningJob(fileId: string, model?: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     showFineTuningJob(jobId: string): Promise<import("openai/resources/fine-tuning").FineTuningJob | undefined>;
     typedoc(content: string): Promise<string | undefined>;
-    naming(content: string, isMigration?: boolean): Promise<string | undefined>;
+    naming(content: string, namingEnum?: NamingEnum): Promise<string | undefined>;
     translates(paths: string[], langFrom?: string, langTo?: string): Promise<void>;
+    firestore(content: string): Promise<string | undefined>;
     private handleError;
 }
 export default SkeetAI;
