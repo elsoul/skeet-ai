@@ -4,6 +4,22 @@ exports.translate = void 0;
 const translate_1 = require("@google-cloud/translate");
 const util_1 = require("util");
 const googleTranslate = new translate_1.v2.Translate();
+/**
+ * Translates the provided text into the specified target language.
+ *
+ * @param text - The text to be translated.
+ * @param target - The target language code for the translation (defaults to 'ja' for Japanese).
+ * @returns A promise that resolves with the translated string.
+ * @throws Will throw an error if the translation fails.
+ *
+ * @example
+ * ```typescript
+ * import { translate } from "@skeet-framework/ai"
+ *
+ * const translatedText = await translate("Hello", "es")
+ * console.log(translatedText);  // Outputs: "Hola"
+ * ```
+ */
 const translate = async (text, target = 'ja') => {
     try {
         const result = await googleTranslate.translate(text, target);

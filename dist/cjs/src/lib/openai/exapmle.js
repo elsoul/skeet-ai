@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_1 = require("fs");
-const genPrompt_1 = require("../genPrompt");
-const skeetai_1 = __importDefault(require("../skeetai"));
+const genPrompt_1 = require("@/lib/genPrompt");
+const skeetai_1 = __importDefault(require("@/lib/skeetai"));
 const exampleJosn = JSON.parse((0, fs_1.readFileSync)('./src/lib/examplePrompt.json', 'utf8'));
 const run = async () => {
     const content = 'Tell me about the Skeet framework.';

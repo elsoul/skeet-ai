@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.skeetNaming = void 0;
-const genPrompt_1 = require("../../genPrompt");
+const genPrompt_1 = require("@/lib/genPrompt");
 const prompt_1 = require("./prompt");
 const skeetaiTypes_1 = require("../../../lib/types/skeetaiTypes");
 const skeetNaming = async (content, thisAi, thisAiInstance, namingEnum) => {

@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.prismaPrompt = void 0;
-const __1 = __importDefault(require(".."));
+const skeetai_1 = __importDefault(require("@/lib/skeetai"));
 const fs_1 = require("fs");
 function readPrismaSchema() {
     try {
-        return (0, fs_1.readFileSync)(__1.default.PRISMA_SCHEMA_PATH, 'utf8');
+        return (0, fs_1.readFileSync)(skeetai_1.default.PRISMA_SCHEMA_PATH, 'utf8');
     }
     catch (error) {
         console.log(error);

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.translateDocument = void 0;
-const genPrompt_1 = require("../../genPrompt");
+const genPrompt_1 = require("@/lib/genPrompt");
 const prompt_1 = require("./prompt");
 const translateDocument = async (content, thisAi, thisAiInstance, mode, langFrom = 'ja', langTo = 'en') => {
     try {

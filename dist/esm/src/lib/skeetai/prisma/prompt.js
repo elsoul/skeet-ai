@@ -1,4 +1,4 @@
-import SkeetAI from '..';
+import SkeetAI from '@/lib/skeetai';
 import { readFileSync } from 'fs';
 function readPrismaSchema() {
     try {

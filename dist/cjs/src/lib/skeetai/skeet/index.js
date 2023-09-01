@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.skeetPrompt = void 0;
-const genPrompt_1 = require("../../../lib/genPrompt");
+const genPrompt_1 = require("@/lib/genPrompt");
 const fs_1 = require("fs");
 const skeetPrompt = async (content, thisAi, thisAiInstance) => {
     try {
