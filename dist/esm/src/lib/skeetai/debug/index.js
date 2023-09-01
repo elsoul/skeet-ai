@@ -1,4 +1,4 @@
-import { generatePrompt } from '../../genPrompt';
+import { generatePrompt } from '@/lib/genPrompt';
 import { debugPrompt } from './prompt';
 import { readFileSync } from 'fs';
 export const skeetDebug = async (content, thisAi, thisAiInstance, debugFile) => {

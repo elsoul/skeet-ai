@@ -53,7 +53,7 @@ import {
 } from '../types/vertexaiTypes'
 import { randomChat } from './randomChat'
 import { promptTitleGenerationEn, promptTitleGenerationJa } from './genTitle'
-import { AIPromptable } from '../skeetai'
+import { AIPromptable } from '@/lib/skeetai'
 import { ReadStream } from 'fs'
 import { Stream } from 'stream'
 

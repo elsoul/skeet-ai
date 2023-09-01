@@ -1,6 +1,6 @@
 import { OpenAI as OpenAIApi } from 'openai';
-import { OpenAIOptions, OpenAIPromptParams } from '../types/openaiTypes';
-import { AIPromptable } from '../skeetai';
+import { OpenAIOptions, OpenAIPromptParams } from '@/lib/types/openaiTypes';
+import { AIPromptable } from '@/lib/skeetai';
 import { Stream } from 'openai/streaming';
 export declare class OpenAI implements AIPromptable {
     private options;

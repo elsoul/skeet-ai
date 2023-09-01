@@ -1,4 +1,4 @@
-import { OpenAIPromptParams } from '../types/openaiTypes'
+import { OpenAIPromptParams } from '@/lib/types/openaiTypes'
 
 export const randomChat = (content: string) => {
   const prompt: OpenAIPromptParams = {

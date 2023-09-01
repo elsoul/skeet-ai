@@ -1,4 +1,4 @@
-import { generatePrompt } from '../../genPrompt';
+import { generatePrompt } from '@/lib/genPrompt';
 import { markdownTranslatePrompt, jsonTranslatePrompt } from './prompt';
 export const translateDocument = async (content, thisAi, thisAiInstance, mode, langFrom = 'ja', langTo = 'en') => {
     try {

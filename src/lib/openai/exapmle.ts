@@ -1,8 +1,8 @@
 import { readFileSync } from 'fs'
-import { OpenAIPromptParams } from '../types/openaiTypes'
+import { OpenAIPromptParams } from '@/lib/types/openaiTypes'
 import { OpenAI } from './'
-import { generatePrompt } from '../genPrompt'
-import SkeetAI from '../skeetai'
+import { generatePrompt } from '@/lib/genPrompt'
+import SkeetAI from '@/lib/skeetai'
 const exampleJosn = JSON.parse(
   readFileSync('./src/lib/examplePrompt.json', 'utf8'),
 )

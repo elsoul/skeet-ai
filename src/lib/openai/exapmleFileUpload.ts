@@ -1,5 +1,5 @@
 import { readFileSync, writeFileSync } from 'fs'
-import SkeetAI from '../skeetai'
+import SkeetAI from '@/lib/skeetai'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
