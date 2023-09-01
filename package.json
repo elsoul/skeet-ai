@@ -3,7 +3,7 @@
   "version": "1.4.20",
   "description": "Skeet Framework Plugin - AI",
   "main": "dist/index.js",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/elsoul/skeet-ai.git"

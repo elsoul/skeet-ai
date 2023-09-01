@@ -4,7 +4,7 @@
     "module": "CommonJS",
     "moduleResolution": "Node",
     "declaration": true,
-    "rootDir": ".",
+    "rootDir": "./src",
     "strict": true,
     "baseUrl": ".",
     "esModuleInterop": true,
@@ -17,7 +17,7 @@
     "lib": ["esnext"],
     "sourceMap": true,
     "emitDeclarationOnly": true,
-    "outDir": "./dist/types",
+    "outDir": "./dist",
     "paths": {
       "@/*": ["src/*"]
     }
