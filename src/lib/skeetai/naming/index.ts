@@ -7,7 +7,7 @@ import {
   functionNamingPrompt,
   modelNamingPrompt,
 } from './prompt'
-import { NamingEnum } from '../../../lib/types/skeetaiTypes'
+import { NamingEnum } from '@/lib/types/skeetaiTypes'
 
 export const skeetNaming = async (
   content: string,

@@ -14,4 +14,4 @@ export enum NamingEnum {
   MODEL = 'model',
 }
 
-export const MODEL_PATH = `${__dirname}/functions/skeet/src/models`
+export const MODEL_PATH = `./functions/skeet/src/models`
