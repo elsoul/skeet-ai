@@ -1,6 +1,6 @@
 {
   "name": "@skeet-framework/ai",
-  "version": "1.4.18",
+  "version": "1.4.19",
   "description": "Skeet Framework Plugin - AI",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
