@@ -1,21 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.skeetNaming = void 0;
+exports.skeetFirestore = void 0;
 const genPrompt_1 = require("../../genPrompt");
 const prompt_1 = require("./prompt");
-const skeetaiTypes_1 = require("@/lib/types/skeetaiTypes");
-const skeetNaming = async (content, thisAi, thisAiInstance, namingEnum) => {
+const skeetFirestore = async (content, thisAi, thisAiInstance) => {
     try {
-        let example = { context: '', examples: [] };
-        if (namingEnum === skeetaiTypes_1.NamingEnum.MIGRATION) {
-            example = prompt_1.migrationNamingPrompt;
-        }
-        else if (namingEnum === skeetaiTypes_1.NamingEnum.FUNCTION) {
-            example = prompt_1.functionNamingPrompt;
-        }
-        else if (namingEnum === skeetaiTypes_1.NamingEnum.MODEL) {
-            example = prompt_1.modelNamingPrompt;
-        }
+        const example = (0, prompt_1.firestorePrompt)();
         const prompt = (0, genPrompt_1.generatePrompt)(example.context, example.examples, content, thisAi);
         if (thisAi === 'VertexAI') {
             const aiInstance = thisAiInstance;
@@ -30,5 +20,5 @@ const skeetNaming = async (content, thisAi, thisAiInstance, namingEnum) => {
         throw new Error(`skeetNaming: ${error}`);
     }
 };
-exports.skeetNaming = skeetNaming;
+exports.skeetFirestore = skeetFirestore;
 //# sourceMappingURL=index.js.map

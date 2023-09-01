@@ -11,6 +11,8 @@ import * as dotenv from 'dotenv'
 import { skeetGenTypedoc } from './typedoc'
 import { skeetNaming } from './naming'
 import { skeetAiTranslates } from './tranlsate'
+import { NamingEnum } from '../types/skeetaiTypes'
+import { skeetFirestore } from './firestore'
 dotenv.config()
 
 /**
@@ -148,9 +150,9 @@ export class SkeetAI {
     }
   }
 
-  async naming(content: string, isMigration = false) {
+  async naming(content: string, namingEnum = NamingEnum.FUNCTION) {
     try {
-      return await skeetNaming(content, this.ai, this.aiInstance, isMigration)
+      return await skeetNaming(content, this.ai, this.aiInstance, namingEnum)
     } catch (error: any) {
       this.handleError(error)
     }
@@ -165,6 +167,14 @@ export class SkeetAI {
         this.ai,
         this.aiInstance,
       )
+    } catch (error: any) {
+      this.handleError(error)
+    }
+  }
+
+  async firestore(content: string) {
+    try {
+      return await skeetFirestore(content, this.ai, this.aiInstance)
     } catch (error: any) {
       this.handleError(error)
     }

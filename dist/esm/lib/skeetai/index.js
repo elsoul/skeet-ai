@@ -7,6 +7,8 @@ import * as dotenv from 'dotenv';
 import { skeetGenTypedoc } from './typedoc';
 import { skeetNaming } from './naming';
 import { skeetAiTranslates } from './tranlsate';
+import { NamingEnum } from '../types/skeetaiTypes';
+import { skeetFirestore } from './firestore';
 dotenv.config();
 /**
  * The main SkeetAI class for handling AI interactions.
@@ -101,9 +103,9 @@ export class SkeetAI {
             this.handleError(error);
         }
     }
-    async naming(content, isMigration = false) {
+    async naming(content, namingEnum = NamingEnum.FUNCTION) {
         try {
-            return await skeetNaming(content, this.ai, this.aiInstance, isMigration);
+            return await skeetNaming(content, this.ai, this.aiInstance, namingEnum);
         }
         catch (error) {
             this.handleError(error);
@@ -112,6 +114,14 @@ export class SkeetAI {
     async translates(paths, langFrom = 'ja', langTo = 'en') {
         try {
             return await skeetAiTranslates(paths, langFrom, langTo, this.ai, this.aiInstance);
+        }
+        catch (error) {
+            this.handleError(error);
+        }
+    }
+    async firestore(content) {
+        try {
+            return await skeetFirestore(content, this.ai, this.aiInstance);
         }
         catch (error) {
             this.handleError(error);

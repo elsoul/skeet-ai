@@ -1,8 +1,18 @@
 import { generatePrompt } from '../../genPrompt';
-import { migrationPrompt, namingPrompt } from './prompt';
-export const skeetNaming = async (content, thisAi, thisAiInstance, isMigration = false) => {
+import { migrationNamingPrompt, functionNamingPrompt, modelNamingPrompt, } from './prompt';
+import { NamingEnum } from '@/lib/types/skeetaiTypes';
+export const skeetNaming = async (content, thisAi, thisAiInstance, namingEnum) => {
     try {
-        const example = isMigration ? migrationPrompt : namingPrompt;
+        let example = { context: '', examples: [] };
+        if (namingEnum === NamingEnum.MIGRATION) {
+            example = migrationNamingPrompt;
+        }
+        else if (namingEnum === NamingEnum.FUNCTION) {
+            example = functionNamingPrompt;
+        }
+        else if (namingEnum === NamingEnum.MODEL) {
+            example = modelNamingPrompt;
+        }
         const prompt = generatePrompt(example.context, example.examples, content, thisAi);
         if (thisAi === 'VertexAI') {
             const aiInstance = thisAiInstance;
