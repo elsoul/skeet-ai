@@ -12,7 +12,7 @@ export declare const functionNamingPrompt: {
         output: string;
     }[];
 };
-export declare const modelNamingPrompt: {
+export declare const modelNamingPrompt: () => {
     context: string;
     examples: {
         input: string;

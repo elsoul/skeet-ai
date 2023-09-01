@@ -22,7 +22,7 @@ export const skeetNaming = async (
     } else if (namingEnum === NamingEnum.FUNCTION) {
       example = functionNamingPrompt
     } else if (namingEnum === NamingEnum.MODEL) {
-      example = modelNamingPrompt
+      example = modelNamingPrompt()
     }
 
     const prompt = generatePrompt(
