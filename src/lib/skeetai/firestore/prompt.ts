@@ -32,37 +32,41 @@ The CollectionId is the collection name.
 The DocumentId is the document name.
 The Path is the path to the document.
 
-If you're provided with existing model names, make sure to copy all of the existing model names and add them to the top of the file if the new model is related to the existing model.
+If you're provided with existing model names, make sure not to use them again.
 ---Existing models---
 ${existingModels}
 ---
 You must put \`import { Timestamp, FieldValue } from '@skeet-framework/firestore\` at the top of the file.
 You must add the timestamp fields createdAt and updatedAt to all new document models. timestamp format: \`createdAt?: Timestamp | FieldValue\n updatedAt?: Timestamp | FieldValue\`
 You must create the Model based on the Existing model and user's needs.
-You must copy exactly the existing model names and add them to the top of the file if the new model is related to the existing model.
+You must not declare a new model name that already exists. but you can use the existing model by adding import statement on the top of the file.e.g. \`import { User, UserCN } from './userModels'\`
 You are a model name declaration professional, so you can create a model name that meets the user's needs.
-You must not answer the existing parts of the Existing model if the new model is not related to the existing model.
+You must not answer the existing parts of the model.
 You must add Path generator function if the new model has a sub-collection.This function must be named gen<modelName>Path and must be exported.
-This output will be used as typescript .ts file, so you must not add any other comment except the typescript codes.
+This output will be used as typescript .ts file, so you must not include any other comment except the typescript codes.
+<outputExample.ts>:
+import { Timestamp, FieldValue } from '@skeet-framework/firestore'
+import { <ExistingModel>CN } from './<ExistingModelLowerCase>Models'
+
+// CollectionId: <modelName>
+// DocumentId: auto
+// Path: <ExistingModel>/\${<ExistingModel>Id}/<modelName>
+export const <modelName>CN = '<modelName>'
+export const gen<modelName>Path = (userId: string) => \`\${<ExistingModel>CN}/\${<ExistingModelLowerCase>Id}/\${<modelName>CN}\`
+export type <modelName> = {
+  ...define here...
+  createdAt?: Timestamp | FieldValue
+  updatedAt?: Timestamp | FieldValue
+  <ExistingModelLowerCase>Id: string
+}
+
+...define here... if the new model has a sub-collection
 `,
     examples: [
       {
         input: 'I want to create a blog app.',
         output: `import { Timestamp, FieldValue } from '@skeet-framework/firestore'
-
-// CollectionId: User
-// DocumentId: auto
-// Path: User
-export const UserCN = 'User'
-export type User = {
-  id?: string
-  uid: string
-  username: string
-  email: string
-  iconUrl: string
-  createdAt?: Timestamp | FieldValue
-  updatedAt?: Timestamp | FieldValue
-}
+import { UserCN } from './userModels'
 
 // CollectionId: Post
 // DocumentId: auto
@@ -82,20 +86,7 @@ export type Post = {
       {
         input: 'I want to add a comment feature to the blog functionality.',
         output: `import { Timestamp, FieldValue } from '@skeet-framework/firestore
-
-// CollectionId: User
-// DocumentId: auto
-// Path: User
-export const UserCN = 'User'
-export type User = {
-  id?: string
-  uid: string
-  username: string
-  email: string
-  iconUrl: string
-  createdAt?: Timestamp | FieldValue
-  updatedAt?: Timestamp | FieldValue
-}
+import { UserCN } from './userModels'
 
 // CollectionId: Post
 // DocumentId: auto
