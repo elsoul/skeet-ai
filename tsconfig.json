@@ -16,6 +16,8 @@
     "resolveJsonModule": true,
     "lib": ["esnext"],
     "sourceMap": true,
+    "emitDeclarationOnly": true,
+    "outDir": "./dist/types",
     "paths": {
       "@/*": ["src/*"]
     }
