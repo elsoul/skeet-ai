@@ -1,5 +1,5 @@
-import { MODEL_PATH } from '@/lib/types/skeetaiTypes'
 import { readdirSync } from 'fs'
+import SkeetAI from '@/lib/skeetai'
 
 export const migrationNamingPrompt = {
   context: `You are a specialist in naming functions based on Prisma schemas. Users will provide you with a brief description of the database change they want to implement, primarily focusing on the model name within the Prisma schema. Your task is to return a function name in camelCase that aptly describes the operation and prominently incorporates the model name. For example, when creating a new table or model named "User", it's common to start the function name with "add" like "addUser". The prefix might vary depending on the specific operation described, but the model name should always be central to your naming convention.If you get multiple model names, you can combine them in the function name. For example, if you get "Post" and "Comment", you can return "addPostAndComment".User model is already defined in the schema.prisma file.Skip the User model and focus on the other models.`,
@@ -93,7 +93,7 @@ export const functionNamingPrompt = {
 
 function readModelFiles(): string[] {
   try {
-    let files = readdirSync(MODEL_PATH)
+    let files = readdirSync(SkeetAI.MODEL_PATH)
     files = files.filter((file) => !file.includes('index.ts'))
     return files
   } catch (error) {

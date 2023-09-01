@@ -1,11 +1,11 @@
 import { AIPrompt } from '@/lib/genPrompt'
-import { MODEL_PATH } from '@/lib/types/skeetaiTypes'
 import { readFileSync, readdirSync } from 'fs'
+import SkeetAI from '@/lib/skeetai'
 
 function readModels(): string {
   try {
-    let files = readdirSync(MODEL_PATH).map(
-      (fileName) => MODEL_PATH + '/' + fileName,
+    let files = readdirSync(SkeetAI.MODEL_PATH).map(
+      (fileName) => SkeetAI.MODEL_PATH + '/' + fileName,
     )
     const modelStrings = []
     files = files.filter((file) => !file.includes('index.ts'))

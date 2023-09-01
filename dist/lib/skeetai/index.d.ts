@@ -36,6 +36,7 @@ export declare class SkeetAI {
     temperature: number;
     private _initOptions;
     static readonly PRISMA_SCHEMA_PATH: string;
+    static readonly MODEL_PATH: string;
     aiInstance: VertexAI | OpenAI;
     /**
      * Creates an instance of SkeetAI.
