@@ -1,3 +1,6 @@
+import { VertexAI } from '@/lib/vertexai'
+import { OpenAI } from '@/lib/openai'
+
 export type Example = {
   context: string
   examples: InputOutput[]
@@ -13,3 +16,5 @@ export enum NamingEnum {
   FUNCTION = 'function',
   MODEL = 'model',
 }
+
+export type AiInstance = VertexAI | OpenAI

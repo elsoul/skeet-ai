@@ -1,18 +1,16 @@
-import { AIPrompt, AIType, generatePrompt } from '@/lib/genPrompt'
-import { VertexAI } from '@/lib/vertexai'
-import { OpenAI } from '@/lib/openai'
-import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
+import { AIPrompt, AIType } from '@/lib/genPrompt'
 import {
   migrationNamingPrompt,
   functionNamingPrompt,
   modelNamingPrompt,
 } from './prompt'
-import { NamingEnum } from '@/lib/types/skeetaiTypes'
+import { AiInstance, NamingEnum } from '@/lib/types/skeetaiTypes'
+import { commonPrompt } from '../commonPrompt'
 
 export const skeetNaming = async (
   content: string,
   thisAi: AIType,
-  thisAiInstance: VertexAI | OpenAI,
+  thisAiInstance: AiInstance,
   namingEnum: NamingEnum,
 ) => {
   try {
@@ -25,20 +23,8 @@ export const skeetNaming = async (
       example = modelNamingPrompt()
     }
 
-    const prompt = generatePrompt(
-      example.context,
-      example.examples,
-      content,
-      thisAi,
-    )
-
-    if (thisAi === 'VertexAI') {
-      const aiInstance = thisAiInstance as VertexAI
-      return await aiInstance.prompt(prompt as VertexPromptParams)
-    } else {
-      const aiInstance = thisAiInstance as OpenAI
-      return await aiInstance.prompt(prompt as OpenAIPromptParams)
-    }
+    const result = await commonPrompt(example, content, thisAi, thisAiInstance)
+    return result
   } catch (error) {
     throw new Error(`skeetNaming: ${error}`)
   }

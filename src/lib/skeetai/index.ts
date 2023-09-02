@@ -5,14 +5,16 @@ import {
   showFineTuningJob,
   uploadJsonlFile,
 } from './fineTune'
-import { skeetAiPrisma } from './prisma/prisma'
+import { skeetAiPrisma } from './prisma'
 import { skeetPrompt } from './skeet'
 import * as dotenv from 'dotenv'
 import { skeetGenTypedoc } from './typedoc'
 import { skeetNaming } from './naming'
 import { skeetAiTranslates } from './tranlsate'
-import { NamingEnum } from '../types/skeetaiTypes'
+import { Example, NamingEnum } from '../types/skeetaiTypes'
 import { skeetFirestore } from './firestore'
+import { generatePrompt } from '../genPrompt'
+import { OpenAIPromptParams, VertexPromptParams } from '../types'
 dotenv.config()
 
 /**
@@ -178,6 +180,27 @@ export class SkeetAI {
       return await skeetFirestore(content, this.ai, this.aiInstance)
     } catch (error: any) {
       this.handleError(error)
+    }
+  }
+
+  async run(example: Example, content: string) {
+    try {
+      const prompt = generatePrompt(
+        example.context,
+        example.examples,
+        content,
+        this.ai,
+      )
+
+      if (this.ai === 'VertexAI') {
+        const aiInstance = this.aiInstance as VertexAI
+        return await aiInstance.prompt(prompt as VertexPromptParams)
+      } else {
+        const aiInstance = this.aiInstance as OpenAI
+        return await aiInstance.prompt(prompt as OpenAIPromptParams)
+      }
+    } catch (error) {
+      throw new Error(`run: ${error}`)
     }
   }
 
