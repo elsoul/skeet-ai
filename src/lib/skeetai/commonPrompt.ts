@@ -1,16 +1,16 @@
-import { OpenAI } from '@/lib/openai'
-import { VertexAI } from '@/lib/vertexai'
-import { prismaPrompt } from './prompt'
 import { AIType, generatePrompt } from '@/lib/genPrompt'
-import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
+import { AiInstance, Example } from '@/lib/types/skeetaiTypes'
+import { VertexAI } from '@/lib/vertexai'
+import { OpenAI } from '@/lib/openai'
+import { OpenAIPromptParams, VertexPromptParams } from '../types'
 
-export const skeetAiPrisma = async (
+export const commonPrompt = async (
+  example: Example,
   content: string,
   thisAi: AIType,
-  thisAiInstance: VertexAI | OpenAI,
+  thisAiInstance: AiInstance,
 ) => {
   try {
-    const example = prismaPrompt()
     const prompt = generatePrompt(
       example.context,
       example.examples,
@@ -26,6 +26,6 @@ export const skeetAiPrisma = async (
       return await aiInstance.prompt(prompt as OpenAIPromptParams)
     }
   } catch (error) {
-    throw new Error(`skeetAiPrisma: ${error}`)
+    throw new Error(`run: ${error}`)
   }
 }

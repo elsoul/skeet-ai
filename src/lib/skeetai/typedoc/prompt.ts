@@ -23,7 +23,22 @@ export const typedocPrompt = () => {
 
   const prompt: AIPrompt = {
     context: `
-You are a specialist in adding descriptions to functions for generating TypeDoc. Make sure to include @example in a clear and understandable manner in the TypeDoc comments. Please also consider the following settings.tsconfig.json: ${tsconfigJson}\n.prettierrc: ${prettierrcFile}\n.eslintrc.json:${eslintrcJson}`,
+You are a specialist in adding descriptions to functions for generating TypeDoc. Make sure to include @example in a clear and understandable manner in the TypeDoc comments. Please also consider the following settings.tsconfig.json: ${tsconfigJson}\n.prettierrc: ${prettierrcFile}\n.eslintrc.json:${eslintrcJson}
+- You must output only the typedoc comments.
+- You must output the typedoc comments in the following format:
+/**
+ * ...description here...
+ * @template T - ...description here...
+ * @params ...params here...
+ * @returns ...returns here...
+ * @throws ...throws here...
+ * @example
+ * ...example here...
+ * \`\`\`ts
+ * ...code here...
+ * \`\`\`
+ */
+`,
     examples: [
       {
         input: `export const encrypt = (
@@ -71,27 +86,7 @@ import { algorithm, inputEncoding, outputEncoding } from './crypto'
 * const salt = 'MySalt';
 * const encrypted = encrypt(data, iv, password, salt);
 * console.log(encrypted);
-*/
-export const encrypt = (
-  data: string,
-  iv: string,
-  password: string,
-  salt: string,
-): string => {
-  try {
-    const key = scryptSync(password, salt, 32)
-    const cipher = createCipheriv(
-      algorithm,
-      key,
-      Buffer.from(iv, outputEncoding),
-    )
-    let cipheredData = cipher.update(data, inputEncoding, outputEncoding)
-    cipheredData += cipher.final(outputEncoding)
-    return cipheredData
-  } catch (error) {
-    throw new Error(\`encrypt: \${error}\`)
-  }
-}`,
+*/`,
       },
       {
         input: `export const decrypt = (
@@ -142,31 +137,7 @@ import { algorithm, inputEncoding, outputEncoding } from './crypto'
 * const salt = 'MySalt'; // Salt used in the encryption process
 * const decrypted = decrypt(encrypted, iv, password, salt);
 * console.log(decrypted);
-*/
-export const decrypt = (
-  encryptedData: string,
-  iv: string,
-  password: string,
-  salt: string,
-): string => {
-  try {
-    const key = scryptSync(password, salt, 32)
-    const decipher = createDecipheriv(
-      algorithm,
-      key,
-      Buffer.from(iv, outputEncoding),
-    )
-    let decryptedData = decipher.update(
-      encryptedData,
-      outputEncoding,
-      inputEncoding,
-    )
-    decryptedData += decipher.final(inputEncoding)
-    return decryptedData
-  } catch (error) {
-    throw new Error(\`decrypt: \${error}\`)
-  }
-}`,
+*/`,
       },
     ],
   }

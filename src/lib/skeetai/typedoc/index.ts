@@ -1,31 +1,17 @@
-import { AIType, generatePrompt } from '@/lib/genPrompt'
-import { VertexAI } from '@/lib/vertexai'
-import { OpenAI } from '@/lib/openai'
-import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
+import { AIType } from '@/lib/genPrompt'
 import { typedocPrompt } from './prompt'
+import { commonPrompt } from '../commonPrompt'
+import { AiInstance } from '@/lib/types/skeetaiTypes'
 
 export const skeetGenTypedoc = async (
   content: string,
   thisAi: AIType,
-  thisAiInstance: VertexAI | OpenAI,
+  thisAiInstance: AiInstance,
 ) => {
   try {
     const example = typedocPrompt()
-
-    const prompt = generatePrompt(
-      example.context,
-      example.examples,
-      content,
-      thisAi,
-    )
-
-    if (thisAi === 'VertexAI') {
-      const aiInstance = thisAiInstance as VertexAI
-      return await aiInstance.prompt(prompt as VertexPromptParams)
-    } else {
-      const aiInstance = thisAiInstance as OpenAI
-      return await aiInstance.prompt(prompt as OpenAIPromptParams)
-    }
+    const result = await commonPrompt(example, content, thisAi, thisAiInstance)
+    return result
   } catch (error) {
     throw new Error(`skeetPrompt: ${error}`)
   }

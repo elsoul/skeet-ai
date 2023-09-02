@@ -1,14 +1,13 @@
-import { AIType, generatePrompt } from '@/lib/genPrompt'
-import { VertexAI } from '@/lib/vertexai'
-import { OpenAI } from '@/lib/openai'
-import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
+import { AIType } from '@/lib/genPrompt'
 import { debugPrompt } from './prompt'
 import { readFileSync } from 'fs'
+import { commonPrompt } from '../commonPrompt'
+import { AiInstance } from '@/lib/types/skeetaiTypes'
 
 export const skeetDebug = async (
   content: string,
   thisAi: AIType,
-  thisAiInstance: VertexAI | OpenAI,
+  thisAiInstance: AiInstance,
   debugFile: string,
 ) => {
   try {
@@ -17,20 +16,8 @@ export const skeetDebug = async (
 
     const debugFileContent = readFileSync(debugFile, 'utf8')
     const example = debugPrompt(tsconfigJson, packageJson, debugFileContent)
-
-    const prompt = generatePrompt(
-      example.context,
-      example.examples,
-      content,
-      thisAi,
-    )
-    if (thisAi === 'VertexAI') {
-      const aiInstance = thisAiInstance as VertexAI
-      return await aiInstance.prompt(prompt as VertexPromptParams)
-    } else {
-      const aiInstance = thisAiInstance as OpenAI
-      return await aiInstance.prompt(prompt as OpenAIPromptParams)
-    }
+    const result = await commonPrompt(example, content, thisAi, thisAiInstance)
+    return result
   } catch (error) {
     throw new Error(`skeetDebug: ${error}`)
   }
