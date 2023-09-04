@@ -1,17 +1,16 @@
-import { AIType } from '@/lib/genPrompt'
 import { commonPrompt } from '../commonPrompt'
 import { firestorePrompt } from './prompt'
-import { AiInstance } from '@/lib/types/skeetaiTypes'
+import SkeetAI from '@/lib/skeetai'
 
-export const skeetFirestore = async (
-  content: string,
-  thisAi: AIType,
-  thisAiInstance: AiInstance,
-) => {
+export const skeetFirestore = async (content: string, skeetAi: SkeetAI) => {
   try {
     const example = firestorePrompt()
-
-    const result = await commonPrompt(example, content, thisAi, thisAiInstance)
+    const result = await commonPrompt(
+      example,
+      content,
+      skeetAi.ai,
+      skeetAi.aiInstance,
+    )
     return result
   } catch (error) {
     throw new Error(`skeetNaming: ${error}`)

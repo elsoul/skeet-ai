@@ -60,7 +60,16 @@ export class SkeetAI {
 
   static readonly PRISMA_SCHEMA_PATH: string = './graphql/prisma/schema.prisma'
   static readonly MODEL_PATH: string = './functions/skeet/src/models'
+  static readonly FUNCTION_ROOT = './functions'
   aiInstance: VertexAI | OpenAI
+
+  functionConfigPaths = (functionName: string) => {
+    const paths = {
+      packageJson: `${SkeetAI.FUNCTION_ROOT}/${functionName}/package.json`,
+      tsconfigJson: `${SkeetAI.FUNCTION_ROOT}/${functionName}/tsconfig.json`,
+    }
+    return paths
+  }
 
   /**
    * Creates an instance of SkeetAI.
@@ -107,7 +116,7 @@ export class SkeetAI {
 
   async prisma(content: string) {
     try {
-      return await skeetAiPrisma(content, this.ai, this.aiInstance)
+      return await skeetAiPrisma(content, this)
     } catch (error: any) {
       this.handleError(error)
     }
@@ -115,7 +124,7 @@ export class SkeetAI {
 
   async skeet(content: string) {
     try {
-      return await skeetPrompt(content, this.ai, this.aiInstance)
+      return await skeetPrompt(content, this)
     } catch (error: any) {
       throw new Error(`skeet: ${error}`)
     }
@@ -147,7 +156,7 @@ export class SkeetAI {
 
   async typedoc(content: string) {
     try {
-      return await skeetGenTypedoc(content, this.ai, this.aiInstance)
+      return await skeetGenTypedoc(content, this)
     } catch (error: any) {
       this.handleError(error)
     }
@@ -155,7 +164,7 @@ export class SkeetAI {
 
   async naming(content: string, namingEnum = NamingEnum.FUNCTION) {
     try {
-      return await skeetNaming(content, this.ai, this.aiInstance, namingEnum)
+      return await skeetNaming(content, this, namingEnum)
     } catch (error: any) {
       this.handleError(error)
     }
@@ -163,13 +172,7 @@ export class SkeetAI {
 
   async translates(paths: string[], langFrom = 'ja', langTo = 'en') {
     try {
-      return await skeetAiTranslates(
-        paths,
-        langFrom,
-        langTo,
-        this.ai,
-        this.aiInstance,
-      )
+      return await skeetAiTranslates(paths, langFrom, langTo, this)
     } catch (error: any) {
       this.handleError(error)
     }
@@ -177,7 +180,7 @@ export class SkeetAI {
 
   async firestore(content: string) {
     try {
-      return await skeetFirestore(content, this.ai, this.aiInstance)
+      return await skeetFirestore(content, this)
     } catch (error: any) {
       this.handleError(error)
     }

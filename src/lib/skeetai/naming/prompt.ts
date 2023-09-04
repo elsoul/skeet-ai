@@ -57,40 +57,47 @@ model Comment {
   ],
 }
 
-export const functionNamingPrompt = {
-  context: `You are a specialist in naming TypeScript functions. Users will provide you with a brief description of the function they want to create. Your task is to return a function name related to the described task in camelCase, ranging from 4 to 20 characters. Even if the user's description is vague or unusual, try to come up with the most appropriate name.`,
-  examples: [
-    {
-      input: 'Create a user',
-      output: 'createUser',
-    },
-    {
-      input: 'Use GitHub API to get user data',
-      output: 'getGitHubUserData',
-    },
-    {
-      input: 'Calculate tax for product',
-      output: 'calculateProductTax',
-    },
-    {
-      input: 'Transform text to uppercase',
-      output: 'transformToUppercase',
-    },
-    {
-      input: 'Find the oldest person in a list',
-      output: 'findOldestPerson',
-    },
-    {
-      input: 'Save data to local storage',
-      output: 'saveToLocalStorage',
-    },
-    {
-      input: 'Fetch latest news from server',
-      output: 'fetchLatestNews',
-    },
-  ],
+export const functionNamingPrompt = (functionNames: string[]) => {
+  return {
+    context: `You are a specialist in naming TypeScript functions. Users will provide you with a brief description of the function they want to create. Your task is to return a function name related to the described task in camelCase, ranging from 4 to 20 characters. Even if the user's description is vague or unusual, try to come up with the most appropriate name.
+    You must not use the same name as the existing function name.
+    Existing function names: ${functionNames.join(', ')}
+    You must use camelCase.
+    You must use 4 to 20 characters.
+    You must not use special characters.
+    `,
+    examples: [
+      {
+        input: 'Create a user',
+        output: 'createUser',
+      },
+      {
+        input: 'Use GitHub API to get user data',
+        output: 'getGitHubUserData',
+      },
+      {
+        input: 'Calculate tax for product',
+        output: 'calculateProductTax',
+      },
+      {
+        input: 'Transform text to uppercase',
+        output: 'transformToUppercase',
+      },
+      {
+        input: 'Find the oldest person in a list',
+        output: 'findOldestPerson',
+      },
+      {
+        input: 'Save data to local storage',
+        output: 'saveToLocalStorage',
+      },
+      {
+        input: 'Fetch latest news from server',
+        output: 'fetchLatestNews',
+      },
+    ],
+  }
 }
-
 function readModelFiles(): string[] {
   try {
     let files = readdirSync(SkeetAI.MODEL_PATH)

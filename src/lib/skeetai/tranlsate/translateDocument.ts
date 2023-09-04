@@ -1,13 +1,13 @@
-import { AIType, generatePrompt } from '@/lib/genPrompt'
+import { generatePrompt } from '@/lib/genPrompt'
 import { VertexAI } from '@/lib/vertexai'
 import { OpenAI } from '@/lib/openai'
 import { OpenAIPromptParams, VertexPromptParams } from '@/lib/types'
 import { markdownTranslatePrompt, jsonTranslatePrompt } from './prompt'
+import SkeetAI from '..'
 
 export const translateDocument = async (
   content: string,
-  thisAi: AIType,
-  thisAiInstance: VertexAI | OpenAI,
+  skeetAi: SkeetAI,
   mode: 'markdown' | 'json',
   langFrom = 'ja',
   langTo = 'en',
@@ -22,14 +22,14 @@ export const translateDocument = async (
       example.context,
       example.examples,
       content,
-      thisAi,
+      skeetAi.ai,
     )
 
-    if (thisAi === 'VertexAI') {
-      const aiInstance = thisAiInstance as VertexAI
+    if (skeetAi.ai === 'VertexAI') {
+      const aiInstance = skeetAi.aiInstance as VertexAI
       return await aiInstance.prompt(prompt as VertexPromptParams)
     } else {
-      const aiInstance = thisAiInstance as OpenAI
+      const aiInstance = skeetAi.aiInstance as OpenAI
       return await aiInstance.prompt(prompt as OpenAIPromptParams)
     }
   } catch (error) {

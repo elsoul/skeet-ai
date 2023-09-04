@@ -1,16 +1,30 @@
-import { AIType } from '@/lib/genPrompt'
-import { functionPrompt } from './prompt'
+import { typescriptFunctionPrompt } from './prompt'
 import { commonPrompt } from '../commonPrompt'
-import { AiInstance } from '@/lib/types/skeetaiTypes'
+import SkeetAI from '@/lib/skeetai'
 
 export const skeetFunction = async (
   content: string,
-  thisAi: AIType,
-  thisAiInstance: AiInstance,
+  skeetAi: SkeetAI,
+  tsconfig: string,
+  packageJson: string,
+  prettierrc: string,
+  existingFunctions: string,
+  existingModels: string,
 ) => {
   try {
-    const example = functionPrompt()
-    const result = await commonPrompt(example, content, thisAi, thisAiInstance)
+    const example = typescriptFunctionPrompt(
+      tsconfig,
+      packageJson,
+      prettierrc,
+      existingFunctions,
+      existingModels,
+    )
+    const result = await commonPrompt(
+      example,
+      content,
+      skeetAi.ai,
+      skeetAi.aiInstance,
+    )
     return result
   } catch (error) {
     throw new Error(`skeetNaming: ${error}`)

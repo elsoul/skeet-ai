@@ -1,16 +1,16 @@
 import { prismaPrompt } from './prompt'
-import { AIType } from '@/lib/genPrompt'
-import { commonPrompt } from '../commonPrompt'
-import { AiInstance } from '@/lib/types/skeetaiTypes'
+import { commonPrompt } from '@/lib/skeetai/commonPrompt'
+import SkeetAI from '@/lib/skeetai'
 
-export const skeetAiPrisma = async (
-  content: string,
-  thisAi: AIType,
-  thisAiInstance: AiInstance,
-) => {
+export const skeetAiPrisma = async (content: string, skeetAi: SkeetAI) => {
   try {
     const example = prismaPrompt()
-    const result = await commonPrompt(example, content, thisAi, thisAiInstance)
+    const result = await commonPrompt(
+      example,
+      content,
+      skeetAi.ai,
+      skeetAi.aiInstance,
+    )
     return result
   } catch (error) {
     throw new Error(`skeetAiPrisma: ${error}`)
