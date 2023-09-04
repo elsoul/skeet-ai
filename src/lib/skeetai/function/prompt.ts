@@ -1,23 +1,45 @@
-import { Example } from '@/lib/types/skeetaiTypes'
+import { Example, InstanceType } from '@/lib/types/skeetaiTypes'
+import { auth } from './auth'
+import { firestore } from './firestore'
+import { pubsub } from './pubsub'
+import { schedule } from './schedule'
+import { http, httpExample } from './http'
 
-export const typescriptFunctionPrompt = (
+export const firebaseFunctionPrompt = (
   tsconfig: string,
   packageJson: string,
   prettierrc: string,
   existingModels: string,
   existingFunctions: string,
+  instanceType: InstanceType,
 ) => {
+  let instanceTemplate = ''
+  if (instanceType === InstanceType.AUTH) {
+    instanceTemplate = auth
+  } else if (instanceType === InstanceType.FIRESTORE) {
+    instanceTemplate = firestore
+  } else if (instanceType === InstanceType.PUBSUB) {
+    instanceTemplate = pubsub
+  } else if (instanceType === InstanceType.SCHEDULE) {
+    instanceTemplate = schedule
+  } else if (instanceType === InstanceType.HTTP) {
+    instanceTemplate = http
+  }
   const prompt: Example = {
     context: `
-You are a specialist in generating TypeScript 5.2.0 functions. Your responses should strictly adhere to TypeScript's syntax and conventions. When designing functions, ensure that they are optimized for clarity, reusability, and performance. 
+You are a specialist in generating TypeScript 5.2.0 codes. Your responses should strictly adhere to TypeScript's syntax and conventions. When designing functions, ensure that they are optimized for clarity, reusability, and performance. This code will be used inside the Skeet Framework Template, you must generate <yourScripts> part only.
+<Skeet Framework Template>: ${instanceTemplate}
 
-If you're provided with existing function names, make sure not to use them again.
-You must create the function based on the Existing function, Models, and user's needs.
----Existing functions---
+All the necessary packages are already installed, so you don't need to install any packages.
+All the necessary functions are already defined in <Existing functions>, so you don't need to define any functions.
+All the necessary models are already defined in <Existing models>, so you don't need to define any models.
+---<Existing functions>---
 ${existingFunctions}
----Existing models---
+---<Existing models>---
 ${existingModels}
 ---
+You must create the typescript codes based on the Existing function, Models, and user's needs.
+
 You must follow package.json, tsconfig.json and prettierrc.json.
 ---package.json---
 ${packageJson}
@@ -26,28 +48,11 @@ ${tsconfig}
 ---prettierrc.json---
 ${prettierrc}
 ---
-You must use @skee-framework/firestore to retrieve data from Firestore.
-@skeet-framework/firestore: https://elsoul.github.io/skeet-firestore/
-You must follow this output format:
-export const <functionName> = async (...args here...): Promise<...type here...> => {
-  try {
-    ...define here...
-  } catch (error) {
-    throw new Error(\`<functionName>: \${error}\`)
-  }
-}
+You must use <@skeet-framework/firestore> to retrieve data from Firestore.
+<@skeet-framework/firestore>: https://elsoul.github.io/skeet-firestore/
 `,
     examples: [
-      {
-        input: 'Create a function that adds two numbers.',
-        output: `export const add(a: number, b: number): number => {
-  try {
-    return a + b;
-  catch (error) {
-    throw new Error(\`add: \${error}\`)
-  }
-}`,
-      },
+      httpExample,
       {
         input: 'Create a function that finds the largest number in an array.',
         output: `export const = findLargest(arr: number[]): numbe => {
@@ -55,20 +60,6 @@ export const <functionName> = async (...args here...): Promise<...type here...> 
     return Math.max(...arr);
   catch (error) {
     throw new Error(\`findLargest: \${error}\`)
-  }
-}`,
-      },
-      {
-        input: 'Get User Data from Firestore.',
-        output: `import { User, UserCN } from './userModels'
-import { get } from '@skeet-framework/firestore'
-
-export const getUser = async (userId: string): Promise<User> => {
-  try {
-    const user = await get<User>(UserCN, userId)
-    return user
-  } catch (error) {
-    throw new Error(\`getUser: \${error}\`)
   }
 }`,
       },

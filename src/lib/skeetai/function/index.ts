@@ -1,6 +1,7 @@
-import { typescriptFunctionPrompt } from './prompt'
+import { InstanceType } from '@/lib/types/skeetaiTypes'
+import SkeetAI from '..'
 import { commonPrompt } from '../commonPrompt'
-import SkeetAI from '@/lib/skeetai'
+import { firebaseFunctionPrompt } from './prompt'
 
 export const skeetFunction = async (
   content: string,
@@ -10,14 +11,16 @@ export const skeetFunction = async (
   prettierrc: string,
   existingFunctions: string,
   existingModels: string,
+  instanceType: InstanceType,
 ) => {
   try {
-    const example = typescriptFunctionPrompt(
+    const example = firebaseFunctionPrompt(
       tsconfig,
       packageJson,
       prettierrc,
       existingFunctions,
       existingModels,
+      instanceType,
     )
     const result = await commonPrompt(
       example,

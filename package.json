@@ -36,14 +36,14 @@
   "dependencies": {
     "@google-cloud/aiplatform": "2.17.0",
     "@google-cloud/translate": "7.2.2",
-    "crypto-js": "^4.1.1",
+    "crypto-js": "4.1.1",
     "dotenv": "16.3.1",
     "node-fetch": "2.6.9",
     "openai": "4.2.0",
-    "pako": "^2.1.0"
+    "pako": "2.1.0"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.1.1",
+    "@types/crypto-js": "4.1.1",
     "@types/jest": "29.5.3",
     "@types/node": "20.4.7",
     "@types/node-fetch": "2.6.4",

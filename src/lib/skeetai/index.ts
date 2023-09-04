@@ -11,10 +11,12 @@ import * as dotenv from 'dotenv'
 import { skeetGenTypedoc } from './typedoc'
 import { skeetNaming } from './naming'
 import { skeetAiTranslates } from './tranlsate'
-import { Example, NamingEnum } from '../types/skeetaiTypes'
+import { Example, InstanceType, NamingEnum } from '../types/skeetaiTypes'
 import { skeetFirestore } from './firestore'
 import { generatePrompt } from '../genPrompt'
 import { OpenAIPromptParams, VertexPromptParams } from '../types'
+import { skeetMethod } from './method'
+import { skeetFunction } from './function'
 dotenv.config()
 
 /**
@@ -181,6 +183,54 @@ export class SkeetAI {
   async firestore(content: string) {
     try {
       return await skeetFirestore(content, this)
+    } catch (error: any) {
+      this.handleError(error)
+    }
+  }
+
+  async function(
+    content: string,
+    tsconfig: string,
+    packageJson: string,
+    prettierrc: string,
+    existingFunctions: string,
+    existingModels: string,
+    instanceType: InstanceType,
+  ) {
+    try {
+      return await skeetFunction(
+        content,
+        this,
+        tsconfig,
+        packageJson,
+        prettierrc,
+        existingFunctions,
+        existingModels,
+        instanceType,
+      )
+    } catch (error: any) {
+      this.handleError(error)
+    }
+  }
+
+  async method(
+    content: string,
+    tsconfig: string,
+    packageJson: string,
+    prettierrc: string,
+    existingFunctions: string,
+    existingModels: string,
+  ) {
+    try {
+      return await skeetMethod(
+        content,
+        this,
+        tsconfig,
+        packageJson,
+        prettierrc,
+        existingFunctions,
+        existingModels,
+      )
     } catch (error: any) {
       this.handleError(error)
     }
