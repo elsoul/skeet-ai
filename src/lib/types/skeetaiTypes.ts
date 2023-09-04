@@ -18,3 +18,22 @@ export enum NamingEnum {
 }
 
 export type AiInstance = VertexAI | OpenAI
+
+export enum SkeetAiMode {
+  Function = 'function',
+  Firestore = 'firestore',
+  Method = 'method',
+  Prisma = 'prisma',
+  Skeet = 'skeet',
+  Translate = 'translate',
+  Typedoc = 'typedoc',
+  YesOrNo = 'yesOrNo',
+}
+
+export enum InstanceType {
+  AUTH = 'auth',
+  FIRESTORE = 'firestore',
+  PUBSUB = 'pubsub',
+  SCHEDULE = 'schedule',
+  HTTP = 'http',
+}

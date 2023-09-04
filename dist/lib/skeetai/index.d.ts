@@ -1,6 +1,6 @@
 import { OpenAI } from '../openai';
 import { VertexAI } from '../vertexai';
-import { Example, NamingEnum } from '../types/skeetaiTypes';
+import { Example, InstanceType, NamingEnum } from '../types/skeetaiTypes';
 /**
  * Configuration options for initializing a SkeetAI instance.
  */
@@ -70,6 +70,8 @@ export declare class SkeetAI {
     naming(content: string, namingEnum?: NamingEnum): Promise<string | undefined>;
     translates(paths: string[], langFrom?: string, langTo?: string): Promise<void>;
     firestore(content: string): Promise<string | undefined>;
+    function(content: string, tsconfig: string, packageJson: string, prettierrc: string, existingFunctions: string, existingModels: string, instanceType: InstanceType): Promise<string | undefined>;
+    method(content: string, tsconfig: string, packageJson: string, prettierrc: string, existingFunctions: string, existingModels: string): Promise<string | undefined>;
     run(example: Example, content: string): Promise<string>;
     private handleError;
 }
