@@ -1,6 +1,6 @@
 import { OpenAI } from '../openai';
 import { VertexAI } from '../vertexai';
-import { NamingEnum } from '../types/skeetaiTypes';
+import { Example, NamingEnum } from '../types/skeetaiTypes';
 /**
  * Configuration options for initializing a SkeetAI instance.
  */
@@ -37,7 +37,12 @@ export declare class SkeetAI {
     private _initOptions;
     static readonly PRISMA_SCHEMA_PATH: string;
     static readonly MODEL_PATH: string;
+    static readonly FUNCTION_ROOT = "./functions";
     aiInstance: VertexAI | OpenAI;
+    functionConfigPaths: (functionName: string) => {
+        packageJson: string;
+        tsconfigJson: string;
+    };
     /**
      * Creates an instance of SkeetAI.
      * @param options - Configuration options for initializing the SkeetAI.
@@ -65,6 +70,7 @@ export declare class SkeetAI {
     naming(content: string, namingEnum?: NamingEnum): Promise<string | undefined>;
     translates(paths: string[], langFrom?: string, langTo?: string): Promise<void>;
     firestore(content: string): Promise<string | undefined>;
+    run(example: Example, content: string): Promise<string>;
     private handleError;
 }
 export default SkeetAI;

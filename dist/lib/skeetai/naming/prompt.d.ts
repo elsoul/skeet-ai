@@ -5,7 +5,7 @@ export declare const migrationNamingPrompt: {
         output: string;
     }[];
 };
-export declare const functionNamingPrompt: {
+export declare const functionNamingPrompt: (functionNames: string[]) => {
     context: string;
     examples: {
         input: string;
