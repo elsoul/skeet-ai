@@ -1,8 +1,6 @@
 import { readFileSync, writeFileSync } from 'fs'
 import { translateDocument } from './translateDocument'
-import { AIType } from '@/lib/genPrompt'
-import { VertexAI } from '@/lib/vertexai'
-import { OpenAI } from '@/lib/openai'
+import SkeetAI from '@/lib/skeetai'
 
 export const splitContentIntoChunks = (
   content: string,
@@ -21,8 +19,7 @@ export const translateJsonDocuments = async (
   paths: string[],
   langFrom = 'ja',
   langTo = 'en',
-  ai: AIType,
-  aiInstance: VertexAI | OpenAI,
+  skeetAi: SkeetAI,
 ) => {
   let i = 0
   console.log(`From ${langFrom} to ${langTo}`)
@@ -38,8 +35,7 @@ export const translateJsonDocuments = async (
       console.log(`Translating chunk: ${j + 1}/${chunks.length} chunks`)
       const translatedChunk = await translateDocument(
         chunk,
-        ai,
-        aiInstance,
+        skeetAi,
         'json',
         langFrom,
         langTo,

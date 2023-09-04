@@ -1,18 +1,15 @@
-import { AIType } from '@/lib/genPrompt'
-import { VertexAI } from '@/lib/vertexai'
-import { OpenAI } from '@/lib/openai'
 import { extractSectionsFromMd } from './extractSectionsFromMd'
 import { translateDocument } from './translateDocument'
 import { writeFileSync } from 'fs'
 import { translateJsonDocuments } from './translateJsonDocuments'
 import { organizeFilesByExtension } from './organizePaths'
+import SkeetAI from '@/lib/skeetai'
 
 export const skeetAiTranslates = async (
   paths: string[],
   langFrom: string,
   langTo: string,
-  thisAi: AIType,
-  thisAiInstance: VertexAI | OpenAI,
+  skeetAi: SkeetAI,
 ) => {
   try {
     const organizedPaths = organizeFilesByExtension(paths)
@@ -21,16 +18,14 @@ export const skeetAiTranslates = async (
         organizedPaths.mdFiles,
         langFrom,
         langTo,
-        thisAi,
-        thisAiInstance,
+        skeetAi,
       )
     if (organizedPaths.jsonFiles.length !== 0)
       await translateJsonDocuments(
         organizedPaths.jsonFiles,
         langFrom,
         langTo,
-        thisAi,
-        thisAiInstance,
+        skeetAi,
       )
   } catch (error) {
     throw new Error(`skeetDocument: ${error}`)
@@ -41,8 +36,7 @@ const translateMarkdownDocuments = async (
   paths: string[],
   langFrom = 'ja',
   langTo = 'en',
-  ai: AIType,
-  aiInstance: VertexAI | OpenAI,
+  skeetAi: SkeetAI,
 ) => {
   let i = 0
   console.log(`From ${langFrom} to ${langTo}`)
@@ -59,8 +53,7 @@ const translateMarkdownDocuments = async (
 
       const translatedContent = await translateDocument(
         section,
-        ai,
-        aiInstance,
+        skeetAi,
         'markdown',
         langFrom,
         langTo,
