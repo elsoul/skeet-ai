@@ -127,6 +127,26 @@ You are a specialist in adding descriptions to functions for generating TypeDoc.
 * console.log(decrypted);
 */`,
       },
+      {
+        input: `get UserChatRoom data from firestore`,
+        output: `/**
+* @module getUserChatRoom
+* Fetches the chat room of a user from the database.
+*
+* @param db - The Firestore database instance.
+* @param userId - The ID of the user.
+* @param chatRoomId - The ID of the chat room.
+* @returns A promise that resolves to the user's chat room.
+* @throws Will throw an error if the chat room cannot be fetched.
+*
+* @example
+* const db = admin.firestore();
+* const userId = 'User123';
+* const chatRoomId = 'ChatRoom123';
+* const userChatRoom = await getUserChatRoom(db, userId, chatRoomId)
+* console.log(userChatRoom));
+*/`,
+      },
     ],
   }
   return prompt
