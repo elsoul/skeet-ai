@@ -25,6 +25,8 @@ export const typedocPrompt = () => {
     context: `
 You are a specialist in adding descriptions to functions for generating TypeDoc. Make sure to include @example in a clear and understandable manner in the TypeDoc comments. Please also consider the following settings.tsconfig.json: ${tsconfigJson}\n.prettierrc: ${prettierrcFile}\n.eslintrc.json:${eslintrcJson}
 - You must output only the typedoc comments.
+- You must not include any other comment except the typedoc comments.
+- You must not include import statements because the import statements already exist in the file.
 - You must output the typedoc comments in the following format:
 /**
  * ...description here...
@@ -63,14 +65,7 @@ You are a specialist in adding descriptions to functions for generating TypeDoc.
 }
 `,
         output: `/**
-* @module crypto
-* @preferred
-*/
-
-import { createCipheriv, scryptSync } from 'crypto'
-import { algorithm, inputEncoding, outputEncoding } from './crypto'
-
-/**
+* @module encrypt
 * Encrypts data using the given parameters.
 *
 * @param data - The data to be encrypted.
@@ -114,14 +109,7 @@ import { algorithm, inputEncoding, outputEncoding } from './crypto'
   }
 }`,
         output: `/**
-* @module crypto
-* @preferred
-*/
-
-import { createDecipheriv, scryptSync } from 'crypto'
-import { algorithm, inputEncoding, outputEncoding } from './crypto'
-
-/**
+* @module decrypt
 * Decrypts data using the given parameters.
 *
 * @param encryptedData - The encrypted data.
