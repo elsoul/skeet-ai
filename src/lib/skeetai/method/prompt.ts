@@ -65,10 +65,11 @@ This output will be used as typescript .ts file, so you must not include any oth
         input: 'Get User Data from Firestore.',
         output: `import { User, UserCN } from './userModels'
 import { get } from '@skeet-framework/firestore'
+import * as admin from 'firebase-admin'
 
-export const getUser = async (userId: string): Promise<User> => {
+export const getUser = async (db: admin.firestore.Firestore, userId: string): Promise<User> => {
   try {
-    const user = await get<User>(UserCN, userId)
+    const user = await get<User>(db, UserCN, userId)
     return user
   } catch (error) {
     throw new Error(\`getUser: \${error}\`)
