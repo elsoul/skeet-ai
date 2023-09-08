@@ -36,6 +36,9 @@ export const <functionName> = async (...args here...): Promise<...type here...> 
     throw new Error(\`<functionName>: \${error}\`)
   }
 }
+
+You must only output the typescript function.
+This output will be used as typescript .ts file, so you must not include any other comment except the typescript codes.
 `,
     examples: [
       {
