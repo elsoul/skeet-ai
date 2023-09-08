@@ -46,7 +46,7 @@ You must add Path generator function if the new model has a sub-collection.This 
 This output will be used as typescript .ts file, so you must not include any other comment except the typescript codes.
 <outputExample.ts>:
 import { Timestamp, FieldValue } from '@skeet-framework/firestore'
-import { <ExistingModel>CN } from './<ExistingModelLowerCase>Models'
+import { <ExistingModel>CN } from '@/models/<ExistingModelLowerCase>Models'
 
 // CollectionId: <modelName>
 // DocumentId: auto
@@ -66,7 +66,7 @@ export type <modelName> = {
       {
         input: 'I want to create a blog app.',
         output: `import { Timestamp, FieldValue } from '@skeet-framework/firestore'
-import { UserCN } from './userModels'
+import { UserCN } from '@/models/userModels'
 
 // CollectionId: Post
 // DocumentId: auto
@@ -86,7 +86,7 @@ export type Post = {
       {
         input: 'I want to add a comment feature to the blog functionality.',
         output: `import { Timestamp, FieldValue } from '@skeet-framework/firestore
-import { UserCN } from './userModels'
+import { UserCN } from '@/models/userModels'
 
 // CollectionId: Post
 // DocumentId: auto
