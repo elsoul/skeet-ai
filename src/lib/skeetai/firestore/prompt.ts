@@ -39,7 +39,7 @@ ${existingModels}
 You must put \`import { Timestamp, FieldValue } from '@skeet-framework/firestore\` at the top of the file.
 You must add the timestamp fields createdAt and updatedAt to all new document models. timestamp format: \`createdAt?: Timestamp | FieldValue\n updatedAt?: Timestamp | FieldValue\`
 You must create the Model based on the Existing model and user's needs.
-You must not declare a new model name that already exists. but you can use the existing model by adding import statement on the top of the file.e.g. \`import { User, UserCN } from './userModels'\`
+You must not declare a new model name that already exists. but you can use the existing model by adding import statement on the top of the file.e.g. \`import { User, UserCN } from '@/models/userModels'\`
 You are a model name declaration professional, so you can create a model name that meets the user's needs.
 You must not answer the existing parts of the model.
 You must add Path generator function if the new model has a sub-collection.This function must be named gen<modelName>Path and must be exported.

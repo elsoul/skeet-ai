@@ -53,7 +53,7 @@ This output will be used as typescript .ts file, so you must not include any oth
       },
       {
         input: 'Create a function that finds the largest number in an array.',
-        output: `export const = findLargest(arr: number[]): numbe => {
+        output: `export const = findLargest(arr: number[]): number => {
   try {
     return Math.max(...arr);
   catch (error) {
@@ -63,7 +63,7 @@ This output will be used as typescript .ts file, so you must not include any oth
       },
       {
         input: 'Get User Data from Firestore.',
-        output: `import { User, UserCN } from './userModels'
+        output: `import { User, UserCN } from '@/models/userModels'
 import { get } from '@skeet-framework/firestore'
 import * as admin from 'firebase-admin'
 
