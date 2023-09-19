@@ -25,7 +25,9 @@ const run = async () => {
     ],
   }
 
-  const vertexAi = new VertexAI()
+  const vertexAi = new VertexAI({
+    maxOutputTokens: 3000,
+  })
   const response = await vertexAi.prompt(prompt)
   console.log('Question:\n', prompt.messages[0].content)
   console.log('Answer:\n', response)
