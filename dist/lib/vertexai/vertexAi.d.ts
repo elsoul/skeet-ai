@@ -53,7 +53,7 @@ export declare class VertexAI implements AIPromptable {
     private initializeVertexParams;
     private getEndpoint;
     prompt(prompt: any): Promise<string>;
-    promptStream(prompt: any): Promise<import("stream").Readable>;
+    promptStream(prompt: any): Promise<import("node:stream").Readable>;
     chat(content: string): Promise<string>;
     private validateOptions;
     private preparePredictRequest;
