@@ -76,7 +76,7 @@ export class VertexAI implements AIPromptable {
       location: options.location || process.env.REGION || '',
       apiEndpoint:
         options.apiEndpoint || 'us-central1-aiplatform.googleapis.com',
-      model: options.model || 'chat-bison@001',
+      model: options.model || 'chat-bison-32k',
       publisher: options.publisher || 'google',
       delay: options.delay || 200,
     }
