@@ -1,6 +1,6 @@
 import { extractSectionsFromMd } from './extractSectionsFromMd'
 import { translateDocument } from './translateDocument'
-import { writeFileSync } from 'fs'
+import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { translateJsonDocuments } from './translateJsonDocuments'
 import { organizeFilesByExtension } from './organizePaths'
 import SkeetAI from '@/lib/skeetai'
@@ -45,7 +45,12 @@ const translateMarkdownDocuments = async (
     console.log(`\nTranslating document: ${i + 1}/${paths.length} paths`)
     const sections = extractSectionsFromMd(path)
     let j = 0
-    const outputPath = path.replace('.md', `-${langTo}.md`)
+    const pathSplit = path.split('/')
+    const lang = pathSplit[pathSplit.length - 2]
+    const pathNum = pathSplit.length - 1
+    const outputPath = path.replace(lang, `${langTo}`)
+    const outputDir = outputPath.replace(pathSplit[pathNum], '')
+    if (!existsSync(outputDir)) mkdirSync(outputDir, { recursive: true })
     outputPaths.push(outputPath)
     const mdContents = []
     for (const section of sections) {
