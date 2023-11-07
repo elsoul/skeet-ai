@@ -1,6 +1,7 @@
 import aiplatform from '@google-cloud/aiplatform'
 export { aiplatform }
 import * as openai from 'openai'
+export type { ChatCompletionMessageParam } from 'openai/resources'
 export type { ChatCompletionChunk, ChatCompletion } from 'openai/resources/chat'
 export { Stream } from 'openai/streaming'
 export { openai }

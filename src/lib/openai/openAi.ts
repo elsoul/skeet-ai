@@ -1,9 +1,13 @@
 import { OpenAI as OpenAIApi } from 'openai'
-import { OpenAIOptions, OpenAIPromptParams } from '@/lib/types/openaiTypes'
+import { OpenAIOptions } from '@/lib/types/openaiTypes'
 import { systemContentJA } from './sytemContexts'
 import { randomChat } from './randomChat'
 import { AIPromptable } from '@/lib/skeetai'
-import { ChatCompletion, ChatCompletionChunk } from 'openai/resources/chat'
+import {
+  ChatCompletion,
+  ChatCompletionChunk,
+  ChatCompletionMessageParam,
+} from 'openai/resources/chat'
 import { Stream } from 'openai/streaming'
 import * as dotenv from 'dotenv'
 import { createReadStream } from 'fs'
@@ -77,7 +81,7 @@ export class OpenAI implements AIPromptable {
 
   async chat(content: string): Promise<string> {
     try {
-      const prompt: OpenAIPromptParams = randomChat(content)
+      const prompt = randomChat(content)
       const response = await this.prompt(prompt)
       return response
     } catch (error) {
@@ -88,27 +92,27 @@ export class OpenAI implements AIPromptable {
   async generateTitle(content: string): Promise<string> {
     try {
       const systemContent = systemContentJA
-      const openAiPrompt: OpenAIPromptParams = {
-        messages: [
-          {
-            role: 'system',
-            content: systemContent,
-          },
-          {
-            role: 'user',
-            content,
-          },
-        ],
-      }
+      const openAiPrompt: ChatCompletionMessageParam[] = [
+        {
+          role: 'system',
+          content: systemContent,
+        },
+        {
+          role: 'user',
+          content,
+        },
+      ]
 
-      const result = await this.prompt(openAiPrompt)
+      const result = await this.prompt({
+        messages: openAiPrompt,
+      })
       return result
     } catch (error) {
       throw new Error(`generateChatRoomTitle: ${error}`)
     }
   }
 
-  async promptStream(prompt: OpenAIPromptParams) {
+  async promptStream(prompt: ChatCompletionMessageParam[]) {
     try {
       const openaiConfig = {
         model: this.options.model!,
@@ -117,11 +121,11 @@ export class OpenAI implements AIPromptable {
         top_p: this.options.topP!,
         n: this.options.n!,
         stream: true,
-        messages: prompt.messages,
+        messages: prompt,
       }
-      const stream = (await this.aiInstance.chat.completions.create(
-        openaiConfig,
-      )) as Stream<ChatCompletionChunk>
+      const stream = (await this.aiInstance.chat.completions.create({
+        ...openaiConfig,
+      })) as Stream<ChatCompletionChunk>
       return stream
     } catch (error) {
       throw new Error(`openAiStream error: ${error}`)

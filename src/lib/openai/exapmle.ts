@@ -8,25 +8,24 @@ const exampleJosn = JSON.parse(
 )
 
 const run = async () => {
-  const content = 'Tell me about the Skeet framework.'
-  const prompt = generatePrompt(
-    exampleJosn.context,
-    exampleJosn.examples,
-    content,
-    'OpenAI',
-  ) as OpenAIPromptParams
+  // const content = 'What is the skeet framework?'
+  // const prompt = generatePrompt(
+  //   exampleJosn.context,
+  //   exampleJosn.examples,
+  //   content,
+  //   'OpenAI',
+  // ) as OpenAIPromptParams
   const openAi = new SkeetAI({
     ai: 'OpenAI',
+    model: 'gpt-4-1106-preview',
   }).aiInstance as OpenAI
-  const result = await openAi.prompt(prompt)
+  // const result = await openAi.prompt(prompt)
 
-  console.log(JSON.stringify(result, null, 2))
-  console.log('Question:\n', prompt.messages[3].content)
-  console.log('\nAnswer:\n', result)
+  // console.log('Question:\n', prompt.messages[3].content)
+  // console.log('\nAnswer:\n', result)
   const content2 =
     'The Skeet framework is an open-source full-stack app development solution that aims to lower the development and operation cost of applications. It allows developers to focus more on the application logic and worry less about infrastructure. The framework can be assembled with a combination of SQL and NoSQL.'
   const title = await openAi.generateTitle(content2)
-  console.log('\nOriginal content:\n', content)
   console.log('\nGenerated title:\n', title)
 }
 
