@@ -42,7 +42,7 @@ export function generatePrompt(
   examples: AIExample[],
   content: string,
   ai: AIType,
-): VertexPromptParams | { messages: ChatCompletionMessageParam[] } {
+): VertexPromptParams | OpenAIPromptParams {
   if (ai === 'VertexAI') {
     const exampleMessages = []
     for (const example of examples) {

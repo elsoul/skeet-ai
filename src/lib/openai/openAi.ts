@@ -112,7 +112,7 @@ export class OpenAI implements AIPromptable {
     }
   }
 
-  async promptStream(prompt: ChatCompletionMessageParam[]) {
+  async promptStream(prompt: any) {
     try {
       const openaiConfig = {
         model: this.options.model!,

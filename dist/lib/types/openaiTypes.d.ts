@@ -1,5 +1,6 @@
+import { ChatCompletionMessageParam } from 'openai/resources';
 export type OpenAIPromptParams = {
-    messages: OpenAIMessage[];
+    messages: ChatCompletionMessageParam[];
 };
 export type OpenAIOptions = {
     organizationKey?: string;
