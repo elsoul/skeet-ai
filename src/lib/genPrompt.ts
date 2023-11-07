@@ -1,5 +1,6 @@
 import { inspect } from 'util'
 import { OpenAIPromptParams, VertexExample, VertexPromptParams } from './types'
+import { ChatCompletionMessageParam } from 'openai/resources'
 
 /**
  * Represents the AI platforms supported by the generatePrompt function.
@@ -41,7 +42,7 @@ export function generatePrompt(
   examples: AIExample[],
   content: string,
   ai: AIType,
-): VertexPromptParams | OpenAIPromptParams {
+): VertexPromptParams | { messages: ChatCompletionMessageParam[] } {
   if (ai === 'VertexAI') {
     const exampleMessages = []
     for (const example of examples) {
@@ -71,14 +72,14 @@ export function generatePrompt(
         exampleMessages.push({
           role: 'user',
           content: example.input,
-        })
+        } as ChatCompletionMessageParam)
       if (!example.output) continue
       exampleMessages.push({
         role: 'assistant',
         content: example.output,
-      })
+      } as ChatCompletionMessageParam)
     }
-    const messages = [
+    const messages: ChatCompletionMessageParam[] = [
       {
         role: 'system',
         content: context,
@@ -90,9 +91,7 @@ export function generatePrompt(
       },
     ]
 
-    return {
-      messages,
-    } as OpenAIPromptParams
+    return { messages }
   } else {
     throw new Error('Unsupported AI type')
   }

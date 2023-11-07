@@ -1,4 +1,5 @@
-import { OpenAIPromptParams, VertexPromptParams } from './types';
+import { VertexPromptParams } from './types';
+import { ChatCompletionMessageParam } from 'openai/resources';
 /**
  * Represents the AI platforms supported by the generatePrompt function.
  */
@@ -29,7 +30,9 @@ export interface AIPrompt {
      */
     examples: AIExample[];
 }
-export declare function generatePrompt(context: string, examples: AIExample[], content: string, ai: AIType): VertexPromptParams | OpenAIPromptParams;
+export declare function generatePrompt(context: string, examples: AIExample[], content: string, ai: AIType): VertexPromptParams | {
+    messages: ChatCompletionMessageParam[];
+};
 export declare const migrationPrompt: {
     context: string;
     examples: {
