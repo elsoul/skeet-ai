@@ -64,7 +64,7 @@ This output will be used as typescript .ts file, so you must not include any oth
       },
       {
         input: 'Get User Data from Firestore.',
-        output: `import { User, UserCN } from '@/models/userModels'
+        output: `import { User, UserCN } from '@common/models/userModels'
 import { get } from '@skeet-framework/firestore'
 import * as admin from 'firebase-admin'
 
