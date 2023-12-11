@@ -39,18 +39,22 @@ ${existingModels}
 You must put \`import { Timestamp, FieldValue } from '@skeet-framework/firestore\` at the top of the file.
 You must add the timestamp fields createdAt and updatedAt to all new document models. timestamp format: \`createdAt?: Timestamp | FieldValue\n updatedAt?: Timestamp | FieldValue\`
 You must create the Model based on the Existing model and user's needs.
-You must not declare a new model name that already exists. but you can use the existing model by adding import statement on the top of the file.e.g. \`import { User, UserCN } from '@/models/userModels'\`
+You must not declare a new model name that already exists. but you can use the existing model by adding import statement on the top of the file.e.g. \`import { User, UserCN } from '@common/models/userModels'\`
 You are a model name declaration professional, so you can create a model name that meets the user's needs.
 You must not answer the existing parts of the model.
 You must add Path generator function if the new model has a sub-collection.This function must be named gen<modelName>Path and must be exported.
 This output will be used as typescript .ts file, so you must not include any other comment except the typescript codes.
 <outputExample.ts>:
 import { Timestamp, FieldValue } from '@skeet-framework/firestore'
-import { <ExistingModel>CN } from '@/models/<ExistingModelLowerCase>Models'
+import { <ExistingModel>CN } from '@common/models/<ExistingModelLowerCase>Models'
 
-// CollectionId: <modelName>
-// DocumentId: auto
-// Path: <ExistingModel>/\${<ExistingModel>Id}/<modelName>
+/**
+ * Type definition for documents in the 'Hey' collection.
+ *
+ * @collectionId <modelName>
+ * @documentId auto-generated
+ * @path <ExistingModel>/\${<ExistingModel>Id}/<modelName>
+ */
 export const <modelName>CN = '<modelName>'
 export const gen<modelName>Path = (userId: string) => \`\${<ExistingModel>CN}/\${<ExistingModelLowerCase>Id}/\${<modelName>CN}\`
 export type <modelName> = {
@@ -66,11 +70,15 @@ export type <modelName> = {
       {
         input: 'I want to create a blog app.',
         output: `import { Timestamp, FieldValue } from '@skeet-framework/firestore'
-import { UserCN } from '@/models/userModels'
+import { UserCN } from '@common/models/userModels'
 
-// CollectionId: Post
-// DocumentId: auto
-// Path: User/\${UserId}/Post
+/**
+ * Type definition for documents in the 'Hey' collection.
+ *
+ * @collectionId Post
+ * @documentId auto-generated
+ * @path User/\${userId}/Post
+ */
 export const PostCN = 'Post'
 export const genPostPath = (userId: string) => \`\${UserCN}/\${userId}/\${PostCN}\`
 export type Post = {
@@ -86,11 +94,15 @@ export type Post = {
       {
         input: 'I want to add a comment feature to the blog functionality.',
         output: `import { Timestamp, FieldValue } from '@skeet-framework/firestore
-import { UserCN } from '@/models/userModels'
+import { UserCN } from '@common/models/userModels'
 
-// CollectionId: Post
-// DocumentId: auto
-// Path: User/\${UserId}/Post
+/**
+ * Type definition for documents in the 'Post' collection.
+ *
+ * @collectionId Post
+ * @documentId auto-generated
+ * @path User/\${userId}/Post
+ */
 export const PostCN = 'Post'
 export const genPostPath = (userId: string) => \`\${UserCN}/\${userId}/\${PostCN}\`
 export type Post = {
@@ -102,9 +114,13 @@ export type Post = {
   userId: string
 }
 
-// CollectionId: Comment
-// DocumentId: auto
-// Path: User/\${UserId}/Post/\${PostId}/Comment
+/**
+ * Type definition for documents in the 'Comment' collection.
+ *
+ * @collectionId Comment
+ * @documentId auto-generated
+ * @path User/\${userId}/Post/\${postId}/Comment
+ */
 export const CommentCN = 'Comment'
 export const genCommentPath = (userId: string, postId: string) => \`\${UserCN}/\${userId}/\${PostCN}/\${postId}/\${CommentCN}\`
 export type Comment = {

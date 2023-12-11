@@ -61,7 +61,7 @@ export class SkeetAI {
   private _initOptions: SkeetAIOptions
 
   static readonly PRISMA_SCHEMA_PATH: string = './graphql/prisma/schema.prisma'
-  static readonly MODEL_PATH: string = './functions/skeet/src/models'
+  static readonly MODEL_PATH: string = './common/models'
   static readonly FUNCTION_ROOT = './functions'
   aiInstance: VertexAI | OpenAI
 
